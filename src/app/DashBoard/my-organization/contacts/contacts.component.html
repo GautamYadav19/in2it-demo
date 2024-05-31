@@ -1,0 +1,246 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light p-0">
+
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li (click)="openFormToggleFn()" class="nav-item d-flex p-1"><i-feather class="pt-1" name="plus"></i-feather>
+        <a class="nav-link ">New</a>
+      </li>
+      <li class="nav-item d-flex p-1"><i-feather class="pt-1" name="shopping-bag"></i-feather>
+        <a class="nav-link " href="#">Add To marketing List</a>
+      </li>
+      <li class="nav-item d-flex p-1"><i-feather class="pt-1" name="share-2"></i-feather>
+        <a class="nav-link " href="#">Share</a>
+      </li>
+      <li class="nav-item d-flex p-1"><i-feather class="pt-1" name="upload"></i-feather>
+        <a class="nav-link " href="#">Import</a>
+      </li>
+    </ul>
+
+  </div>
+</nav>
+<div class="d-flex justify-content-between mt-2">
+  <h5>All Contact List</h5>
+  <div>
+    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+  </div>
+</div>
+
+<ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+  <li *ngFor="let data of navs;let i=index" [ngbNavItem]="data.id">
+    <a ngbNavLink>
+      {{ data.organization }}
+      <span class="btn-close ms-3 fw-light"></span>
+    </a>
+
+
+    <ng-template *ngIf="i===0;elseBolock" ngbNavContent>
+      <div class="container-fluid p-0">
+        <div class="row flex-nowrap">
+          <div class="col-auto col-md-2 col-xl-2 px-sm-2 px-0 bg-dark">
+            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+              <a routerLink="" class="nav-link px-0 align-middle">
+                <span class="ms-1 d-none d-sm-inline">List</span>
+              </a>
+              <a class="nav-link px-0 align-middle">
+                <span class="ms-1 d-none d-sm-inline active" (click)="getTableList()">All Contact</span>
+              </a>
+              <a *ngFor="let org of tableData" class="nav-link px-0 align-middle">
+                <div (click)="filterData(org.organization)" class="ms-1 d-none d-sm-inline">{{org.organization}}</div>
+                <div style="font-size: small;" class="ms-1">Contacts ({{org.contact?.length}})</div>
+              </a>
+
+            </div>
+          </div>
+          <div class="col py-3 ">
+            <div [ngClass]="toggle?'row':''">
+              <div [ngClass]="toggle?'col-lg-8':''">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Organization</th>
+                      <th>Name</th>
+                      <th>Role</th>
+                      <th>Email</th>
+                      <th>Phone Number</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let org of showtableData">
+                      <tr *ngFor="let contactData of org.contact">
+                        <td>  <input class="form-check-input " type="checkbox" value="" id="flexCheckDefault"><a class="ms-2" [routerLink]="'/organization'" [state]="{data:org,id:org.id}">{{ org.organization }}</a>
+                        </td>
+                        <td (click)="getOrgMemberDataById(org.id,contactData.id)">{{contactData.name}}</td>
+                        <td>{{contactData.role}}</td>
+                        <td>{{contactData.email}}</td>
+                        <td>{{contactData.phoneNumber}}</td>
+
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+              <div [ngClass]="toggle?'col-lg-4':'hide'">
+
+                <div *ngIf="!openFormToggle" class="row">
+                  <div class="col-12">
+
+                    <div class="card" style="width: 18rem;">
+                      <button (click)="openFormToggleFn(true)">edit</button>
+                      <div class="card-body">
+                        <h5 class="card-title">Name :{{rightCardData?.name}}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted"> Phone
+                          Number:{{rightCardData?.phoneNumber}}</h6>
+                        <p class="card-text">Role: {{rightCardData?.role}}</p>
+                        <p class="card-text">Email: {{rightCardData?.email}}</p>
+                        <p class="card-text">Additional Role: {{rightCardData?.additionalrole}}</p>
+
+                        <a class="btn btn-secondary" (click)="togglebtn()">Close</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <form [formGroup]="orgForm" class="card p-2" style="width: 22rem;" *ngIf="openFormToggle">
+                  <div class="form-group " formGroupName="name">
+                    <label for="name">Name</label>
+                    <div class="d-flex">
+                      <input formControlName="fname" type="email" class="form-control w-50 " id="name"
+                        aria-describedby="emailHelp" placeholder="Enter first Name">
+                      <input formControlName="lname" type="email" class="form-control w-50 ms-2" id="name"
+                        aria-describedby="emailHelp" placeholder="Enter Last Name">
+                    </div>
+
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="w-100 form-group">
+                        <label class="form-label">Organization</label>
+                        <select class="form-control" formControlName="org" #orgValue
+                          (change)="getRoles($event.target)">
+
+                          <option *ngIf="flagForOrgDropdown;else elseblock" [value]="orgDropdown">
+                            {{orgDropdown}}
+                          </option>
+                          <ng-template #elseblock>
+
+                            <option *ngFor="let org of orgDropdown" value="{{org}}">
+                              {{org}}
+                            </option>
+                          </ng-template>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="email">Email</label>
+                    <input formControlName="email" type="email" class="form-control" id="email" placeholder="Email">
+                  </div>
+                  <div class="form-group mt-2">
+                    <div class="d-flex" formGroupName="number">
+                      <div class="w-25 form-group">
+                        <label class="form-label">code</label>
+                        <select class="form-control" formControlName="code">
+                          <option *ngFor="let code of codes" value="{{code}}">
+                            {{code}}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="w-75 ms-1" style="margin-top:9.5%;">
+                        <input formControlName="phoneNumber" type="text" class="form-control"
+                          placeholder="Phone Number">
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div formArrayName="addmorefield">
+                    <div *ngFor="let field of addmore.controls;let i =index">
+                      <div [formGroupName]="i">
+
+                        <div class="form-group mt-2">
+                          <div class="d-flex">
+                            <div class="w-25 form-group">
+                              <label class="form-label">Options</label>
+                              <select class="form-control" formControlName="newFieldname">
+                                <option selected value="whatsappNumber">
+                                  Whatsapp Number
+                                </option>
+                                <option value="FaceBookID">
+                                  FaceBook
+                                </option>
+                                <option value="instagramId">
+                                  Instagram
+                                </option>
+                              </select>
+                            </div>
+                            <div class="w-75 ms-1" style="margin-top:9.5%;">
+                              <input formControlName="newfield" type="text" class="form-control" placeholder="newfield">
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <!-- <input formControlName="newFiledname" type="text" class="form-control" id="newFieldname"
+                          placeholder="enter newFiledname role">
+                        <input formControlName="fieldName" type="text" class="form-control" id="newfield"
+                          placeholder="enter fieldName role"> -->
+                      </div>
+                    </div>
+                  </div>
+                  <p class="btn btn-outline-info mt-2" (click)="addMoreFn()"> +Add more</p>
+
+                  <div class="form-group ">
+                    <label class="form-label">Role</label>
+                    <select class="form-control" formControlName="role">
+                      <option *ngFor="let roles of listOfRole" value="{{roles}}">
+                        {{roles}}
+                      </option>
+                    </select>
+                  </div>
+
+
+
+                  <div class="form-group">
+                    <label for="additionalrole">Additional Role</label>
+                    <input formControlName="additionalrole" type="text" class="form-control" id="additionalrole"
+                      placeholder="enter additional role">
+                  </div>
+                  <label class="mt-2 mb-2" for="floatingTextarea">Remark</label>
+                  <div class="form-floating">
+                    <textarea formControlName="remark" class="form-control" placeholder="Leave a comment here"
+                      id="floatingTextarea"></textarea>
+                  </div>
+                  <div class="d-flex ">
+                    <div class="col">
+                      <button type="submit" class="btn btn-outline-secondary mt-2" (click)="cancel()">cancel</button>
+                    </div>
+                    <div class="col">
+                      <button type="submit" class="btn btn-outline-secondary mt-2"(click)="clear()" >Clear Info</button>
+                    </div>
+                    <div class="col">
+                      <button type="submit" class="btn btn-outline-info mt-2" (click)="onSubmit()">Save</button>
+                    </div>
+
+                  </div>
+                </form>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+    </ng-template>
+    <ng-template #elseBolock ngbNavContent>
+      <app-org-details></app-org-details>
+    </ng-template>
+  </li>
+  <li class="nav-item" role="presentation">
+  </li>
+</ul>
+<!-- kya role hain iska -->
+<div [ngbNavOutlet]="nav" class="mt-2">
+</div>

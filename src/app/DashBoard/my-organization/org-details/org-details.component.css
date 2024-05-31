@@ -1,0 +1,35 @@
+.hide{
+    display: none;
+}
+i-feather{
+    border:  1px  solid; 
+    border-radius: 50%;
+    padding: 35px;
+
+}
+img{
+    height: 250px;
+    width: auto;
+}
+.box{
+    height: 100px;
+    width: auto;
+    padding: 25px auto;
+    border: 1px solid;
+}
+.box p{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin:  15px 0;
+
+}
+.nav-tabs .nav-link.active {
+    color: white;
+    background-color: #0a4aa8;
+    border-color: var(--bs-nav-tabs-link-active-border-color);
+}
+.nav-tabs .nav-link{
+    background-color: rgb(223, 217, 217);
+    color: rgb(59, 57, 57);
+}

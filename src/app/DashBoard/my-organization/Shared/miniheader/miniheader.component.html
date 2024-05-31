@@ -1,0 +1,100 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light p-0">
+
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item d-flex p-1"><i-feather class="pt-1" name="plus"></i-feather>
+        <a class="nav-link " href="#">New</a>
+      </li>
+      <li class="nav-item d-flex p-1"><i-feather class="pt-1" name="shopping-bag"></i-feather>
+        <a class="nav-link " href="#">Add To marketing List</a>
+      </li>
+      <li class="nav-item d-flex p-1"><i-feather class="pt-1" name="share-2"></i-feather>
+        <a class="nav-link " href="#">Share</a>
+      </li>
+      <li class="nav-item d-flex p-1"><i-feather class="pt-1" name="upload"></i-feather>
+        <a class="nav-link " href="#">Import</a>
+      </li>
+    </ul>
+
+  </div>
+</nav>
+<div class="d-flex justify-content-between mt-2">
+<h5>All Organization List</h5>  
+<div>
+  <input  class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" #searchValue (input)="searOrgList(searchValue.value)" >
+</div>
+</div>
+<ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+  <li *ngFor="let data of navs;let i=index" [ngbNavItem]="data.id"  >
+    <a (click)="onTabClick(data.id)" ngbNavLink>
+      {{ data.organization }}
+      <span *ngIf="i>0" class="btn-close ms-3 fw-light" (click)="i>0? close($event, i,data.id):''"></span>
+    </a>
+    <ng-template *ngIf="i===0;elseBolock" ngbNavContent>
+      <div class="container-fluid p-0">
+        <div class="row flex-nowrap">
+          <div class="col-auto col-md-2 col-xl-2 px-sm-2 px-0 bg-dark">
+            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+              <a routerLink="" class="nav-link px-0 align-middle">
+                <span class="ms-1 d-none d-sm-inline">List</span>
+              </a>
+              <a class="nav-link px-0 align-middle">
+                <span class="ms-1 d-none d-sm-inline active" (click)="getAllTable()">All Organization</span>
+              </a>
+              <a class="nav-link px-0 align-middle">
+                <span class="ms-1 d-none d-sm-inline" (click)="filterData('Customer')">Customer</span>
+              </a>
+              <a class="nav-link px-0 align-middle">
+                <span class="ms-1 d-none d-sm-inline" (click)="filterData('Non-Customer')">Non-Customers</span>
+              </a>
+            </div>
+          </div>
+          <div class="col py-3 ">
+            <div class="container">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Organization</th>
+                    <th>Type</th>
+                    <th>Industry</th>
+                    <th>Onboarding</th>
+                    <th>Related Orgs</th>
+                    <th>Products</th>
+                    <th>Org SPOC</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let org of showTable">
+
+                    <td (click)="add($event,org)">{{ org.organization }}</td>
+                    <td>{{ org.type }}</td>
+                    <td>{{ org.industry }}</td>
+                    <td>{{ org.onboarding }}</td>
+                    <td>{{ org.relatedOrgs }}</td>
+                    <td>{{ org.products }}</td>
+                    <td>{{ org.orgSPOC }}</td>
+                    <td>{{ org?.email }}</td>
+                    <td>{{ org.phone }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </ng-template>
+    <ng-template #elseBolock ngbNavContent>
+      <app-org-details></app-org-details>
+    </ng-template>
+  </li>
+  <li class="nav-item" role="presentation">
+  </li>
+</ul>
+<!-- kya role hain iska -->
+<div [ngbNavOutlet]="nav" class="mt-2">
+</div>

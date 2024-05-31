@@ -1,0 +1,27 @@
+.yellow{
+    background-color: wheat;
+}
+.priority-high {
+    background-color: rgb(184, 59, 21); 
+    color: black;  
+
+}
+
+.priority-medium {
+    background-color: #90dfd8;   
+    color: black;  
+}
+
+.priority-low {
+    background-color: #e8eeee;   
+    color: black;  
+}
+.hide{
+    display: none;
+}
+.Active{
+    background-color: beige;
+}
+.green{
+    background-color: greenyellow;
+}

@@ -1,0 +1,62 @@
+#certainity,
+#chartdiv,
+#piechart,
+#funnelChart,
+#salechart {
+  background-color: #d7dedf;
+  padding: 5px;
+  margin: 2px;
+
+}
+#chartdiv {
+  position: relative;
+}
+.left-btn {
+  position: absolute;
+  left: 0;
+  top: 25px;
+}
+.right-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+}#slider {
+    position: relative;
+    overflow: hidden;
+    margin: 20px auto 0 auto;
+    border-radius: 4px;
+  }
+
+  button.control_prev, button.control_next {
+    position: absolute;
+    top: 40%;
+    z-index: 999;
+    display: block;
+    width: auto;
+    /* height: auto; */
+    background: #2a2a2a;
+    color: #fff;
+    text-decoration: none;
+    /* font-weight: 600; */
+    font-size: 18px;
+    opacity: 0.8;
+    cursor: pointer;
+  }
+  
+  button.control_prev:hover, a.control_next:hover {
+    opacity: 1;
+    -webkit-transition: all 0.2s ease;
+  }
+  
+  button.control_prev {
+    border-radius: 23px;
+  }
+  
+  button.control_next {
+    right: 0;
+    border-radius: 23px;
+
+  }
+  h3{
+    text-align: center;
+  }

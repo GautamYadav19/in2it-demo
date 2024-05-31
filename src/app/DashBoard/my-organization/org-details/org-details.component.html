@@ -1,0 +1,215 @@
+<div class="row py-3">
+    <div class="col-3">
+        <ul>
+            <h5>
+                {{orgDetailsdata.organization}}
+            </h5>
+            <li>
+                <strong>Parent Organization </strong> with 2 Related Organization(s)
+                Registration Number :AB-123456
+            </li>
+        </ul>
+    </div>
+    <div class="col-2">
+        <ul>
+            <li><strong>Industry:</strong>{{orgDetailsdata.industry}}</li>
+            <li><strong>Description:</strong>This is a test site</li>
+        </ul>
+    </div>
+    <div class="col-2">
+        <ul>
+            <li><strong>Cluster:</strong>Limpop</li>
+            <li><strong>Tier:</strong>Private Companies</li>
+        </ul>
+    </div>
+    <div class="col-2">
+        <p>Near Arth Mart, Tech Zone 4, Vizag,Uttar Pradesh, India, 201308</p>
+    </div>
+    <div class="col-3">
+        <p>Email: test@gmail.com Phone: +91 94100XXXX</p>
+    </div>
+</div>
+<ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+    <li [ngbNavItem]="1">
+        <a ngbNavLink>General overview</a>
+        <ng-template ngbNavContent>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+
+                                    <h5 class="card-title">
+                                        Quarterly Revenue
+                                    </h5>
+                                    <h1>R O</h1>
+                                    <p class="card-text"> 0% campared to last quarter</p>
+                                    <p class="card-text">Customer lifeTime Value</p>
+                                    <h4>R O</h4>
+                                    <p class="card-text">
+                                        CSAT Score
+                                    </p>
+
+
+                                </div>
+                                <div class="img">
+                                    <img src="https://img.freepik.com/free-vector/design-tools-concept-illustration_114360-1227.jpg?w=740&t=st=1715319940~exp=1715320540~hmac=30ce673b41af2d84fba633cd43c7282e83d0267b23a461e644590b3013faa99a"
+                                        alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>Billing and Payments</h5>
+                            <hr>
+                            <p class="card-text">
+                                Upcoming Payments
+                            </p>
+                            <h5>R O</h5>
+                            <hr>
+                            <p class="card-text">
+                                Pending Payments
+                            </p>
+                            <h5>No Pending Payments</h5>
+                            <hr>
+                            <p class="card-text">
+                                Last Payments
+                            </p>
+                            <h5>R O</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>In Operations Requests</h5>
+                            <div class="box">
+                                <p>no Records found</p>
+
+                            </div>
+                            <h4>Sales Requests</h4>
+                            <p>Product:Managed SDWAN</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>Contacts</h5>
+                            <div class="search-container">
+                                <input type="text" class="form-control" id="searchInput" placeholder="Search...">
+                              </div>
+                            <h6>Gautam Yadav</h6>
+                            <p>Org Role :</p>
+                            <p>Preference Contact</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </li>
+    <li [ngbNavItem]="2">
+        <a ngbNavLink>Invoice & Reports</a>
+        <ng-template ngbNavContent>
+            <p>
+                Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko
+                farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean
+                shorts
+                ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.
+                Keytar
+                helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes
+                anderson
+                8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party
+                scenester
+                stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.
+            </p>
+        </ng-template>
+    </li>
+    <li [ngbNavItem]="3">
+        <a ngbNavLink>Request</a>
+        <ng-template ngbNavContent>
+            <p>
+                Sed commodo, leo at suscipit dictum, quam est porttitor sapien, eget sodales nibh elit id diam. Nulla
+                facilisi.
+                Donec egestas ligula vitae odio interdum aliquet. Duis lectus turpis, luctus eget tincidunt eu, congue
+                et odio.
+                Duis pharetra et nisl at faucibus. Quisque luctus pulvinar arcu, et molestie lectus ultrices et. Sed
+                diam urna,
+                egestas ut ipsum vel, volutpat volutpat neque. Praesent fringilla tortor arcu. Vivamus faucibus nisl
+                enim, nec
+                tristique ipsum euismod facilisis. Morbi ut bibendum est, eu tincidunt odio. Orci varius natoque
+                penatibus et
+                magnis dis parturient montes, nascetur ridiculus mus. Mauris aliquet odio ac lorem aliquet ultricies in
+                eget
+                neque. Phasellus nec tortor vel tellus pulvinar feugiat.
+            </p>
+        </ng-template>
+    </li>
+    <li [ngbNavItem]="4">
+        <a ngbNavLink>Product</a>
+        <ng-template ngbNavContent>
+            <p>
+                Product
+            </p>
+        </ng-template>
+    </li>
+    <li [ngbNavItem]="5">
+        <a ngbNavLink>Contact</a>
+        <ng-template ngbNavContent>
+            <div [ngClass]="addTaskFlag?'row':''">
+                <div [ngClass]="addTaskFlag?'col-lg-9':''">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr>    
+                                <th   scope="row"><input type="checkbox"></th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Role</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Phone Number</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of orgDetailsdata.contact" (click)="getOrgMemberDataById(row.id)">
+                                <th scope="row"><input type="checkbox"></th>
+                                <td><a>{{ row.name }}</a></td>
+                                <td>{{ row.role }}</td>
+                                <td>{{ row.email }}</td>
+                                <td>{{ row.phoneNumber }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div [ngClass]="addTaskFlag?'col-lg-3':'hide'">
+
+                    <div class="row">
+                        <div class="col-12">
+
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">Name :{{rightCardData?.name}}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted"> Phone
+                                        Number:{{rightCardData?.phoneNumber}}</h6>
+                                    <p class="card-text">Role: {{rightCardData?.role}}</p>
+                                    <p class="card-text">Email: {{rightCardData?.email}}</p>
+                                    <p class="card-text">Additional Role: {{rightCardData?.additionalrole}}</p>
+
+                                    <a class="btn btn-secondary" (click)="togglebtn()">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </ng-template>
+    </li>
+</ul>
+
+<div [ngbNavOutlet]="nav" class="mt-2"></div>

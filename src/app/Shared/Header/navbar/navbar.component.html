@@ -1,0 +1,119 @@
+<nav class="navbar navbar-dark bg-primary">
+  <div class=" d-flex flex-row">
+
+    <a class="navbar-brand px-2" (click)="toggle()"><i-feather name="align-justify"></i-feather>
+    </a>
+    <span class="hl"></span>
+    <a class="navbar-brand  px-2 " href="#"><img
+        src="https://play-lh.googleusercontent.com/5LDHuNzAYc1uToY9wczN_i2dugPjnSwAStnSouNyTViKAzsIax7GpJS9aFajkPcsIME"
+        alt=""></a>
+    <span class="hl"></span>
+    <i-feather class="pt-2" name="layers"></i-feather>
+    <a class="navbar-brand  px-2 " href="#">iProcess</a>
+    <a class="navbar-brand  px-2 ">{{title?.modalName}}/{{title?.name}}</a>
+
+  </div>
+
+</nav>
+
+<div *ngIf="flag" class="container-fluid">
+  <div class="row flex-nowrap">
+    <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+      <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+        <a class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+          <span class="fs-5 d-none d-sm-inline">My Menu</span>
+        </a>
+        <a routerLink="menu/mytask" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+          <i-feather name="user"></i-feather>
+          <span class="ms-1 d-none d-sm-inline" (click)="setTableTitle({name:'My task',modalName:'Menu'})">My
+            Task</span>
+        </a>
+
+        <a routerLink="menu/teamtask" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+          <i-feather name="users"></i-feather>
+          <i class="fs-4 "></i>
+          <span class="ms-1 d-none d-sm-inline" (click)="setTableTitle({name:'Team task',modalName:'Menu'})">Team
+            Task</span>
+        </a>
+        <a routerLink="organization"
+          class="d-flex align-items-center pt-3 pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+          <span class="fs-5 d-none d-sm-inline" (click)="setTableTitle({name:'details',modalName:'Organization'})">My
+            Organization</span>
+        </a>
+        <a routerLink="organization/solutionareas" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+          <i-feather name="slack"></i-feather>
+          <span class="ms-1 d-none d-sm-inline">Solution Areas</span>
+        </a>
+        <a routerLink="organization/contact" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+          <i-feather name="clock"></i-feather>
+          <i class="fs-4 "></i>
+          <span class="ms-1 d-none d-sm-inline">Contact </span>
+        </a>
+
+        <a routerLink="menu/teamtask" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+          <i-feather name="clock"></i-feather>
+          <i class="fs-4 "></i>
+          <span class="ms-1 d-none d-sm-inline">Process </span>
+        </a>
+        <a routerLink="menu/teamtask" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+          <i-feather name="crosshair"></i-feather>
+          <i class="fs-4 "></i>
+          <span class="ms-1 d-none d-sm-inline">WorkFlows </span>
+        </a>
+        <a routerLink="menu/teamtask" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+          <i-feather name="wind"></i-feather>
+          <i class="fs-4 "></i>
+          <span class="ms-1 d-none d-sm-inline">Humans Task </span>
+        </a>
+        <a routerLink="menu/teamtask" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+          <i-feather name="user-check"></i-feather>
+          <i class="fs-4 "></i>
+          <span class="ms-1 d-none d-sm-inline">WorkFlows Execution </span>
+        </a>
+        <a routerLink="menu/teamtask" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+          <i-feather name="menu"></i-feather>
+          <i class="fs-4 "></i>
+          <span class="ms-1 d-none d-sm-inline">
+            schedule List </span>
+        </a>
+        <a routerLink="/designer" class="d-flex align-items-center pt-3 pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+          <span class="fs-5 d-none d-sm-inline">Designer</span>
+        </a>
+        <a routerLink="menu/teamtask" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+          <i-feather name="dribbble"></i-feather>
+          <i class="fs-4 "></i>
+          <span class="ms-1 d-none d-sm-inline">
+            WorkFlows Builder </span>
+        </a>
+        <a routerLink="menu/teamtask" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+          <i-feather name="command"></i-feather>
+          <i class="fs-4 "></i>
+          <span class="ms-1 d-none d-sm-inline">
+            Form Builder </span>
+        </a>
+        <a class="d-flex align-items-center pt-3 pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+          <span class="fs-5 d-none d-sm-inline">Settings</span>
+        </a>
+        <a routerLink="menu/teamtask" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+          <i-feather name="grid"></i-feather>
+          <i class="fs-4 "></i>
+          <span class="ms-1 d-none d-sm-inline">
+            Custom Task </span>
+        </a>
+        <a routerLink="menu/teamtask" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+          <i-feather name="hexagon"></i-feather>
+          <i class="fs-4 "></i>
+          <span class="ms-1 d-none d-sm-inline">
+            Organization Settings </span>
+        </a>
+      </div>
+
+    </div>
+    <div class="col ">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+<div *ngIf="!flag" class="col ">
+  <router-outlet></router-outlet>
+</div>
