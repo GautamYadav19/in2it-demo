@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, ViewChildren, OnInit, ElementRef } from '@angular/core';
 import { OrgService } from '../service/org.service';
 import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
@@ -14,6 +14,7 @@ export class ContactsComponent implements OnInit {
   newFromToggleBtn: boolean = false;
   editformToggleBtn: boolean = false;
   openFormToggle: boolean = false;
+  checkBoxDisableBtn: boolean = true;
   navs = [
     {
       id: 0,
@@ -97,8 +98,8 @@ export class ContactsComponent implements OnInit {
   orgNameForPatch: any;
   getOrgMemberDataById(orgId: any, contactId: any) {
     // this.togglebtn();
-    this.toggle=true
-    this.openFormToggle =false
+    this.toggle = true;
+    this.openFormToggle = false;
     const ListData = this.showtableData.filter((field: any) => {
       return field.id === orgId;
     });
@@ -167,9 +168,10 @@ export class ContactsComponent implements OnInit {
   //     return field?.id === field;
   //   });
   // }
-  editMode:boolean=false
+  editMode: boolean = false;
   initEditForm() {
-    this.editMode=true
+    console.log(this.rightCardData);
+    this.editMode = true;
     const data = this.rightCardData;
     // yaha data algh terha se a raha hain isliya esa karna requied hain
     const fname = data?.name.split(' ')[0];
@@ -178,30 +180,26 @@ export class ContactsComponent implements OnInit {
     const phoneNumber = data?.phoneNumber.split(' ')[1];
     // console.log('rigth', this.rightCardData.id);
     // if (this.editformToggleBtn) {
-      this.orgForm.patchValue({
-        id: this.rightCardData?.id,
-        name: {
-          fname: fname,
-          lname: lname,
-        },
-        org: this.orgNameForPatch,
-        email: data?.email,
-        number: {
-          code: code,
-          phoneNumber: phoneNumber,
-        },
+    this.orgForm.patchValue({
+      id: this.rightCardData?.id,
+      name: {
+        fname: fname,
+        lname: lname,
+      },
+      org: this.orgNameForPatch,
+      email: data?.email,
+      number: {
+        code: code,
+        phoneNumber: phoneNumber,
+      },
 
-        role: data?.role,
-        additionalrole: data?.additionalrole,
-        // addmorefield:data.addmorefield
-        remark: data?.remark,
-      });
-    // }
+      role: data?.role,
+      additionalrole: data?.additionalrole,
+      remark: data?.remark,
+    });
   }
   onSubmit(index?: any) {
     if (!this.editMode) {
-      // Math.floor(Math.random() * (100 - 0 + 1)) + 0
-      // this.showtableData.contact.push(this.orgForm.value);
       const saveData = {
         additionalrole: this.orgForm.value.additionalrole,
         email: this.orgForm.value.email,
@@ -239,42 +237,109 @@ export class ContactsComponent implements OnInit {
         return data.id === this.orgForm.value.id;
       });
       org[0].contact.splice(i, 1, saveData);
-      this.editMode=false
+      this.editMode = false;
+      this.storeSelectedData.length=0
+      this.checkBoxDisableBtn=true
+
     }
     this.orgForm.reset();
 
-    this.openFormToggle=this.toggle=false
-
-
+    this.openFormToggle = this.toggle = false;
   }
 
-  // basic toggles
   togglebtn() {
     this.toggle = true;
   }
- 
 
   cancel() {
-    // this.editFormToggle();
     this.orgForm.reset();
+    this.storeSelectedData.length=0
+    this.checkBoxDisableBtn=true
 
-    
-    this.openFormToggle=this.toggle=false
+    console.log(this.storeSelectedData.length)
+    this.openFormToggle = this.toggle = false;
   }
   clear() {
     this.orgForm.reset();
   }
-  openFormToggleFn(edit =false) {
-   
-    this.toggle =  this.openFormToggle = !this.openFormToggle;
-    // this.togglebtn()
-    console.log("this.openFormToggle",this.openFormToggle)
-    if(edit){
-    this.initEditForm();
-
+  openFormToggleFn(edit = false) {
+    this.toggle = this.openFormToggle = !this.openFormToggle;
+    console.log('this.openFormToggle', this.openFormToggle);
+    if (edit) {
+      this.initEditForm();
     }
   }
-  // opentab(data: any, id: any) {
-  //   this.router.navigate(['/organization'], { state: { data, id } });
+
+  storeSelectedData: any = [];
+
+  // selectData(orgId: any, contactData: any) {
+  //   const org = {
+  //     orgId: orgId.id,
+  //     contact: contactData,
+  //   };
+  //   this.storeSelectedData.push(org);
+  //   if (this.storeSelectedData.length === 1) {
+  //     this.checkBoxDisableBtn = false;
+  //   } else {
+  //     this.checkBoxDisableBtn = true;
+  //   }
   // }
+  selectData(orgId: any, contactData: any) {
+    const existingIndex = this.storeSelectedData.findIndex((data: any) => {
+      return data.orgId === orgId.id && data.contact === contactData;
+    });
+
+    if (existingIndex !== -1) {
+      this.storeSelectedData.splice(existingIndex, 1);
+    } else {
+      const org = {
+        orgId: orgId.id,
+        contact: contactData,
+      };
+      this.storeSelectedData.push(org);
+    }
+    this.checkBoxDisableBtn =
+      this.storeSelectedData.length === 1 ? false : true;
+  }
+
+  // isChecked :boolean=false;
+  selectAllDeleteData() {
+    //   const dataList = this.tableData.filter((field: any) => {
+    //     return field?.organization.contact ;
+    //   });
+    //   console.log(dataList)
+  }
+  deleteMultipleData() {
+    console.log(this.storeSelectedData);
+
+    this.storeSelectedData.forEach((storedata: any) => {
+      const filter = this.showtableData.filter((data: any) => {
+        return data.id === storedata.orgId;
+      });
+      console.log(filter);
+      const id = filter[0].contact.findIndex((data: any) => {
+        return data.id == storedata.contact.id;
+      });
+      console.log(id);
+      filter[0].contact.splice(id, 1);
+    });
+    this.storeSelectedData = [];
+    this.checkBoxDisableBtn=true
+
+
+  }
+
+  editSelectedData() {
+    console.log(this.storeSelectedData);
+    const checkLength = this.storeSelectedData.length;
+    if (checkLength) {
+      let orgId = this.storeSelectedData[0]?.orgId;
+      let contactId = this.storeSelectedData[0]?.contact.id;
+      console.log(orgId, contactId);
+      this.getOrgMemberDataById(orgId, contactId);
+      this.openFormToggleFn(true);
+      this.storeSelectedData = [];
+      this.checkBoxDisableBtn=true
+    }
+  }
 }

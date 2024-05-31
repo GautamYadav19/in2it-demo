@@ -6,11 +6,11 @@
       <li (click)="openFormToggleFn()" class="nav-item d-flex p-1"><i-feather class="pt-1" name="plus"></i-feather>
         <a class="nav-link ">New</a>
       </li>
-      <li class="nav-item d-flex p-1"><i-feather class="pt-1" name="shopping-bag"></i-feather>
-        <a class="nav-link " href="#">Add To marketing List</a>
+      <li (click)="deleteMultipleData()" class="nav-item d-flex p-1"><i-feather class="pt-1" name="shopping-bag"></i-feather>
+        <a class="nav-link " >Delted</a>
       </li>
-      <li class="nav-item d-flex p-1"><i-feather class="pt-1" name="share-2"></i-feather>
-        <a class="nav-link " href="#">Share</a>
+      <li   [ngClass]="checkBoxDisableBtn?'disable':''" (click)="editSelectedData()" class="nav-item d-flex p-1"><i-feather class="pt-1" name="share-2"></i-feather>
+        <a class="nav-link ">edit</a>
       </li>
       <li class="nav-item d-flex p-1"><i-feather class="pt-1" name="upload"></i-feather>
         <a class="nav-link " href="#">Import</a>
@@ -58,7 +58,7 @@
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th>Organization</th>
+                      <th> <input (click)="selectAllDeleteData()" #checkboxes class="form-check-input " type="checkbox" value="" id="flexCheckDefault">Organization</th>
                       <th>Name</th>
                       <th>Role</th>
                       <th>Email</th>
@@ -68,7 +68,7 @@
                   <tbody>
                     <ng-container *ngFor="let org of showtableData">
                       <tr *ngFor="let contactData of org.contact">
-                        <td>  <input class="form-check-input " type="checkbox" value="" id="flexCheckDefault"><a class="ms-2" [routerLink]="'/organization'" [state]="{data:org,id:org.id}">{{ org.organization }}</a>
+                        <td>  <input (click)="selectData(org,contactData)" class="form-check-input " type="checkbox" value="" id="flexCheckDefault"><a class="ms-2" [routerLink]="'/organization'" [state]="{data:org,id:org.id}">{{ org.organization }}</a>
                         </td>
                         <td (click)="getOrgMemberDataById(org.id,contactData.id)">{{contactData.name}}</td>
                         <td>{{contactData.role}}</td>

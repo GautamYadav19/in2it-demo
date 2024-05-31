@@ -4,3 +4,7 @@ a{
 .hide{
     display: none;
 }
+.disable{
+    opacity: 0.5;
+    
+}
