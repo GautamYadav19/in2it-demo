@@ -22,7 +22,10 @@
 <div class="d-flex justify-content-between mt-2">
   <h5>All Contact List</h5>
   <div>
-    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+    <form >
+      <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter">
+
+    </form>
   </div>
 </div>
 
@@ -70,11 +73,11 @@
                       <tr *ngFor="let contactData of org.contact">
                         <td>  <input (click)="selectData(org,contactData)" class="form-check-input " type="checkbox" value="" id="flexCheckDefault"><a class="ms-2" [routerLink]="'/organization'" [state]="{data:org,id:org.id}">{{ org.organization }}</a>
                         </td>
-                        <td (click)="getOrgMemberDataById(org.id,contactData.id)">{{contactData.name}}</td>
+                        <!-- <td (click)="getOrgMemberDataById(org.id,contactData.id)">{{contactData.name}}</td> -->
+                        <td><ngb-highlight (click)="getOrgMemberDataById(org.id,contactData.id)" [result]="contactData.name " [term]="filter.value"></ngb-highlight></td>
                         <td>{{contactData.role}}</td>
                         <td>{{contactData.email}}</td>
                         <td>{{contactData.phoneNumber}}</td>
-
                       </tr>
                     </ng-container>
                   </tbody>

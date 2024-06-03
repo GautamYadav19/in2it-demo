@@ -1,7 +1,14 @@
-import { Component, ViewChildren, OnInit, ElementRef } from '@angular/core';
+import {
+  Component,
+  ViewChildren,
+  OnInit,
+  ElementRef,
+  PipeTransform,
+} from '@angular/core';
 import { OrgService } from '../service/org.service';
 import { Router } from '@angular/router';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-contacts',
@@ -43,7 +50,29 @@ export class ContactsComponent implements OnInit {
     private orgServie: OrgService,
     public router: Router,
     private fb: FormBuilder
-  ) {}
+  ) {
+    this.filter.valueChanges.subscribe((data: any) => {
+      if (data.length > 0) {
+        this.showtableData = this.search(data);
+        console.log('search data', this.showtableData);
+      } else {
+        this.getTableList();
+      }
+    });
+    // this.filter.valueChanges.subscribe((data: any) => {
+    //   if (data.length > 0) {
+    //     this.showtableData = this.search(data);
+    //     console.log('search data', this.showtableData);
+    //   } else {
+    //     this.getTableList();
+    //   }
+    // });
+    // .pipe(
+    // startWith(''),
+    // map(text => this.search(text))
+
+    // );
+  }
 
   ngOnInit(): void {
     this.getTableList();
@@ -238,9 +267,8 @@ export class ContactsComponent implements OnInit {
       });
       org[0].contact.splice(i, 1, saveData);
       this.editMode = false;
-      this.storeSelectedData.length=0
-      this.checkBoxDisableBtn=true
-
+      this.storeSelectedData.length = 0;
+      this.checkBoxDisableBtn = true;
     }
     this.orgForm.reset();
 
@@ -253,10 +281,10 @@ export class ContactsComponent implements OnInit {
 
   cancel() {
     this.orgForm.reset();
-    this.storeSelectedData.length=0
-    this.checkBoxDisableBtn=true
+    this.storeSelectedData.length = 0;
+    this.checkBoxDisableBtn = true;
 
-    console.log(this.storeSelectedData.length)
+    console.log(this.storeSelectedData.length);
     this.openFormToggle = this.toggle = false;
   }
   clear() {
@@ -324,9 +352,7 @@ export class ContactsComponent implements OnInit {
       filter[0].contact.splice(id, 1);
     });
     this.storeSelectedData = [];
-    this.checkBoxDisableBtn=true
-
-
+    this.checkBoxDisableBtn = true;
   }
 
   editSelectedData() {
@@ -339,7 +365,39 @@ export class ContactsComponent implements OnInit {
       this.getOrgMemberDataById(orgId, contactId);
       this.openFormToggleFn(true);
       this.storeSelectedData = [];
-      this.checkBoxDisableBtn=true
+      this.checkBoxDisableBtn = true;
     }
+  }
+  filter = new FormControl('');
+
+  search(text: string) {
+    const term = text?.toLowerCase();
+    let result: any[] = [];
+
+    this.showtableData.forEach((org: any) => {
+      const filteredContacts = org.contact.filter((contact: any) => {
+        return contact.name?.toLowerCase().includes(term);
+      });
+
+      if (filteredContacts.length > 0) {
+        filteredContacts.forEach((contact: any) => {
+          result.push({
+            organization: org.organization,
+            email: org.email,
+            id: org.id,
+            industry: org.industry,
+            onboarding: org.onboarding,
+            orgSPOC: org.orgSPOC,
+            phone: org.phone,
+            products: org.products,
+            relatedOrgs: org.relatedOrgs,
+            type: org.type,
+            contact: [contact],
+          });
+        });
+      }
+    });
+
+    return result;
   }
 }
