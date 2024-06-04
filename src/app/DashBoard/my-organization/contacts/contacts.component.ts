@@ -1,14 +1,7 @@
-import {
-  Component,
-  ViewChildren,
-  OnInit,
-  ElementRef,
-  PipeTransform,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { OrgService } from '../service/org.service';
 import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-contacts',
@@ -59,19 +52,6 @@ export class ContactsComponent implements OnInit {
         this.getTableList();
       }
     });
-    // this.filter.valueChanges.subscribe((data: any) => {
-    //   if (data.length > 0) {
-    //     this.showtableData = this.search(data);
-    //     console.log('search data', this.showtableData);
-    //   } else {
-    //     this.getTableList();
-    //   }
-    // });
-    // .pipe(
-    // startWith(''),
-    // map(text => this.search(text))
-
-    // );
   }
 
   ngOnInit(): void {
@@ -158,9 +138,6 @@ export class ContactsComponent implements OnInit {
     const listOfValidRoles = lisfOfRoles[0].contact.some((data: any) => {
       return data.role === restrictedValue;
     });
-    // const listOfValidRoles = lisfOfRoles[0].contact.filter((data: any) => {
-    //   return data.role !== restrictedValue;
-    // });
     if (listOfValidRoles) {
       const role1 = this.role.filter((data: any) => {
         return data !== restrictedValue;
@@ -171,17 +148,11 @@ export class ContactsComponent implements OnInit {
       console.log('Out condition', this.role);
       this.listOfRole = this.role;
     }
-    // listOfValidRoles.forEach((data: any) => {
-    //   roleList.push(data.role);
-    // });
-    // const finalRoleLsit = [...new Set(roleList)];
-    // this.rolesList = finalRoleLsit;
   }
 
   // new form
   newForm() {
     this.togglebtn();
-    // this.editFormToggle();
     this.orgForm.reset();
   }
 
@@ -192,11 +163,6 @@ export class ContactsComponent implements OnInit {
 
     this.getAllOrgdropdown();
   }
-  // getFormDataById(id:any){
-  //   const dataList = this.tableData.filter((field: any) => {
-  //     return field?.id === field;
-  //   });
-  // }
   editMode: boolean = false;
   initEditForm() {
     console.log(this.rightCardData);
@@ -207,8 +173,6 @@ export class ContactsComponent implements OnInit {
     const lname = data?.name.split(' ')[1];
     const code = data?.phoneNumber.split(' ')[0];
     const phoneNumber = data?.phoneNumber.split(' ')[1];
-    // console.log('rigth', this.rightCardData.id);
-    // if (this.editformToggleBtn) {
     this.orgForm.patchValue({
       id: this.rightCardData?.id,
       name: {
@@ -300,18 +264,6 @@ export class ContactsComponent implements OnInit {
 
   storeSelectedData: any = [];
 
-  // selectData(orgId: any, contactData: any) {
-  //   const org = {
-  //     orgId: orgId.id,
-  //     contact: contactData,
-  //   };
-  //   this.storeSelectedData.push(org);
-  //   if (this.storeSelectedData.length === 1) {
-  //     this.checkBoxDisableBtn = false;
-  //   } else {
-  //     this.checkBoxDisableBtn = true;
-  //   }
-  // }
   selectData(orgId: any, contactData: any) {
     const existingIndex = this.storeSelectedData.findIndex((data: any) => {
       return data.orgId === orgId.id && data.contact === contactData;
@@ -319,40 +271,66 @@ export class ContactsComponent implements OnInit {
 
     if (existingIndex !== -1) {
       this.storeSelectedData.splice(existingIndex, 1);
+      console.log('s', this.storeSelectedData);
     } else {
       const org = {
         orgId: orgId.id,
         contact: contactData,
       };
+
       this.storeSelectedData.push(org);
     }
     this.checkBoxDisableBtn =
       this.storeSelectedData.length === 1 ? false : true;
   }
+  isCheckedSelectAll: boolean = false;
 
-  // isChecked :boolean=false;
-  selectAllDeleteData() {
-    //   const dataList = this.tableData.filter((field: any) => {
-    //     return field?.organization.contact ;
-    //   });
-    //   console.log(dataList)
+  selectAllData() {
+    this.isCheckedSelectAll = !this.isCheckedSelectAll;
+    if (this.isCheckedSelectAll) {
+      this.showtableData.forEach((orgData: any) => {
+        orgData?.contact.forEach((contact: any) => {
+          const org = {
+            orgId: orgData.id,
+            contact: [contact],
+          };
+          this.storeSelectedData.push(org);
+        });
+      });
+      console.log('selectAll', this.storeSelectedData);
+      this.storeSelectedData.forEach((data: any) => {
+        this.selectCheckBox(data.orgId);
+      });
+
+      // return true
+    } else {
+      this.storeSelectedData = [];
+    }
   }
+  selectCheckBox(id: number,contactID?:number) {
+    return this.storeSelectedData.some((data: any) => {
+      console.log("i am id ,",data.contact[0]?.id)
+      return data.orgId == id && data.contact[0]?.id== contactID;
+    });
+  }
+
   deleteMultipleData() {
-    console.log(this.storeSelectedData);
+    console.log('delete data list before', this.storeSelectedData);
 
     this.storeSelectedData.forEach((storedata: any) => {
       const filter = this.showtableData.filter((data: any) => {
         return data.id === storedata.orgId;
       });
-      console.log(filter);
+      console.log('filter', filter[0].contact);
       const id = filter[0].contact.findIndex((data: any) => {
         return data.id == storedata.contact.id;
       });
-      console.log(id);
+      console.log('Id', id);
       filter[0].contact.splice(id, 1);
     });
     this.storeSelectedData = [];
     this.checkBoxDisableBtn = true;
+    console.log('delete data list after', this.storeSelectedData);
   }
 
   editSelectedData() {
