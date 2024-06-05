@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataService } from '../service/data.service';
+import { CheckboxSelectionComponent, ColDef } from 'ag-grid-community';
 
 @Component({
   selector: 'app-my-task',
@@ -8,6 +9,8 @@ import { DataService } from '../service/data.service';
   styleUrls: ['./my-task.component.css'],
 })
 export class MyTaskComponent implements OnInit {
+  rowData!: any;
+  colDefs!: ColDef[];
   items = [
     {
       icon: 'user',
@@ -30,26 +33,87 @@ export class MyTaskComponent implements OnInit {
       count: '46',
     },
   ];
-  tabname!:string;
+  tabname!: string;
   tableData: any[] = [];
   addTaskForm!: FormGroup;
   addTaskFlag: boolean = false;
   editMode: boolean = false;
   todayDate: string;
+  rowClass!: string;
+  rowClassRules!: any;
+  rowStyle!: any;
   constructor(public fb: FormBuilder, private service: DataService) {
-    this.getNavTitle()
-
+    this.getNavTitle();
     this.todayDate = new Date().toISOString().split('T')[0];
-    console.log(this.todayDate);
   }
-getNavTitle(){
-  this.service.setTabnavigateName({name:'My task',modalName:'Menu'})
-}
+  getNavTitle() {
+    this.service.setTabnavigateName({ name: 'My task', modalName: 'Menu' });
+  }
   ngOnInit(): void {
     this.addTaskFormInit();
-    this.tableData = JSON.parse(localStorage.getItem('data') || '[]');
-    this.service.tabNavigateName.subscribe()
+    this.getTableData();
+    this.service.tabNavigateName.subscribe();
   }
+
+  getTableData() {
+    this.tableData = JSON.parse(localStorage.getItem('data') || '[]');
+    this.rowData = this.tableData;
+    console.log(this.rowData);
+    const colNames = [];
+    const colKeys = Object.keys(this.tableData[0]);
+
+    for (let i = 0; i < colKeys.length; i++) {
+      if (colKeys[i] === 'priority') {
+        let colTableDataFormate = {
+          field: colKeys[i],
+          width: 100,
+
+          cellStyle: (data: any) => {
+            return data.value == 'Low'
+              ? { background: 'red' }
+              : data.value == 'High'
+              ? { background: 'blue' }
+              : { background: 'green' };
+          },
+        };
+
+        colNames.push(colTableDataFormate);
+      } else if (colKeys[i] === 'status') {
+        let colTableDataFormate = {
+          field: colKeys[i],
+          width: 150,
+
+          cellStyle: (data: any) => {
+            return data.value == 'In Progress'
+              ? { background: 'yellow' }
+              : data.value == 'Active'
+              ? { background: 'green' }
+              : { background: 'blue' };
+          },
+        };
+
+        colNames.push(colTableDataFormate);
+      } else if (colKeys[i] === 'fieldId') {
+        let colTableDataFormate = {
+          field: colKeys[i],
+          width: 120,
+          headerCheckboxSelection: true,
+          checkboxSelection: true,
+        };
+
+        colNames.push(colTableDataFormate);
+      } else {
+        let colTableDataFormate = {
+          field: colKeys[i],
+          width: 155,
+        };
+        colNames.push(colTableDataFormate);
+      }
+    }
+    
+    this.colDefs = colNames;
+  }
+
   addTaskFormInit() {
     this.addTaskForm = this.fb.group({
       fieldId: ['', [Validators.required]],
@@ -74,16 +138,16 @@ getNavTitle(){
     this.listOfSelectedData.push(id);
   }
   OnDeleteMultiData() {
-    console.log(this.listOfSelectedData,this.listOfSelectedData.length)
+    console.log(this.listOfSelectedData, this.listOfSelectedData.length);
     if (this.listOfSelectedData.length > 0) {
       var result = confirm('Want to delete?');
       if (result) {
         for (let i = 0; i < this.listOfSelectedData.length; i++) {
-          console.log("loopdata",this.listOfSelectedData[i])
+          console.log('loopdata', this.listOfSelectedData[i]);
           this.service.deleteTask(this.listOfSelectedData[i]);
           this.tableData.splice(this.listOfSelectedData[i], 1);
         }
-        this.listOfSelectedData=[]
+        this.listOfSelectedData = [];
       }
     }
   }
@@ -123,6 +187,7 @@ getNavTitle(){
         this.editMode = false;
       }
       this.togglebtn();
+      this.getTableData();
     } else {
       Object.keys(this.addTaskForm.controls).forEach((data) => {
         const control = this.addTaskForm.get(data);
