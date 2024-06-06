@@ -22,7 +22,10 @@ export class DataService {
   }
   deleteTask(id: any) {
     const existingData = JSON.parse(localStorage.getItem('data')!) || [];
-    existingData.splice(id, 1);
+    const exisitingID= existingData.findIndex((data:any)=>{
+      return data.fieldId === id
+    })
+    existingData.splice(exisitingID, 1);
     localStorage.setItem('data', JSON.stringify(existingData));
   }
   taskGetByID(id: any) {

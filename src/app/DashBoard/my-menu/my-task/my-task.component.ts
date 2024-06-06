@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataService } from '../service/data.service';
-import { CheckboxSelectionComponent, ColDef } from 'ag-grid-community';
+import { CheckboxSelectionComponent, ColDef, GridApi } from 'ag-grid-community';
+import { EditButtonComponent } from './AgGridComponents/edit-button/edit-button.component';
 
 @Component({
   selector: 'app-my-task',
@@ -42,6 +43,8 @@ export class MyTaskComponent implements OnInit {
   rowClass!: string;
   rowClassRules!: any;
   rowStyle!: any;
+  listOfSelectedData: any[] = [];
+
   constructor(public fb: FormBuilder, private service: DataService) {
     this.getNavTitle();
     this.todayDate = new Date().toISOString().split('T')[0];
@@ -54,14 +57,34 @@ export class MyTaskComponent implements OnInit {
     this.getTableData();
     this.service.tabNavigateName.subscribe();
   }
-
+  gridApi: GridApi | undefined;
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+  }
+  onSelectionChanged() {
+    const selectedRows = this.gridApi?.getSelectedRows();
+    if (selectedRows && selectedRows.length > 0) {
+      this.listOfSelectedData.push(selectedRows[0].fieldId);
+    }
+  }
   getTableData() {
     this.tableData = JSON.parse(localStorage.getItem('data') || '[]');
     this.rowData = this.tableData;
     console.log(this.rowData);
     const colNames = [];
-    const colKeys = Object.keys(this.tableData[0]);
-
+    const tableFields = [
+      'fieldId',
+      'taskName',
+      'taskId',
+      'solutionArea',
+      'status',
+      'startDate',
+      'dueDate',
+      'priority',
+      'workflow',
+    ];
+    const colKeys = tableFields;
+    colKeys.push('Action');
     for (let i = 0; i < colKeys.length; i++) {
       if (colKeys[i] === 'priority') {
         let colTableDataFormate = {
@@ -97,10 +120,22 @@ export class MyTaskComponent implements OnInit {
         let colTableDataFormate = {
           field: colKeys[i],
           width: 120,
-          headerCheckboxSelection: true,
+          // headerCheckboxSelection: true,
           checkboxSelection: true,
         };
 
+        colNames.push(colTableDataFormate);
+      } else if (colKeys[i] === 'Action') {
+        let colTableDataFormate = {
+          field: colKeys[i],
+          width: 155,
+          cellRendererFramework: EditButtonComponent,
+          cellRendererParams: {
+            editTaskByIdAgGrid: this.editTaskById.bind(this),
+            onDeleteAgGrid: this.onDelete.bind(this),
+            togglebtnAgGrid: this.togglebtn.bind(this),
+          },
+        };
         colNames.push(colTableDataFormate);
       } else {
         let colTableDataFormate = {
@@ -110,7 +145,7 @@ export class MyTaskComponent implements OnInit {
         colNames.push(colTableDataFormate);
       }
     }
-    
+
     this.colDefs = colNames;
   }
 
@@ -127,13 +162,18 @@ export class MyTaskComponent implements OnInit {
       priority: ['', [Validators.required]],
     });
   }
-  editTaskById(id: any) {
+  editTaskById(params: any) {
+    console.log(params);
+    const id = params.data.fieldId;
+    console.log(id, this.tableData[0]);
     this.editMode = true;
     localStorage.setItem('editId', JSON.stringify(id));
-    this.addTaskForm.patchValue(this.tableData[id]);
+    const index = this.tableData.findIndex((data: any) => {
+      return data.fieldId === id;
+    });
+    this.addTaskForm.patchValue(this.tableData[index]);
   }
 
-  listOfSelectedData: any[] = [];
   OnSelectData(id: any) {
     this.listOfSelectedData.push(id);
   }
@@ -150,12 +190,16 @@ export class MyTaskComponent implements OnInit {
         this.listOfSelectedData = [];
       }
     }
+    this.getTableData();
   }
-  onDelete(id: any) {
+  onDelete(params: any) {
+    const id = params.data.fieldId;
+    console.log(id);
     var result = confirm('Want to delete?');
     if (result) {
       this.service.deleteTask(id);
       this.tableData.splice(id, 1);
+      this.getTableData();
     }
   }
   togglebtn() {
@@ -177,10 +221,15 @@ export class MyTaskComponent implements OnInit {
         this.tableData.push(this.addTaskForm.value);
         this.addTaskForm.reset();
       } else {
+        console.log('edit on');
         const existingData = JSON.parse(localStorage.getItem('data')!) || [];
-        existingData[JSON.parse(localStorage.getItem('editId')!)] = null;
-        existingData[JSON.parse(localStorage.getItem('editId')!)] =
-          this.addTaskForm.value;
+        console.log(JSON.parse(localStorage.getItem('editId')!));
+        const id = JSON.parse(localStorage.getItem('editId')!);
+        const index = existingData.findIndex((data: any) => {
+          return data.fieldId === id;
+        });
+        existingData[index] = null;
+        existingData[index] = this.addTaskForm.value;
         localStorage.setItem('data', JSON.stringify(existingData));
         this.tableData = JSON.parse(localStorage.getItem('data') || '[]');
         this.addTaskForm.reset();

@@ -7,12 +7,14 @@ import { TeamTaskComponent } from './team-task/team-task.component';
 import { IconsModule } from 'src/app/Shared/icons/icons.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AgGridModule } from 'ag-grid-angular';
+import { EditButtonComponent } from './my-task/AgGridComponents/edit-button/edit-button.component';
 
 
 @NgModule({
   declarations: [
     MyTaskComponent,
-    TeamTaskComponent
+    TeamTaskComponent,
+    EditButtonComponent
   ],
   imports: [
     CommonModule,

@@ -35,7 +35,7 @@
 <div [ngClass]="addTaskFlag?'row':''">
   <div [ngClass]="addTaskFlag?'col-lg-9':''">
 
-    <table class="table table-hover">
+    <!-- <table class="table table-hover">
       <thead>
         <tr>
           <th scope="col">ID</th>
@@ -80,11 +80,13 @@
         </tr>
 
       </tbody>
-    </table>
+    </table> -->
 
-    <ag-grid-angular class="ag-theme-alpine" style="height: 500px;" [rowData]="rowData" [columnDefs]="colDefs"
- ></ag-grid-angular>
-  </div>
+    <ag-grid-angular class="ag-theme-alpine table table-hover" style="height: 500px;" [rowData]="rowData"
+      (gridReady)="onGridReady($event)" (selectionChanged)="onSelectionChanged()" [rowSelection]="'multiple'"
+      [columnDefs]="colDefs"></ag-grid-angular>
+
+    </div>
   <div [ngClass]="addTaskFlag?'col-lg-3':'hide'">
 
     <div class="row">
