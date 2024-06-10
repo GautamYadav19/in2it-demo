@@ -11,6 +11,7 @@ import { OrgDetailsComponent } from './org-details/org-details.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ContactsComponent } from './contacts/contacts.component';
 import { FormComponent } from './form/form.component';
+import { AgGridModule } from 'ag-grid-angular';
 
 @NgModule({
   declarations: [SolutionAreasComponent, MiniheaderComponent, OrgDetailsComponent, ContactsComponent, FormComponent],
@@ -19,7 +20,7 @@ import { FormComponent } from './form/form.component';
     MyOrganizationRoutingModule,
     FeatherModule,
     IconsModule,
-    NgbModule,FormsModule,NgbNavModule, ReactiveFormsModule 
+    NgbModule,FormsModule,NgbNavModule, ReactiveFormsModule ,AgGridModule
   ],
 })
 export class MyOrganizationModule {}

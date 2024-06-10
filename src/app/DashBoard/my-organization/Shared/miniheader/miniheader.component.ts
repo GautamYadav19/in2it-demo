@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { OrgService } from '../../service/org.service';
 import { DataService } from 'src/app/DashBoard/my-menu/service/data.service';
+import { ColDef } from 'ag-grid-community';
 
 @Component({
   selector: 'app-miniheader',
@@ -8,68 +9,7 @@ import { DataService } from 'src/app/DashBoard/my-menu/service/data.service';
   styleUrls: ['./miniheader.component.css'],
 })
 export class MiniheaderComponent implements OnInit, OnDestroy {
-  // organizations = [
-  //   {
-  //     id: 1,
-  //     organization: 'Organization A',
-  //     type: 'Customer',
-  //     industry: 'Industry A',
-  //     onboarding: 'Onboarding A',
-  //     relatedOrgs: 'Related Orgs A',
-  //     products: 'Products A',
-  //     orgSPOC: 'Org SPOC A',
-  //     email: 'gautam@example.com',
-  //     phone: '123-456-7890',
-  //   },
-  //   {
-  //     id: 2,
-  //     organization: 'Organization B',
-  //     type: 'Non-Customer',
-  //     industry: 'Industry B',
-  //     onboarding: 'Onboarding B',
-  //     relatedOrgs: 'Related Orgs B',
-  //     products: 'Products B',
-  //     orgSPOC: 'Org SPOC B',
-  //     email: 'email2@example.com',
-  //     phone: '987-654-3210',
-  //   },
-  //   {
-  //     id: 3,
-  //     organization: 'Organization C',
-  //     type: 'Customer',
-  //     industry: 'Industry C',
-  //     onboarding: 'Onboarding C',
-  //     relatedOrgs: 'Related Orgs C',
-  //     products: 'Products C',
-  //     orgSPOC: 'Org SPOC C',
-  //     email: 'email3@example.com',
-  //     phone: '456-789-0123',
-  //   },
-  //   {
-  //     id: 4,
-  //     organization: 'Organization D',
-  //     type: 'Non-Customer',
-  //     industry: 'Industry D',
-  //     onboarding: 'Onboarding D',
-  //     relatedOrgs: 'Related Orgs D',
-  //     products: 'Products D',
-  //     orgSPOC: 'Org SPOC D',
-  //     email: 'email4@example.com',
-  //     phone: '789-012-3456',
-  //   },
-  //   {
-  //     id: 5,
-  //     organization: 'Organization A',
-  //     type: 'Customer',
-  //     industry: 'Industry A',
-  //     onboarding: 'Onboarding A',
-  //     relatedOrgs: 'Related Orgs A',
-  //     products: 'Products Asdfsd',
-  //     orgSPOC: 'Org SPOC A',
-  //     email: 'gautam@example.com',
-  //     phone: '123-456-7890',
-  //   },
-  // ];
+  
   navs = [
     {
       id: 0,
@@ -89,6 +29,8 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
   active!: number;
   showTable!: any;
   flag!: boolean;
+  rowData!: any;
+  columnDefs!: ColDef[];
   ngOnInit(): void {
     this.getListOfTable();
     this.getAllTable();
@@ -98,13 +40,10 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
     });
 
     const navigation = history.state;
-    console.log("org",navigation?.data)
-    if ( navigation.data && navigation.id) {
-     
-
+    console.log('org', navigation?.data);
+    if (navigation.data && navigation.id) {
       this.add(navigation, navigation.data);
     }
-  
   }
 
   constructor(
@@ -172,10 +111,55 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
     const filteredOrganizations = this.organizations.filter(
       (data: any) => data.type === filterName
     );
-    this.showTable = filteredOrganizations;
+    this.rowData = filteredOrganizations;
   }
+
   getAllTable() {
     this.showTable = this.organizations;
+    this.rowData = this.showTable;
+    console.log(this.showTable);
+    const columnnames = [];
+    const tableFields = [
+      'id',
+      'organization',
+      'type',
+      'industry',
+      'onboarding',
+      'relatedOrgs',
+      'products',
+      'orgSPOC',
+      'email',
+      'phone',
+    ];
+    for (let i = 0; i < tableFields.length; i++) {
+      if (tableFields[i] === 'id') {
+        const data = {
+          field: tableFields[i],
+          hide: true,
+        };
+        columnnames.push(data);
+      } else if (tableFields[i] === 'email') {
+        const data = {
+          field: tableFields[i],
+          width: 200,
+        };
+        columnnames.push(data);
+      } else if (tableFields[i] === 'organization') {
+        const data = {
+          field: tableFields[i],
+          width: 130,
+
+        };
+        columnnames.push(data);
+      } else {
+        const data = {
+          field: tableFields[i],
+          width: 130,
+        };
+        columnnames.push(data);
+      }
+    }
+    this.columnDefs = columnnames;
   }
   getListOfTable() {
     this.organizations = this.orgService.getAllList();
@@ -184,7 +168,7 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
 
   searOrgList(value: string) {
     if (!value) {
-      this.showTable = this.organizations;
+      this.rowData = this.organizations;
     } else {
       const filteredOrganizations = this.organizations.filter((org: any) => {
         const orgValues = Object.values(org);
@@ -194,7 +178,7 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
             field.toLowerCase().includes(value.toLowerCase())
         );
       });
-      this.showTable = filteredOrganizations;
+      this.rowData = filteredOrganizations;
     }
   }
 }

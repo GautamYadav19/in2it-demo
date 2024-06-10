@@ -44,6 +44,9 @@ export class MyTaskComponent implements OnInit {
   rowClassRules!: any;
   rowStyle!: any;
   listOfSelectedData: any[] = [];
+  gridApi: GridApi | undefined;
+  pagination!: boolean;
+  paginationPageSize!: number;
 
   constructor(public fb: FormBuilder, private service: DataService) {
     this.getNavTitle();
@@ -55,9 +58,13 @@ export class MyTaskComponent implements OnInit {
   ngOnInit(): void {
     this.addTaskFormInit();
     this.getTableData();
+    this.initPagination()
     this.service.tabNavigateName.subscribe();
   }
-  gridApi: GridApi | undefined;
+  initPagination(){
+this.pagination = true;
+this.paginationPageSize = 2;
+  }
   onGridReady(params: any) {
     this.gridApi = params.api;
   }
