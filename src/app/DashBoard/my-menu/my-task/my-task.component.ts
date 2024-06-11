@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataService } from '../service/data.service';
-import { CheckboxSelectionComponent, ColDef, GridApi } from 'ag-grid-community';
+import { CheckboxSelectionComponent, ColDef, GridApi, GridOptions } from 'ag-grid-community';
 import { EditButtonComponent } from './AgGridComponents/edit-button/edit-button.component';
 
 @Component({
@@ -47,6 +47,7 @@ export class MyTaskComponent implements OnInit {
   gridApi: GridApi | undefined;
   pagination!: boolean;
   paginationPageSize!: number;
+  gridOptions!: GridOptions;
 
   constructor(public fb: FormBuilder, private service: DataService) {
     this.getNavTitle();
@@ -58,18 +59,19 @@ export class MyTaskComponent implements OnInit {
   ngOnInit(): void {
     this.addTaskFormInit();
     this.getTableData();
-    this.initPagination()
+    this.initPagination();
     this.service.tabNavigateName.subscribe();
   }
-  initPagination(){
-this.pagination = true;
-this.paginationPageSize = 2;
+  initPagination() {
+    this.pagination = true;
+    this.paginationPageSize = 2;
   }
   onGridReady(params: any) {
     this.gridApi = params.api;
   }
   onSelectionChanged() {
     const selectedRows = this.gridApi?.getSelectedRows();
+    console.log(selectedRows)
     if (selectedRows && selectedRows.length > 0) {
       this.listOfSelectedData.push(selectedRows[0].fieldId);
     }

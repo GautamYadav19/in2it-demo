@@ -1,0 +1,11 @@
+<ag-grid-angular
+class="ag-theme-alpine table table-hover"
+style="height: 500px"
+[rowData]="rowData"
+(gridReady)="onGridReady($event)"
+(selectionChanged)="onSelectionChanged()"
+[rowSelection]="'multiple'"
+[columnDefs]="colDefs"
+[pagination]="true"
+[paginationPageSize]="2"
+></ag-grid-angular>

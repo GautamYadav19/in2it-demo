@@ -61,7 +61,7 @@
             <div [ngClass]="toggle?'row':''">
               <div [ngClass]="toggle?'col-lg-8':''">
                 <table class="table table-hover">
-                  <thead>
+                  <!-- <thead>
                     <tr>
                       <th> <input (click)="selectAllData()" class="form-check-input " type="checkbox"
                           [(ngModel)]="isCheckedSelectAll" value="" id="flexCheckDefault">Organization</th>
@@ -70,8 +70,8 @@
                       <th>Email</th>
                       <th>Phone Number</th>
                     </tr>
-                  </thead>
-                  <tbody>
+                  </thead> -->
+                  <!-- <tbody>
                     <ng-container *ngFor="let org of showtableData">
                       <tr *ngFor="let contactData of org.contact">
                         <td> <input (click)="selectData(org,contactData)" class="form-check-input " type="checkbox"
@@ -85,13 +85,14 @@
                         <td>{{contactData.phoneNumber}}</td>
                       </tr>
                     </ng-container>
-                  </tbody>
+                  </tbody> -->
                 </table>
                 <!-- (rowClicked)="navigateToOrganization($event)" -->
 
-                <ag-grid-angular class="ag-theme-alpine table table-hover" style="height: 500px" [rowData]="rowData"
-                  [columnDefs]="columnDef" (cellClicked)="[getOrgMemberDataById($event,$event,$event),navigateToOrganization($event)]"
-                  ></ag-grid-angular>
+                <ag-grid-angular [rowSelection]="'multiple'" (gridReady)="onGridReady($event)" (selectionChanged)="onSelectChange()"
+                  class="ag-theme-alpine table table-hover" style="height: 500px" [rowData]="rowData"
+                  [columnDefs]="columnDef"
+                  (cellClicked)="[getOrgMemberDataById($event,$event,$event),navigateToOrganization($event)]"></ag-grid-angular>
               </div>
               <div [ngClass]="toggle?'col-lg-4':'hide'">
 

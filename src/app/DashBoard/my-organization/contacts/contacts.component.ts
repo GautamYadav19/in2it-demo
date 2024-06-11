@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OrgService } from '../service/org.service';
 import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ColDef } from 'ag-grid-community';
+import { ColDef, GridApi, GridOptions } from 'ag-grid-community';
 
 @Component({
   selector: 'app-contacts',
@@ -40,14 +40,20 @@ export class ContactsComponent implements OnInit {
   orgDropdown: any;
   flagForOrgDropdown: boolean = false;
   orgForm!: FormGroup;
+  gridoptions!: GridOptions;
   columnDef: ColDef[] = [
-    { field: 'organization' },
+    {
+      field: 'organization',
+      checkboxSelection: true,
+      headerCheckboxSelection: true,
+    },
     { field: 'name' },
     { field: 'role' },
     { field: 'email' },
     { field: 'phoneNumber' },
   ];
   rowData: any;
+  gridApi!: GridApi;
   constructor(
     private orgServie: OrgService,
     public router: Router,
@@ -102,7 +108,33 @@ export class ContactsComponent implements OnInit {
     this.addmore.push(this.newAddMore());
   }
   // form array end
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+  }
+  onSelectChange() {
+    const selectRow = this.gridApi.getSelectedRows();
+    if (selectRow && selectRow.length > 0) {
+      for (let i = 0; i < selectRow.length; i++) {
+        const ListData = this.showtableData.filter((field: any) => {
+          return field.id === selectRow[i].id;
+        });
 
+        console.log('selectRow[i].id', selectRow[i].id, this.showtableData);
+        const org = {
+          orgId: selectRow[i].orgId,
+          contact: ListData,
+          contactIdForEdit: selectRow[i].id,
+        };
+        console.log(selectRow[i], ListData);
+        this.storeSelectedData.push(org);
+      }
+    }
+    if (selectRow.length == 1) {
+      this.checkBoxDisableBtn = false;
+    } else {
+      this.checkBoxDisableBtn = true;
+    }
+  }
   // filters to show table data
   filterData(filtername: any) {
     this.flagForOrgDropdown = true;
@@ -114,7 +146,7 @@ export class ContactsComponent implements OnInit {
   }
   orgNameForPatch: any;
   getOrgMemberDataById(orgId: any, contactId: any, org?: any) {
-    if (org.colDef.field === 'name') {
+    if (org !== undefined && org?.colDef?.field === 'name') {
       // this.togglebtn();
       this.toggle = true;
       this.openFormToggle = false;
@@ -127,6 +159,18 @@ export class ContactsComponent implements OnInit {
         return field.id === contactId.data.id;
       });
       this.rightCardData = contactData[0];
+    } else if (org?.colDef?.field === 'name') {
+      this.toggle = true;
+      this.openFormToggle = false;
+      const ListData = this.showtableData.filter((field: any) => {
+        return field.id === orgId;
+      });
+      this.navigateData = ListData;
+      this.orgNameForPatch = ListData[0].organization;
+      const contactData = ListData[0].contact.filter((field: any) => {
+        return field.id === contactId;
+      });
+      this.rightCardData = contactData[0];
     }
   }
   navigateData: any;
@@ -135,6 +179,7 @@ export class ContactsComponent implements OnInit {
       const ListData = this.showtableData.filter((field: any) => {
         return field.id === org.data.orgId;
       });
+
       const state = { data: ListData[0], id: ListData[0].id };
       this.router.navigateByUrl('/organization', { state });
     }
@@ -241,6 +286,14 @@ export class ContactsComponent implements OnInit {
         return data.organization === this.orgForm.value.org;
       });
       org[0].contact.push(saveData);
+      this.rowData = this.showtableData.flatMap((org: any) =>
+        org.contact.map((contact: any) => ({
+          ...contact,
+          orgId: org.id,
+          organization: org.organization,
+          ...this.showtableData,
+        }))
+      );
     } else {
       const saveData = {
         additionalrole: this.orgForm.value.additionalrole,
@@ -263,6 +316,16 @@ export class ContactsComponent implements OnInit {
       this.editMode = false;
       this.storeSelectedData.length = 0;
       this.checkBoxDisableBtn = true;
+      this.rowData = this.showtableData.flatMap((org: any) =>
+        org.contact.map((contact: any) => ({
+          ...contact,
+          orgId: org.id,
+          organization: org.organization,
+          ...this.showtableData,
+        }))
+      );
+     
+
     }
     this.orgForm.reset();
 
@@ -292,72 +355,85 @@ export class ContactsComponent implements OnInit {
 
   storeSelectedData: any = [];
 
-  selectData(orgId: any, contactData: any) {
-    const existingIndex = this.storeSelectedData.findIndex((data: any) => {
-      return data.orgId === orgId.id && data.contact === contactData;
-    });
+  // selectData(orgId: any, contactData: any) {
+  //   const existingIndex = this.storeSelectedData.findIndex((data: any) => {
+  //     return data.orgId === orgId.id && data.contact === contactData;
+  //   });
 
-    if (existingIndex !== -1) {
-      this.storeSelectedData.splice(existingIndex, 1);
-    } else {
-      const org = {
-        orgId: orgId.id,
-        contact: contactData,
-      };
+  //   if (existingIndex !== -1) {
+  //     this.storeSelectedData.splice(existingIndex, 1);
+  //   } else {
+  //     const org = {
+  //       orgId: orgId.id,
+  //       contact: contactData,
+  //     };
 
-      this.storeSelectedData.push(org);
-    }
-    this.checkBoxDisableBtn =
-      this.storeSelectedData.length === 1 ? false : true;
-  }
+  //     this.storeSelectedData.push(org);
+  //   }
+  //   this.checkBoxDisableBtn =
+  //     this.storeSelectedData.length === 1 ? false : true;
+  // }
   isCheckedSelectAll: boolean = false;
 
-  selectAllData() {
-    this.isCheckedSelectAll = !this.isCheckedSelectAll;
-    if (this.isCheckedSelectAll) {
-      this.showtableData.forEach((orgData: any) => {
-        orgData?.contact.forEach((contact: any) => {
-          const org = {
-            orgId: orgData.id,
-            contact: [contact],
-          };
-          this.storeSelectedData.push(org);
-        });
-      });
-      this.storeSelectedData.forEach((data: any) => {
-        this.selectCheckBox(data.orgId);
-      });
+  // selectAllData() {
+  //   this.isCheckedSelectAll = !this.isCheckedSelectAll;
+  //   if (this.isCheckedSelectAll) {
+  //     this.showtableData.forEach((orgData: any) => {
+  //       orgData?.contact.forEach((contact: any) => {
+  //         const org = {
+  //           orgId: orgData.id,
+  //           contact: [contact],
+  //         };
+  //         this.storeSelectedData.push(org);
+  //       });
+  //     });
+  //     this.storeSelectedData.forEach((data: any) => {
+  //       this.selectCheckBox(data.orgId);
+  //     });
 
-      // return true
-    } else {
-      this.storeSelectedData = [];
-    }
-  }
-  selectCheckBox(id: number, contactID?: number) {
-    return this.storeSelectedData.some((data: any) => {
-      return data.orgId == id && data.contact[0]?.id == contactID;
-    });
-  }
+  //     // return true
+  //   } else {
+  //     this.storeSelectedData = [];
+  //   }
+  // }
+  // selectCheckBox(id: number, contactID?: number) {
+  //   return this.storeSelectedData.some((data: any) => {
+  //     return data.orgId == id && data.contact[0]?.id == contactID;
+  //   });
+  // }
 
   deleteMultipleData() {
+    console.log(this.storeSelectedData, 'sdfd');
     this.storeSelectedData.forEach((storedata: any) => {
       const filter = this.showtableData.filter((data: any) => {
         return data.id === storedata.orgId;
       });
+
       const id = filter[0].contact.findIndex((data: any) => {
         return data.id == storedata.contact.id;
       });
       filter[0].contact.splice(id, 1);
     });
+    this.rowData = this.showtableData.flatMap((org: any) =>
+      org.contact.map((contact: any) => ({
+        ...contact,
+        orgId: org.id,
+        organization: org.organization,
+        ...this.showtableData,
+      }))
+    );
+    console.log(this.showtableData);
     this.storeSelectedData = [];
     this.checkBoxDisableBtn = true;
   }
 
   editSelectedData() {
     const checkLength = this.storeSelectedData.length;
-    if (checkLength) {
+    const selectRow = this.gridApi.getSelectedRows();
+
+    if (!this.checkBoxDisableBtn) {
       let orgId = this.storeSelectedData[0]?.orgId;
-      let contactId = this.storeSelectedData[0]?.contact.id;
+      let contactId = this.storeSelectedData[0].contactIdForEdit;
       this.getOrgMemberDataById(orgId, contactId);
       this.openFormToggleFn(true);
       this.storeSelectedData = [];
