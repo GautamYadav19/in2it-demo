@@ -52,7 +52,7 @@
           </div>
           <div class="col py-3 ">
             <div class="container">
-
+<!-- 
               <table class="table table-hover">
                 <thead>
                   <tr>
@@ -81,9 +81,8 @@
                     <td>{{ org.phone }}</td>
                   </tr>
                 </tbody>
-              </table>
-              asdas
-              <ag-grid-angular class="ag-theme-alpine" style="height: 500px;" [columnDefs]="columnDefs" [rowData]="rowData"></ag-grid-angular>
+              </table> -->
+              <ag-grid-angular class="ag-theme-alpine" style="height: 500px;" [columnDefs]="columnDefs" [rowData]="rowData" (cellClicked)="onCellClick($event)"></ag-grid-angular>
             </div>
 
           </div>

@@ -63,7 +63,7 @@
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th> <input (click)="selectAllData()"  class="form-check-input " type="checkbox"
+                      <th> <input (click)="selectAllData()" class="form-check-input " type="checkbox"
                           [(ngModel)]="isCheckedSelectAll" value="" id="flexCheckDefault">Organization</th>
                       <th>Name</th>
                       <th>Role</th>
@@ -78,7 +78,6 @@
                             [checked]="selectCheckBox(org.id,contactData.id) " id="flexCheckDefault"><a class="ms-2"
                             [routerLink]="'/organization'" [state]="{data:org,id:org.id}">{{ org.organization }}</a>
                         </td>
-                        <!-- <td (click)="getOrgMemberDataById(org.id,contactData.id)">{{contactData.name}}</td> -->
                         <td><ngb-highlight (click)="getOrgMemberDataById(org.id,contactData.id)"
                             [result]="contactData.name " [term]="filter.value"></ngb-highlight></td>
                         <td>{{contactData.role}}</td>
@@ -88,6 +87,11 @@
                     </ng-container>
                   </tbody>
                 </table>
+                <!-- (rowClicked)="navigateToOrganization($event)" -->
+
+                <ag-grid-angular class="ag-theme-alpine table table-hover" style="height: 500px" [rowData]="rowData"
+                  [columnDefs]="columnDef" (cellClicked)="[getOrgMemberDataById($event,$event,$event),navigateToOrganization($event)]"
+                  ></ag-grid-angular>
               </div>
               <div [ngClass]="toggle?'col-lg-4':'hide'">
 
@@ -187,12 +191,6 @@
                             </div>
                           </div>
                         </div>
-
-
-                        <!-- <input formControlName="newFiledname" type="text" class="form-control" id="newFieldname"
-                          placeholder="enter newFiledname role">
-                        <input formControlName="fieldName" type="text" class="form-control" id="newfield"
-                          placeholder="enter fieldName role"> -->
                       </div>
                     </div>
                   </div>

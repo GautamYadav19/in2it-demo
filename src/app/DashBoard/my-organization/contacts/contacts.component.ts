@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OrgService } from '../service/org.service';
 import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { ColDef } from 'ag-grid-community';
 
 @Component({
   selector: 'app-contacts',
@@ -39,6 +40,14 @@ export class ContactsComponent implements OnInit {
   orgDropdown: any;
   flagForOrgDropdown: boolean = false;
   orgForm!: FormGroup;
+  columnDef: ColDef[] = [
+    { field: 'organization' },
+    { field: 'name' },
+    { field: 'role' },
+    { field: 'email' },
+    { field: 'phoneNumber' },
+  ];
+  rowData: any;
   constructor(
     private orgServie: OrgService,
     public router: Router,
@@ -47,7 +56,6 @@ export class ContactsComponent implements OnInit {
     this.filter.valueChanges.subscribe((data: any) => {
       if (data.length > 0) {
         this.showtableData = this.search(data);
-        console.log('search data', this.showtableData);
       } else {
         this.getTableList();
       }
@@ -105,21 +113,32 @@ export class ContactsComponent implements OnInit {
     this.showtableData = dataList;
   }
   orgNameForPatch: any;
-  getOrgMemberDataById(orgId: any, contactId: any) {
-    // this.togglebtn();
-    this.toggle = true;
-    this.openFormToggle = false;
-    const ListData = this.showtableData.filter((field: any) => {
-      return field.id === orgId;
-    });
-    this.orgNameForPatch = ListData[0].organization;
-    const contactData = ListData[0].contact.filter((field: any) => {
-      return field.id === contactId;
-    });
-    this.rightCardData = contactData[0];
-    console.log(this.rightCardData);
+  getOrgMemberDataById(orgId: any, contactId: any, org?: any) {
+    if (org.colDef.field === 'name') {
+      // this.togglebtn();
+      this.toggle = true;
+      this.openFormToggle = false;
+      const ListData = this.showtableData.filter((field: any) => {
+        return field.id === orgId.data.orgId;
+      });
+      this.navigateData = ListData;
+      this.orgNameForPatch = ListData[0].organization;
+      const contactData = ListData[0].contact.filter((field: any) => {
+        return field.id === contactId.data.id;
+      });
+      this.rightCardData = contactData[0];
+    }
   }
-
+  navigateData: any;
+  navigateToOrganization(org: any) {
+    if (org.colDef.field === 'organization') {
+      const ListData = this.showtableData.filter((field: any) => {
+        return field.id === org.data.orgId;
+      });
+      const state = { data: ListData[0], id: ListData[0].id };
+      this.router.navigateByUrl('/organization', { state });
+    }
+  }
   // filters for form
   getAllOrgdropdown() {
     const orgList: any[] = [];
@@ -142,10 +161,8 @@ export class ContactsComponent implements OnInit {
       const role1 = this.role.filter((data: any) => {
         return data !== restrictedValue;
       });
-      console.log('in condition', role1);
       this.listOfRole = role1;
     } else {
-      console.log('Out condition', this.role);
       this.listOfRole = this.role;
     }
   }
@@ -160,12 +177,28 @@ export class ContactsComponent implements OnInit {
   getTableList() {
     this.tableData = this.showtableData = this.orgServie.getAllList();
     this.flagForOrgDropdown = false;
+    // const extractContacttable =[]
+    // for (let i = 0; i < this.showtableData.length; i++) {
+    //   for (let j = 0; j < this.showtableData[i].contact.length; j++) {
+    //  this.showtableData[i].contact[j]['organization']=this.showtableData[i].organization;
+    //   extractContacttable.push(this.showtableData[i].contact[j])
+    //   }
+    // }
+    // this.rowData = extractContacttable
+    this.rowData = this.showtableData.flatMap((org: any) =>
+      org.contact.map((contact: any) => ({
+        ...contact,
+        orgId: org.id,
+        organization: org.organization,
+        ...this.showtableData,
+      }))
+    );
 
     this.getAllOrgdropdown();
   }
+
   editMode: boolean = false;
   initEditForm() {
-    console.log(this.rightCardData);
     this.editMode = true;
     const data = this.rightCardData;
     // yaha data algh terha se a raha hain isliya esa karna requied hain
@@ -204,12 +237,10 @@ export class ContactsComponent implements OnInit {
           this.orgForm.value.number.phoneNumber,
         role: this.orgForm.value.role,
       };
-      console.log(this.orgForm.value);
       const org = this.showtableData.filter((data: any) => {
         return data.organization === this.orgForm.value.org;
       });
       org[0].contact.push(saveData);
-      console.log(saveData);
     } else {
       const saveData = {
         additionalrole: this.orgForm.value.additionalrole,
@@ -225,7 +256,6 @@ export class ContactsComponent implements OnInit {
       const org = this.showtableData.filter((data: any) => {
         return data.organization === this.orgForm.value.org;
       });
-      console.log('ss', this.orgForm.value.id, saveData);
       const i = org[0].contact.findIndex((data: any) => {
         return data.id === this.orgForm.value.id;
       });
@@ -247,16 +277,14 @@ export class ContactsComponent implements OnInit {
     this.orgForm.reset();
     this.storeSelectedData.length = 0;
     this.checkBoxDisableBtn = true;
-
-    console.log(this.storeSelectedData.length);
     this.openFormToggle = this.toggle = false;
   }
+
   clear() {
     this.orgForm.reset();
   }
   openFormToggleFn(edit = false) {
     this.toggle = this.openFormToggle = !this.openFormToggle;
-    console.log('this.openFormToggle', this.openFormToggle);
     if (edit) {
       this.initEditForm();
     }
@@ -271,7 +299,6 @@ export class ContactsComponent implements OnInit {
 
     if (existingIndex !== -1) {
       this.storeSelectedData.splice(existingIndex, 1);
-      console.log('s', this.storeSelectedData);
     } else {
       const org = {
         orgId: orgId.id,
@@ -297,7 +324,6 @@ export class ContactsComponent implements OnInit {
           this.storeSelectedData.push(org);
         });
       });
-      console.log('selectAll', this.storeSelectedData);
       this.storeSelectedData.forEach((data: any) => {
         this.selectCheckBox(data.orgId);
       });
@@ -307,39 +333,31 @@ export class ContactsComponent implements OnInit {
       this.storeSelectedData = [];
     }
   }
-  selectCheckBox(id: number,contactID?:number) {
+  selectCheckBox(id: number, contactID?: number) {
     return this.storeSelectedData.some((data: any) => {
-      console.log("i am id ,",data.contact[0]?.id)
-      return data.orgId == id && data.contact[0]?.id== contactID;
+      return data.orgId == id && data.contact[0]?.id == contactID;
     });
   }
 
   deleteMultipleData() {
-    console.log('delete data list before', this.storeSelectedData);
-
     this.storeSelectedData.forEach((storedata: any) => {
       const filter = this.showtableData.filter((data: any) => {
         return data.id === storedata.orgId;
       });
-      console.log('filter', filter[0].contact);
       const id = filter[0].contact.findIndex((data: any) => {
         return data.id == storedata.contact.id;
       });
-      console.log('Id', id);
       filter[0].contact.splice(id, 1);
     });
     this.storeSelectedData = [];
     this.checkBoxDisableBtn = true;
-    console.log('delete data list after', this.storeSelectedData);
   }
 
   editSelectedData() {
-    console.log(this.storeSelectedData);
     const checkLength = this.storeSelectedData.length;
     if (checkLength) {
       let orgId = this.storeSelectedData[0]?.orgId;
       let contactId = this.storeSelectedData[0]?.contact.id;
-      console.log(orgId, contactId);
       this.getOrgMemberDataById(orgId, contactId);
       this.openFormToggleFn(true);
       this.storeSelectedData = [];

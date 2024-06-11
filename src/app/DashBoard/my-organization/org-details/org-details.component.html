@@ -102,7 +102,7 @@
                             <h5>Contacts</h5>
                             <div class="search-container">
                                 <input type="text" class="form-control" id="searchInput" placeholder="Search...">
-                              </div>
+                            </div>
                             <h6>Gautam Yadav</h6>
                             <p>Org Role :</p>
                             <p>Preference Contact</p>
@@ -162,10 +162,10 @@
         <ng-template ngbNavContent>
             <div [ngClass]="addTaskFlag?'row':''">
                 <div [ngClass]="addTaskFlag?'col-lg-9':''">
-                    <table class="table table-hover table-bordered">
+                    <!-- <table class="table table-hover table-bordered">
                         <thead>
-                            <tr>    
-                                <th   scope="row"><input type="checkbox"></th>
+                            <tr>
+                                <th scope="row"><input type="checkbox"></th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Role</th>
                                 <th scope="col">Email</th>
@@ -181,7 +181,10 @@
                                 <td>{{ row.phoneNumber }}</td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table> -->
+                    <ag-grid-angular class="ag-theme-alpine table table-hover" style="height: 500px" [rowData]="rowData"
+                        [columnDefs]="columnDef"></ag-grid-angular>
+
                 </div>
                 <div [ngClass]="addTaskFlag?'col-lg-3':'hide'">
 

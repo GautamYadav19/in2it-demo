@@ -9,7 +9,6 @@ import { ColDef } from 'ag-grid-community';
   styleUrls: ['./miniheader.component.css'],
 })
 export class MiniheaderComponent implements OnInit, OnDestroy {
-  
   navs = [
     {
       id: 0,
@@ -40,7 +39,6 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
     });
 
     const navigation = history.state;
-    console.log('org', navigation?.data);
     if (navigation.data && navigation.id) {
       this.add(navigation, navigation.data);
     }
@@ -70,7 +68,6 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
     const data = existingData.filter((data: any) => {
       return data.id !== id;
     });
-    console.log('dsfsd', data);
     localStorage.setItem('orgData', JSON.stringify(data));
     event.preventDefault();
     event.stopImmediatePropagation();
@@ -117,7 +114,6 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
   getAllTable() {
     this.showTable = this.organizations;
     this.rowData = this.showTable;
-    console.log(this.showTable);
     const columnnames = [];
     const tableFields = [
       'id',
@@ -148,7 +144,6 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
         const data = {
           field: tableFields[i],
           width: 130,
-
         };
         columnnames.push(data);
       } else {
@@ -161,9 +156,13 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
     }
     this.columnDefs = columnnames;
   }
+  onCellClick(event: any) {
+    if (event.colDef.field === 'organization') {
+      this.add(event, event.data);
+    }
+  }
   getListOfTable() {
     this.organizations = this.orgService.getAllList();
-    console.log(this.organizations, 'sdfsdfsd');
   }
 
   searOrgList(value: string) {

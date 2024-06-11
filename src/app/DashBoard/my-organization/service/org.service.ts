@@ -9,7 +9,6 @@ export class OrgService {
   public orgID = new BehaviorSubject<number>(0);
   getOrgIdSub =this.orgID.asObservable()
   SetOrgId(id: number) {
-    console.log("service",id)
     this.orgID.next(id);
   }
   deleteOrg(id: any) {
@@ -18,10 +17,8 @@ export class OrgService {
     localStorage.setItem('orgData', JSON.stringify(existingData));
   }
   getOrgByID(id: any) {
-    console.log(id);
     const orgData = JSON.parse(localStorage.getItem('orgData')!) || [];
     for (let i = 0; i <= orgData.length; i++) {
-      console.log("service data",orgData[i]);
       if (orgData[i]?.id === id) {
         return orgData[i];
       }
