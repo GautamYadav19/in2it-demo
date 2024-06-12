@@ -8,6 +8,7 @@ import { IconsModule } from 'src/app/Shared/icons/icons.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AgGridModule } from 'ag-grid-angular';
 import { EditButtonComponent } from './my-task/AgGridComponents/edit-button/edit-button.component';
+import { SharedModule } from 'src/app/Shared/shared/shared.module';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { EditButtonComponent } from './my-task/AgGridComponents/edit-button/edit
     CommonModule,
     MyMenuRoutingModule,
     ReactiveFormsModule,
-    IconsModule,AgGridModule
+    IconsModule,AgGridModule,
+    SharedModule
   ]
 })
 export class MyMenuModule { }

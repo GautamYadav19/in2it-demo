@@ -89,11 +89,15 @@
                 </table>
                 <!-- (rowClicked)="navigateToOrganization($event)" -->
 
-                <ag-grid-angular [rowSelection]="'multiple'" (gridReady)="onGridReady($event)" (selectionChanged)="onSelectChange()"
+                <!-- <ag-grid-angular [rowSelection]="'multiple'" (gridReady)="onGridReady($event)" (selectionChanged)="onSelectChange()"
                   class="ag-theme-alpine table table-hover" style="height: 500px" [rowData]="rowData"
                   [columnDefs]="columnDef"
-                  (cellClicked)="[getOrgMemberDataById($event,$event,$event),navigateToOrganization($event)]"></ag-grid-angular>
+                  (cellClicked)="[getOrgMemberDataById($event,$event,$event),navigateToOrganization($event)]"></ag-grid-angular> -->
               </div>
+              <app-ag-grid-table (SelectionChanged)="onSelectChange($event)" (GridReady)="onGridReady($event)"  [rowData]="rowData"
+              [colDefs]="columnDef"
+              (cellClick)="[getOrgMemberDataById($event,$event,$event),navigateToOrganization($event)]"
+              ></app-ag-grid-table>
               <div [ngClass]="toggle?'col-lg-4':'hide'">
 
                 <div *ngIf="!openFormToggle" class="row">

@@ -5,7 +5,7 @@ import { AgGridModule } from 'ag-grid-angular';
 
 @NgModule({
   declarations: [AgGridTableComponent],
-  imports: [CommonModule,AgGridModule],
+  imports: [CommonModule, AgGridModule],
   exports: [AgGridTableComponent],
 })
 export class SharedModule {}

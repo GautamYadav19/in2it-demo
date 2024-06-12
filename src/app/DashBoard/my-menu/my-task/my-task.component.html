@@ -81,7 +81,7 @@
 
       </tbody>
     </table> -->
-
+<!-- 
     <ag-grid-angular
       class="ag-theme-alpine table table-hover"
       style="height: 500px"
@@ -92,7 +92,8 @@
       [columnDefs]="colDefs"
       [pagination]="true"
       [paginationPageSize]="paginationPageSize"
-    ></ag-grid-angular>
+    ></ag-grid-angular> -->
+    <app-ag-grid-table [rowData]="rowData" [colDefs]="colDefs" (GridReady)="onGridReady($event)" (SelectionChanged)="onSelectionChanged()"></app-ag-grid-table>
   </div>
   <div [ngClass]="addTaskFlag ? 'col-lg-3' : 'hide'">
     <div class="row">

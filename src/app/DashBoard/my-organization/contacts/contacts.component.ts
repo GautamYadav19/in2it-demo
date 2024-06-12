@@ -109,10 +109,12 @@ export class ContactsComponent implements OnInit {
   }
   // form array end
   onGridReady(params: any) {
+    console.log(params);
     this.gridApi = params.api;
   }
-  onSelectChange() {
-    const selectRow = this.gridApi.getSelectedRows();
+  onSelectChange(selectRow:any) {
+    // const selectRow = this.gridApi?.getSelectedRows();
+    console.log(selectRow)
     if (selectRow && selectRow.length > 0) {
       for (let i = 0; i < selectRow.length; i++) {
         const ListData = this.showtableData.filter((field: any) => {
@@ -129,12 +131,13 @@ export class ContactsComponent implements OnInit {
         this.storeSelectedData.push(org);
       }
     }
-    if (selectRow.length == 1) {
+    if (selectRow?.length == 1) {
       this.checkBoxDisableBtn = false;
     } else {
       this.checkBoxDisableBtn = true;
     }
   }
+
   // filters to show table data
   filterData(filtername: any) {
     this.flagForOrgDropdown = true;
@@ -146,38 +149,40 @@ export class ContactsComponent implements OnInit {
   }
   orgNameForPatch: any;
   getOrgMemberDataById(orgId: any, contactId: any, org?: any) {
-    if (org !== undefined && org?.colDef?.field === 'name') {
+    console.log(org[2]?.colDef?.field === 'name', org[2] !== undefined);
+    if (org[2] !== undefined && org[2]?.colDef?.field === 'name') {
       // this.togglebtn();
       this.toggle = true;
       this.openFormToggle = false;
       const ListData = this.showtableData.filter((field: any) => {
-        return field.id === orgId.data.orgId;
+        return field.id === orgId[0].data.orgId;
       });
       this.navigateData = ListData;
       this.orgNameForPatch = ListData[0].organization;
       const contactData = ListData[0].contact.filter((field: any) => {
-        return field.id === contactId.data.id;
+        return field.id === contactId[1].data.id;
       });
       this.rightCardData = contactData[0];
-    } else if (org?.colDef?.field === 'name') {
+    } else if (org[2]?.colDef?.field === 'name') {
       this.toggle = true;
       this.openFormToggle = false;
       const ListData = this.showtableData.filter((field: any) => {
-        return field.id === orgId;
+        return field.id === orgId[0].data.orgId;
       });
       this.navigateData = ListData;
       this.orgNameForPatch = ListData[0].organization;
       const contactData = ListData[0].contact.filter((field: any) => {
-        return field.id === contactId;
+        return field.id === contactId[1];
       });
       this.rightCardData = contactData[0];
     }
   }
   navigateData: any;
   navigateToOrganization(org: any) {
-    if (org.colDef.field === 'organization') {
+    console.log(org);
+    if (org[0].colDef.field === 'organization') {
       const ListData = this.showtableData.filter((field: any) => {
-        return field.id === org.data.orgId;
+        return field.id === org[0].data.orgId;
       });
 
       const state = { data: ListData[0], id: ListData[0].id };
@@ -324,8 +329,6 @@ export class ContactsComponent implements OnInit {
           ...this.showtableData,
         }))
       );
-     
-
     }
     this.orgForm.reset();
 

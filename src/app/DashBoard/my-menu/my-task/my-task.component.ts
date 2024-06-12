@@ -61,10 +61,7 @@ export class MyTaskComponent implements OnInit {
     this.getTableData();
     this.initPagination();
     this.service.tabNavigateName.subscribe();
-  }
-  initPagination() {
-    this.pagination = true;
-    this.paginationPageSize = 2;
+    
   }
   onGridReady(params: any) {
     this.gridApi = params.api;
@@ -76,6 +73,11 @@ export class MyTaskComponent implements OnInit {
       this.listOfSelectedData.push(selectedRows[0].fieldId);
     }
   }
+  initPagination() {
+    this.pagination = true;
+    this.paginationPageSize = 2;
+  }
+
   getTableData() {
     this.tableData = JSON.parse(localStorage.getItem('data') || '[]');
     this.rowData = this.tableData;

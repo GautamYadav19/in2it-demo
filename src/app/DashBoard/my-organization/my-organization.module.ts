@@ -11,6 +11,7 @@ import { OrgDetailsComponent } from './org-details/org-details.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ContactsComponent } from './contacts/contacts.component';
 import { AgGridModule } from 'ag-grid-angular';
+import { SharedModule } from 'src/app/Shared/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { AgGridModule } from 'ag-grid-angular';
     NgbNavModule,
     ReactiveFormsModule,
     AgGridModule,
+    SharedModule
   ],
 })
 export class MyOrganizationModule {}

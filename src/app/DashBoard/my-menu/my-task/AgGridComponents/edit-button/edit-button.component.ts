@@ -9,12 +9,14 @@ import { ICellRendererParams } from 'ag-grid-community';
 })
 export class EditButtonComponent implements ICellRendererAngularComp {
   addTaskFlag: boolean=false;
-  constructor() {}
+  constructor() {
+    console.log(this.params)
+  }
   params: any;
 
   agInit(params: ICellRendererParams<any, any>): void {
-    console.log("ag",this.addTaskFlag,params)
     this.params = params;
+    console.log("ag",this.addTaskFlag,params)
   }
 
   refresh(params: ICellRendererParams<any, any>): boolean {
