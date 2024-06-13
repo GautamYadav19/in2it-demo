@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 
 import { NavbarComponent } from './Shared/Header/navbar/navbar.component';
 import { IconsModule } from './Shared/icons/icons.module';
-import { TableComponent } from './Shared/AgGrid/table/table.component';
 
 
 
@@ -14,7 +13,6 @@ import { TableComponent } from './Shared/AgGrid/table/table.component';
   declarations: [
     AppComponent,
     NavbarComponent,
-    TableComponent,
   ],
   imports: [
     BrowserModule,

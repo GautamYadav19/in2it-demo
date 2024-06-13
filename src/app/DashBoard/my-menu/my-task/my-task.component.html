@@ -81,7 +81,7 @@
 
       </tbody>
     </table> -->
-<!-- 
+    <!-- 
     <ag-grid-angular
       class="ag-theme-alpine table table-hover"
       style="height: 500px"
@@ -93,7 +93,8 @@
       [pagination]="true"
       [paginationPageSize]="paginationPageSize"
     ></ag-grid-angular> -->
-    <app-ag-grid-table [rowData]="rowData" [colDefs]="colDefs" (GridReady)="onGridReady($event)" (SelectionChanged)="onSelectionChanged()"></app-ag-grid-table>
+    <app-ag-grid-table [gridOptions]="gridOptions" [rowData]="rowData" [colDefs]="colDefs"
+      (SelectionChanged)="onSelectionChanged()"></app-ag-grid-table>
   </div>
   <div [ngClass]="addTaskFlag ? 'col-lg-3' : 'hide'">
     <div class="row">
@@ -106,225 +107,145 @@
             <form [formGroup]="addTaskForm" (ngSubmit)="onSubmit()">
               <div class="form-group">
                 <label for="fieldId">Field Id</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  [ngClass]="
+                <input type="number" class="form-control" [ngClass]="
                     addTaskForm.get('fieldId')?.errors &&
                     addTaskForm.get('fieldId')?.touched
                       ? 'is-invalid'
                       : ''
-                  "
-                  id="fieldId"
-                  formControlName="fieldId"
-                />
-                <div
-                  *ngIf="
+                  " id="fieldId" formControlName="fieldId" />
+                <div *ngIf="
                     addTaskForm.get('fieldId')?.errors &&
                     addTaskForm.get('fieldId')?.touched
-                  "
-                  class="invalid-feedback"
-                >
+                  " class="invalid-feedback">
                   This is required Field.
                 </div>
               </div>
               <div class="form-group">
                 <label for="solutionArea">Solution Area</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  [ngClass]="
+                <input type="text" class="form-control" [ngClass]="
                     addTaskForm.get('solutionArea')?.errors &&
                     addTaskForm.get('solutionArea')?.touched
                       ? 'is-invalid'
                       : ''
-                  "
-                  id="solutionArea"
-                  formControlName="solutionArea"
-                />
-                <div
-                  *ngIf="
+                  " id="solutionArea" formControlName="solutionArea" />
+                <div *ngIf="
                     addTaskForm.get('solutionArea')?.errors &&
                     addTaskForm.get('solutionArea')?.touched
-                  "
-                  class="invalid-feedback"
-                >
+                  " class="invalid-feedback">
                   This is required Field.
                 </div>
               </div>
               <div class="form-group">
                 <label for="workflow">Workflow</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  [ngClass]="
+                <input type="text" class="form-control" [ngClass]="
                     addTaskForm.get('workflow')?.errors &&
                     addTaskForm.get('workflow')?.touched
                       ? 'is-invalid'
                       : ''
-                  "
-                  id="workflow"
-                  formControlName="workflow"
-                />
-                <div
-                  *ngIf="
+                  " id="workflow" formControlName="workflow" />
+                <div *ngIf="
                     addTaskForm.get('workflow')?.errors &&
                     addTaskForm.get('workflow')?.touched
-                  "
-                  class="invalid-feedback"
-                >
+                  " class="invalid-feedback">
                   This is required Field.
                 </div>
               </div>
               <div class="form-group">
                 <label for="taskId">Task Id</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  [ngClass]="
+                <input type="text" class="form-control" [ngClass]="
                     addTaskForm.get('taskId')?.errors &&
                     addTaskForm.get('taskId')?.touched
                       ? 'is-invalid'
                       : ''
-                  "
-                  id="taskId"
-                  formControlName="taskId"
-                />
-                <div
-                  *ngIf="
+                  " id="taskId" formControlName="taskId" />
+                <div *ngIf="
                     addTaskForm.get('taskId')?.errors &&
                     addTaskForm.get('taskId')?.touched
-                  "
-                  class="invalid-feedback"
-                >
+                  " class="invalid-feedback">
                   This is required Field.
                 </div>
               </div>
               <div class="form-group">
                 <label for="taskName">Task Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  [ngClass]="
+                <input type="text" class="form-control" [ngClass]="
                     addTaskForm.get('taskName')?.errors &&
                     addTaskForm.get('taskName')?.touched
                       ? 'is-invalid'
                       : ''
-                  "
-                  id="taskName"
-                  formControlName="taskName"
-                />
-                <div
-                  *ngIf="
+                  " id="taskName" formControlName="taskName" />
+                <div *ngIf="
                     addTaskForm.get('taskName')?.errors &&
                     addTaskForm.get('taskName')?.touched
-                  "
-                  class="invalid-feedback"
-                >
+                  " class="invalid-feedback">
                   This is required Field.
                 </div>
               </div>
               <div class="form-group">
                 <label for="status">Status</label>
-                <select
-                  class="form-control"
-                  id="status"
-                  [ngClass]="
+                <select class="form-control" id="status" [ngClass]="
                     addTaskForm.get('status')?.errors &&
                     addTaskForm.get('status')?.touched
                       ? 'is-invalid'
                       : ''
-                  "
-                  formControlName="status"
-                >
+                  " formControlName="status">
                   <option value="In Progress">In Progress</option>
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
                 </select>
-                <div
-                  *ngIf="
+                <div *ngIf="
                     addTaskForm.get('status')?.errors &&
                     addTaskForm.get('status')?.touched
-                  "
-                  class="invalid-feedback"
-                >
+                  " class="invalid-feedback">
                   This is required Field.
                 </div>
               </div>
               <div class="form-group">
                 <label for="startDue">Start Due</label>
-                <input
-                  type="date"
-                  class="form-control"
-                  [ngClass]="
+                <input type="date" class="form-control" [ngClass]="
                     addTaskForm.get('startDate')?.errors &&
                     addTaskForm.get('startDate')?.touched
                       ? 'is-invalid'
                       : ''
-                  "
-                  id="startDue"
-                  formControlName="startDate"
-                  [min]="todayDate"
-                />
-                <div
-                  *ngIf="
+                  " id="startDue" formControlName="startDate" [min]="todayDate" />
+                <div *ngIf="
                     addTaskForm.get('startDate')?.errors &&
                     addTaskForm.get('startDate')?.touched
-                  "
-                  class="invalid-feedback"
-                >
+                  " class="invalid-feedback">
                   This is a required Field.
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="dueDate">Due Date</label>
-                <input
-                  type="date"
-                  class="form-control"
-                  [ngClass]="
+                <input type="date" class="form-control" [ngClass]="
                     addTaskForm.get('dueDate')?.errors &&
                     addTaskForm.get('dueDate')?.touched
                       ? 'is-invalid'
                       : ''
-                  "
-                  id="dueDate"
-                  formControlName="dueDate"
-                />
-                <div
-                  *ngIf="
+                  " id="dueDate" formControlName="dueDate" />
+                <div *ngIf="
                     addTaskForm.get('priority')?.errors &&
                     addTaskForm.get('dueDate')?.touched
-                  "
-                  class="invalid-feedback"
-                >
+                  " class="invalid-feedback">
                   This is required Field.
                 </div>
               </div>
               <div class="form-group">
                 <label for="priority">Priority</label>
-                <select
-                  class="form-control"
-                  id="priority"
-                  [ngClass]="
+                <select class="form-control" id="priority" [ngClass]="
                     addTaskForm.get('priority')?.errors &&
                     addTaskForm.get('priority')?.touched
                       ? 'is-invalid'
                       : ''
-                  "
-                  formControlName="priority"
-                >
+                  " formControlName="priority">
                   <option>Low</option>
                   <option>Medium</option>
                   <option>High</option>
                 </select>
-                <div
-                  *ngIf="
+                <div *ngIf="
                     addTaskForm.get('priority')?.errors &&
                     addTaskForm.get('priority')?.touched
-                  "
-                  class="invalid-feedback"
-                >
+                  " class="invalid-feedback">
                   This is required Field.
                 </div>
               </div>
@@ -332,18 +253,10 @@
                 <button type="submit" class="btn btn-primary btn-block">
                   Submit
                 </button>
-                <button
-                  type="button"
-                  class="btn btn-secondary btn-block mx-2"
-                  (click)="clear()"
-                >
+                <button type="button" class="btn btn-secondary btn-block mx-2" (click)="clear()">
                   Clear
                 </button>
-                <button
-                  type="button"
-                  class="btn btn-secondary btn-block mx-2"
-                  (click)="OnCanel()"
-                >
+                <button type="button" class="btn btn-secondary btn-block mx-2" (click)="OnCanel()">
                   Cancel
                 </button>
               </div>

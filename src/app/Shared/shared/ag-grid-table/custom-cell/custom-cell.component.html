@@ -1,0 +1,8 @@
+<i-feather *ngIf="params.context.parent==='mytask'" style="color: green;" class="m-1" name="edit"
+    (click)="editTaskByIdAgGrid()"></i-feather>
+
+<i-feather *ngIf="params.context.parent==='mytask'" style="color: red;" class="m-1" name="trash-2"
+    (click)="onDeleteAgGrid()"> </i-feather>
+
+<p *ngIf="params.context.parent==='contact' && fieldName=='organization'" (click)="navigateToOrganization()" >{{params.data.organization}}</p>
+<p *ngIf="params.context.parent==='contact' && fieldName=='name'" (click)="getOrgMemberDataById()" >{{params.data.name}}</p>

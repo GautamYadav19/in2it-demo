@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
+import { ColDef, GridApi, GridOptions, GridReadyEvent } from 'ag-grid-community';
 // import { EventEmitter } from 'stream';
 
 @Component({
@@ -14,6 +14,7 @@ export class AgGridTableComponent implements OnInit {
   @Output() GridReady: EventEmitter<any> = new EventEmitter<GridApi>();
   @Output() SelectionChanged: EventEmitter<any> = new EventEmitter();
   @Output() cellClick: EventEmitter<any> = new EventEmitter();
+  @Input() gridOptions! :GridOptions;
 
   gridAPi!: GridApi;
   constructor() {}

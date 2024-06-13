@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataService } from '../service/data.service';
 import { CheckboxSelectionComponent, ColDef, GridApi, GridOptions } from 'ag-grid-community';
 import { EditButtonComponent } from './AgGridComponents/edit-button/edit-button.component';
+import { CellRendererComponent } from 'ag-grid-community/dist/lib/components/framework/componentTypes';
+import { CustomCellComponent } from 'src/app/Shared/shared/ag-grid-table/custom-cell/custom-cell.component';
 
 @Component({
   selector: 'app-my-task',
@@ -61,6 +63,12 @@ export class MyTaskComponent implements OnInit {
     this.getTableData();
     this.initPagination();
     this.service.tabNavigateName.subscribe();
+    this.gridOptions={
+      context:{
+        parentComponent:this,
+        parent:'mytask'
+      }
+    }
     
   }
   onGridReady(params: any) {
@@ -140,12 +148,13 @@ export class MyTaskComponent implements OnInit {
         let colTableDataFormate = {
           field: colKeys[i],
           width: 155,
-          cellRendererFramework: EditButtonComponent,
-          cellRendererParams: {
-            editTaskByIdAgGrid: this.editTaskById.bind(this),
-            onDeleteAgGrid: this.onDelete.bind(this),
-            togglebtnAgGrid: this.togglebtn.bind(this),
-          },
+          cellRenderer:CustomCellComponent
+          // cellRendererFramework: EditButtonComponent,
+          // cellRendererParams: {
+          //   editTaskByIdAgGrid: this.editTaskById.bind(this),
+          //   onDeleteAgGrid: this.onDelete.bind(this),
+          //   togglebtnAgGrid: this.togglebtn.bind(this),
+          // },
         };
         colNames.push(colTableDataFormate);
       } else {
@@ -219,6 +228,7 @@ export class MyTaskComponent implements OnInit {
 
   clear() {
     this.addTaskForm.reset();
+    console.log("ejfer")
   }
   OnCanel() {
     this.togglebtn();

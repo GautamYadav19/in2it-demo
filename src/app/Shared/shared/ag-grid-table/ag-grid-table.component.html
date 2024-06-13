@@ -7,5 +7,5 @@ style="height: 500px"
 (gridReady)="onGridReady($event)"
 (selectionChanged)="onSelectionChanged()"
 (cellClicked)="oncellClickedFn($event,$event,$event)"
-
+[gridOptions]="gridOptions"
 ></ag-grid-angular>

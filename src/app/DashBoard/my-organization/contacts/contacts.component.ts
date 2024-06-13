@@ -3,6 +3,7 @@ import { OrgService } from '../service/org.service';
 import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ColDef, GridApi, GridOptions } from 'ag-grid-community';
+import { CustomCellComponent } from 'src/app/Shared/shared/ag-grid-table/custom-cell/custom-cell.component';
 
 @Component({
   selector: 'app-contacts',
@@ -41,13 +42,15 @@ export class ContactsComponent implements OnInit {
   flagForOrgDropdown: boolean = false;
   orgForm!: FormGroup;
   gridoptions!: GridOptions;
+  singlenameOrg: any;
   columnDef: ColDef[] = [
     {
       field: 'organization',
       checkboxSelection: true,
       headerCheckboxSelection: true,
+      cellRenderer: CustomCellComponent,
     },
-    { field: 'name' },
+    { field: 'name', cellRenderer: CustomCellComponent },
     { field: 'role' },
     { field: 'email' },
     { field: 'phoneNumber' },
@@ -61,7 +64,20 @@ export class ContactsComponent implements OnInit {
   ) {
     this.filter.valueChanges.subscribe((data: any) => {
       if (data.length > 0) {
-        this.showtableData = this.search(data);
+        this.rowData = this.search(data).flatMap((org: any) =>
+          org.contact.map(
+            (contact: any) => (
+              (this.singlenameOrg = this.showtableData),
+              {
+                ...contact,
+                orgId: org.id,
+                organization: org.organization,
+                ...this.showtableData,
+              }
+            )
+          )
+        );
+        
       } else {
         this.getTableList();
       }
@@ -73,6 +89,12 @@ export class ContactsComponent implements OnInit {
     this.initNewFrom();
     this.getAllOrgdropdown();
     this.state = history.state;
+    this.gridoptions = {
+      context: {
+        parentComponent: this,
+        parent: 'contact',
+      },
+    };
   }
   initNewFrom() {
     this.orgForm = this.fb.group({
@@ -112,9 +134,9 @@ export class ContactsComponent implements OnInit {
     console.log(params);
     this.gridApi = params.api;
   }
-  onSelectChange(selectRow:any) {
+  onSelectChange(selectRow: any) {
     // const selectRow = this.gridApi?.getSelectedRows();
-    console.log(selectRow)
+    console.log(selectRow);
     if (selectRow && selectRow.length > 0) {
       for (let i = 0; i < selectRow.length; i++) {
         const ListData = this.showtableData.filter((field: any) => {
@@ -149,45 +171,29 @@ export class ContactsComponent implements OnInit {
   }
   orgNameForPatch: any;
   getOrgMemberDataById(orgId: any, contactId: any, org?: any) {
-    console.log(org[2]?.colDef?.field === 'name', org[2] !== undefined);
-    if (org[2] !== undefined && org[2]?.colDef?.field === 'name') {
-      // this.togglebtn();
-      this.toggle = true;
-      this.openFormToggle = false;
-      const ListData = this.showtableData.filter((field: any) => {
-        return field.id === orgId[0].data.orgId;
-      });
-      this.navigateData = ListData;
-      this.orgNameForPatch = ListData[0].organization;
-      const contactData = ListData[0].contact.filter((field: any) => {
-        return field.id === contactId[1].data.id;
-      });
-      this.rightCardData = contactData[0];
-    } else if (org[2]?.colDef?.field === 'name') {
-      this.toggle = true;
-      this.openFormToggle = false;
-      const ListData = this.showtableData.filter((field: any) => {
-        return field.id === orgId[0].data.orgId;
-      });
-      this.navigateData = ListData;
-      this.orgNameForPatch = ListData[0].organization;
-      const contactData = ListData[0].contact.filter((field: any) => {
-        return field.id === contactId[1];
-      });
-      this.rightCardData = contactData[0];
-    }
+    console.log(orgId, contactId, org);
+
+    this.toggle = true;
+    this.openFormToggle = false;
+    const ListData = this.showtableData.filter((field: any) => {
+      return field.id === orgId;
+    });
+    this.navigateData = ListData;
+    this.orgNameForPatch = ListData[0].organization;
+    const contactData = ListData[0].contact.filter((field: any) => {
+      return field.id === contactId;
+    });
+    this.rightCardData = contactData[0];
+    // }
   }
   navigateData: any;
   navigateToOrganization(org: any) {
-    console.log(org);
-    if (org[0].colDef.field === 'organization') {
-      const ListData = this.showtableData.filter((field: any) => {
-        return field.id === org[0].data.orgId;
-      });
-
-      const state = { data: ListData[0], id: ListData[0].id };
-      this.router.navigateByUrl('/organization', { state });
-    }
+    console.log(org.orgId);
+    const ListData = this.showtableData.filter((field: any) => {
+      return field.id === org.orgId;
+    });
+    const state = { data: ListData[0], id: ListData[0].id };
+    this.router.navigateByUrl('/organization', { state });
   }
   // filters for form
   getAllOrgdropdown() {
@@ -227,21 +233,19 @@ export class ContactsComponent implements OnInit {
   getTableList() {
     this.tableData = this.showtableData = this.orgServie.getAllList();
     this.flagForOrgDropdown = false;
-    // const extractContacttable =[]
-    // for (let i = 0; i < this.showtableData.length; i++) {
-    //   for (let j = 0; j < this.showtableData[i].contact.length; j++) {
-    //  this.showtableData[i].contact[j]['organization']=this.showtableData[i].organization;
-    //   extractContacttable.push(this.showtableData[i].contact[j])
-    //   }
-    // }
-    // this.rowData = extractContacttable
+
     this.rowData = this.showtableData.flatMap((org: any) =>
-      org.contact.map((contact: any) => ({
-        ...contact,
-        orgId: org.id,
-        organization: org.organization,
-        ...this.showtableData,
-      }))
+      org.contact.map(
+        (contact: any) => (
+          (this.singlenameOrg = this.showtableData),
+          {
+            ...contact,
+            orgId: org.id,
+            organization: org.organization,
+            ...this.showtableData,
+          }
+        )
+      )
     );
 
     this.getAllOrgdropdown();
@@ -358,52 +362,7 @@ export class ContactsComponent implements OnInit {
 
   storeSelectedData: any = [];
 
-  // selectData(orgId: any, contactData: any) {
-  //   const existingIndex = this.storeSelectedData.findIndex((data: any) => {
-  //     return data.orgId === orgId.id && data.contact === contactData;
-  //   });
-
-  //   if (existingIndex !== -1) {
-  //     this.storeSelectedData.splice(existingIndex, 1);
-  //   } else {
-  //     const org = {
-  //       orgId: orgId.id,
-  //       contact: contactData,
-  //     };
-
-  //     this.storeSelectedData.push(org);
-  //   }
-  //   this.checkBoxDisableBtn =
-  //     this.storeSelectedData.length === 1 ? false : true;
-  // }
   isCheckedSelectAll: boolean = false;
-
-  // selectAllData() {
-  //   this.isCheckedSelectAll = !this.isCheckedSelectAll;
-  //   if (this.isCheckedSelectAll) {
-  //     this.showtableData.forEach((orgData: any) => {
-  //       orgData?.contact.forEach((contact: any) => {
-  //         const org = {
-  //           orgId: orgData.id,
-  //           contact: [contact],
-  //         };
-  //         this.storeSelectedData.push(org);
-  //       });
-  //     });
-  //     this.storeSelectedData.forEach((data: any) => {
-  //       this.selectCheckBox(data.orgId);
-  //     });
-
-  //     // return true
-  //   } else {
-  //     this.storeSelectedData = [];
-  //   }
-  // }
-  // selectCheckBox(id: number, contactID?: number) {
-  //   return this.storeSelectedData.some((data: any) => {
-  //     return data.orgId == id && data.contact[0]?.id == contactID;
-  //   });
-  // }
 
   deleteMultipleData() {
     console.log(this.storeSelectedData, 'sdfd');
@@ -431,9 +390,6 @@ export class ContactsComponent implements OnInit {
   }
 
   editSelectedData() {
-    const checkLength = this.storeSelectedData.length;
-    const selectRow = this.gridApi.getSelectedRows();
-
     if (!this.checkBoxDisableBtn) {
       let orgId = this.storeSelectedData[0]?.orgId;
       let contactId = this.storeSelectedData[0].contactIdForEdit;
