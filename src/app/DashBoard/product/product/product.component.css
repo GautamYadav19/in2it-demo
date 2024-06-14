@@ -1,0 +1,11 @@
+.sick-days-warning{
+    background-color: red;
+    background-color: rgb(220, 223, 226);
+}
+
+/* .ag-paging-panel */
+.ag-paging-panel {
+    position: absolute!important;
+    left: 0!important;
+  /* justify-content: flex-start!important; */
+}

@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 
 import { NavbarComponent } from './Shared/Header/navbar/navbar.component';
 import { IconsModule } from './Shared/icons/icons.module';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -16,6 +17,7 @@ import { IconsModule } from './Shared/icons/icons.module';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     IconsModule
 

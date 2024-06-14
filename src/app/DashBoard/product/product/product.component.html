@@ -1,0 +1,11 @@
+<app-ag-grid-table [colDefs]="colDefs" [rowData]="showTableData" [pagination]="true" [paginationPageSize]="5" 
+    [gridOptions]="gridOptions"></app-ag-grid-table>
+
+
+<div class="container">
+    <div class="row">
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-primary" [disabled]="!disableNextBtn" type="button">Add to List</button>
+        </div>
+    </div>
+</div>

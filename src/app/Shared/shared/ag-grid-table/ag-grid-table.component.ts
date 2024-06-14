@@ -1,5 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ColDef, GridApi, GridOptions, GridReadyEvent } from 'ag-grid-community';
+import {
+  ColDef,
+  GridApi,
+  GridOptions,
+  GridReadyEvent,
+} from 'ag-grid-community';
 // import { EventEmitter } from 'stream';
 
 @Component({
@@ -14,8 +19,13 @@ export class AgGridTableComponent implements OnInit {
   @Output() GridReady: EventEmitter<any> = new EventEmitter<GridApi>();
   @Output() SelectionChanged: EventEmitter<any> = new EventEmitter();
   @Output() cellClick: EventEmitter<any> = new EventEmitter();
-  @Input() gridOptions! :GridOptions;
-
+  @Input() gridOptions!: GridOptions;
+  @Input() pagination!: boolean;
+  @Input() paginationPageSize!: number;
+  @Input() paginationPageSizeSelector!:number
+  @Input() isRowSelectable!: any;
+  @Input() getRowStyle!:any;
+  @Input() rowStyle!:any
   gridAPi!: GridApi;
   constructor() {}
 
@@ -30,6 +40,7 @@ export class AgGridTableComponent implements OnInit {
     this.SelectionChanged.emit(selectRow);
   }
   oncellClickedFn(...event: any) {
+    
     this.cellClick.emit(event);
   }
 }

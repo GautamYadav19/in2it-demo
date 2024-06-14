@@ -1,6 +1,6 @@
 <ag-grid-angular
 class="ag-theme-alpine table table-hover"
-style="height: 500px"
+style="height: 400px"
 [rowData]="rowData"
 [columnDefs]="colDefs"
 [rowSelection]="'multiple'"
@@ -8,4 +8,9 @@ style="height: 500px"
 (selectionChanged)="onSelectionChanged()"
 (cellClicked)="oncellClickedFn($event,$event,$event)"
 [gridOptions]="gridOptions"
+[pagination]="pagination"
+[isRowSelectable]="isRowSelectable"
+[paginationPageSize]="paginationPageSize"
+[getRowStyle]="getRowStyle"
+[rowStyle]="rowStyle"
 ></ag-grid-angular>
