@@ -1,0 +1,16 @@
+<span *ngIf="params.context.parent==='product-details'">
+    <span *ngIf="!flag;else else_block">
+
+        <i-feather style="color: green;" class="m-1" name="edit" (click)="startEditing()"></i-feather>
+
+        <i-feather style="color: red;" class="m-1" name="trash-2" (click)="delete()"> </i-feather>
+
+    </span>
+    <ng-template #else_block>
+
+        <i-feather style="color: green;" class="m-1" name="check-circle" (click)="save()"></i-feather>
+
+        <i-feather style="color: red;" class="m-1" name="x-circle" (click)="cancel()">
+        </i-feather>
+    </ng-template>
+</span>

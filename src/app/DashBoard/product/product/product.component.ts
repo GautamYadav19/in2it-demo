@@ -5,6 +5,8 @@ import {
   Table,
 } from 'src/app/Interfaces/product-table.interface';
 import { ColDef, GridApi, GridOptions, RowClassRules } from 'ag-grid-community';
+import { ProductDBdetail } from 'src/app/Interfaces/product-db-details';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product',
@@ -12,16 +14,16 @@ import { ColDef, GridApi, GridOptions, RowClassRules } from 'ag-grid-community';
   styleUrls: ['./product.component.css'],
 })
 export class ProductComponent implements OnInit {
-  productTableData!: Table[];
+  productTableData!: any[];
   showTableData!: Table[];
   colDefs!: ColDef[];
-  rowData!: ProductApiResponse;
+  rowData!: any[];
   gridOptions!: GridOptions;
   gridApi!: GridApi;
   isRowSelectable!: any;
 
   disableNextBtn!: boolean;
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService, private router: Router) {}
 
   ngOnInit(): void {
     this.getProductData();
@@ -30,15 +32,23 @@ export class ProductComponent implements OnInit {
   }
 
   getProductData() {
-    this.productService
-      .getProductData()
-      .subscribe((data: ProductApiResponse) => {
-        this.productTableData = data.resData.data;
-        this.defineRowData(this.productTableData);
-        this.disableNextBtn = this.productTableData.some((data: Table) => {
-          return data.is_table_exist === false;
-        });
-      });
+    // this.productService
+    //   .getProductData()
+    //   .subscribe((data: ProductApiResponse) => {
+    //     this.productTableData = data.resData.data;
+    //     this.defineRowData(this.productTableData);
+    //     console.log("first",this.productTableData);
+
+    //   });
+    this.productTableData = this.rowData =
+      this.productService.getProductData().resData.data;
+    console.log(this.productTableData);
+    // let localstorageData=JSON.parse(localStorage.getItem('productData')!)
+    // this.productTableData =localstorageData
+    localStorage.setItem('productData', JSON.stringify(this.productTableData));
+    this.disableNextBtn = this.productTableData.some((data: Table) => {
+      return data.is_table_exist === false;
+    });
   }
 
   defineColDefs() {
@@ -67,9 +77,9 @@ export class ProductComponent implements OnInit {
     ];
   }
 
-  defineRowData(table: Table[]) {
-    this.showTableData = table;
-  }
+  // defineRowData(table: Table[]) {
+  //   this.rowData = table;
+  // }
 
   defineGridOptions() {
     this.gridOptions = {
@@ -83,5 +93,15 @@ export class ProductComponent implements OnInit {
         return;
       },
     };
+  }
+  selectedData!: Table[];
+  SelectionChanged(event: any) {
+    console.log(event);
+    this.selectedData = event;
+  }
+  NavigateToRoute() {
+    // this.route.navigateByUrl('tablelist',{})
+    const state = { data: this.selectedData };
+    this.router.navigateByUrl('product/tablelist', { state });
   }
 }

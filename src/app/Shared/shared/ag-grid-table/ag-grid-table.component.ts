@@ -15,10 +15,10 @@ import {
 export class AgGridTableComponent implements OnInit {
   @Input() rowData: any;
   @Input() colDefs!: ColDef[];
-  // @Output() onSelectionChanged = new EventEmitter();
   @Output() GridReady: EventEmitter<any> = new EventEmitter<GridApi>();
   @Output() SelectionChanged: EventEmitter<any> = new EventEmitter();
   @Output() cellClick: EventEmitter<any> = new EventEmitter();
+
   @Input() gridOptions!: GridOptions;
   @Input() pagination!: boolean;
   @Input() paginationPageSize!: number;
@@ -26,6 +26,12 @@ export class AgGridTableComponent implements OnInit {
   @Input() isRowSelectable!: any;
   @Input() getRowStyle!:any;
   @Input() rowStyle!:any
+  @Input() defaultcolDef!:ColDef;
+  @Input() editType :any
+  
+  // insare input ki jaghahum colDef ka bhi use kar skte hai
+
+
   gridAPi!: GridApi;
   constructor() {}
 
@@ -33,7 +39,7 @@ export class AgGridTableComponent implements OnInit {
 
   onGridReady(params: any) {
     this.gridAPi = params.api;
-    this.GridReady.emit(this.gridAPi);
+    this.GridReady.emit(params);
   }
   onSelectionChanged() {
     const selectRow = this.gridAPi.getSelectedRows();
