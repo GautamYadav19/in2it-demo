@@ -23,11 +23,15 @@ export class CustomProductBtnComponent
     return true;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   startEditing() {
+    console.log(this.params);
+    
     this.params.context.parentComponent.onBtStartEditing(this.params.rowIndex);
     this.flag = this.params.context.parentComponent.flag;
+
   }
   save() {
     this.params.context.parentComponent.save(this.params.data);
