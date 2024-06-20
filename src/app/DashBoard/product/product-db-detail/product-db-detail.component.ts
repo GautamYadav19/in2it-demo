@@ -11,13 +11,15 @@ import {
   GridReadyEvent,
 } from 'ag-grid-community';
 import { CustomProductBtnComponent } from 'src/app/Shared/shared/ag-grid-table/custom-product-btn/custom-product-btn.component';
+import { TableInputDescComponent } from 'src/app/Shared/shared/ag-grid-table/table-input-desc/table-input-desc.component';
+import { TableInputNameComponent } from 'src/app/Shared/shared/ag-grid-table/table-input-name/table-input-name.component';
 
 @Component({
   selector: 'app-product-db-detail',
   templateUrl: './product-db-detail.component.html',
   styleUrls: ['./product-db-detail.component.css'],
 })
-export class ProductDbDetailComponent implements OnInit, OnChanges {
+export class ProductDbDetailComponent implements OnInit {
   rowData!: any[];
   colDefs!: ColDef[];
   gridOptions!: GridOptions;
@@ -25,15 +27,9 @@ export class ProductDbDetailComponent implements OnInit, OnChanges {
 
   state: any;
   showProductList!: TableItem[];
-  defaultcolDef = {
-    editable: true,
-  };
-  editType: 'fullRow' = 'fullRow';
+  flag: boolean = false;
 
   constructor(private productService: ProductService) {}
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-  }
 
   ngOnInit(): void {
     this.getProductDetails();
@@ -42,7 +38,6 @@ export class ProductDbDetailComponent implements OnInit, OnChanges {
         parentComponent: this,
         parent: 'product-details',
       },
-    
     };
   }
   localstorageData = JSON.parse(localStorage.getItem('productData')!);
@@ -60,13 +55,18 @@ export class ProductDbDetailComponent implements OnInit, OnChanges {
         headerName: 'Table ID',
         field: 'table_id.value',
         width: 170,
-        editable: false,
       },
-      { headerName: 'Table Name', field: 'table_name.value', width: 170 },
+      {
+        headerName: 'Table Name',
+        field: 'table_name.value',
+        width: 170,
+        cellRenderer: TableInputNameComponent,
+      },
       {
         headerName: 'Table Description',
         field: 'description.value',
         width: 170,
+        cellRenderer: TableInputDescComponent,
       },
       { headerName: 'Create On', field: 'created_on.value', width: 170 },
       { headerName: 'Create By', field: 'created_by.value', width: 170 },
@@ -76,10 +76,7 @@ export class ProductDbDetailComponent implements OnInit, OnChanges {
         headerName: 'Action',
         width: 170,
         cellRenderer: CustomProductBtnComponent,
-        // cellRendererParams: {
-        //   startEditing: this.onBtStartEditing.bind(this),
-        // },
-        editable: false,
+      
       },
     ];
   }
@@ -89,23 +86,30 @@ export class ProductDbDetailComponent implements OnInit, OnChanges {
     console.log(this.gridApi);
   }
 
-  flag: boolean = false;
 
   onBtStopEditing() {
     this.flag = false;
 
     this.gridApi.stopEditing();
   }
-  store!: any[];
+  store: any[]=[]
 
   onBtStartEditing(index: any) {
     this.flag = true;
+    console.log("index",index);
+    
+this.store.push(index)
+console.log(this.store,"store");
+this.productService.setOpenclickProduct(this.store)
+// this.store.forEach((data:any)=>{
+//   this.gridApi.setFocusedCell(data, 'table_name.value');
+//   this.gridApi.startEditingCell({
+//     rowIndex: data,
+//     colKey: 'table_name.value',
+//   });
+// })
+ 
 
-    this.gridApi.setFocusedCell(index, 'table_name.value');
-    this.gridApi.startEditingCell({
-      rowIndex: index,
-      colKey: 'table_name.value',
-    });
   }
   save(data: any) {
     this.flag = false;
@@ -122,7 +126,6 @@ export class ProductDbDetailComponent implements OnInit, OnChanges {
   cancel(data: any) {
     this.flag = false;
     this.gridApi.stopEditing();
-    // let localstorageData = JSON.parse(localStorage.getItem('productData')!);
     const index = this.localstorageData.findIndex((id: any) => {
       return id.table_id.value == data.table_id.value;
     });
@@ -130,10 +133,10 @@ export class ProductDbDetailComponent implements OnInit, OnChanges {
     localStorage.setItem('productData', JSON.stringify(this.localstorageData));
     this.getProductDetails();
   }
+
   delete(data: any) {
     this.flag = false;
 
-    // let localstorageData = JSON.parse(localStorage.getItem('productData')!);
 
     const index = this.localstorageData.findIndex((id: any) => {
       return id.table_id.value == data.table_id.value;

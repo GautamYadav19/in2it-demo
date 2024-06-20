@@ -1,2 +1,15 @@
-<p *ngIf="params.context.parent==='product-details' && fieldName=='table_name.value'" >
-    {{params.data.table_name.value}}</p>
+<div *ngIf="params.context.parent==='product-details' && fieldName=='table_name.value'">
+
+    <span *ngIf="flag  && params.rowIndex !==params.rowIndex ">
+        <!-- params.data.table_name.is_edit -->
+        {{params.data.table_name.value}}
+    </span>
+    <p *ngFor="let item of data">
+
+
+        <span *ngIf="item.data.table_name.is_edit && params.rowIndex===item.rowIndex"> <input type="text"
+                [(ngModel)]="item.data.table_name.value"></span>
+
+    </p>
+</div>
+<!-- <p *ngIf="params.context.parent==='product-details' && fieldName=='table_name.value' && data.table_name.is_edit">ssss</p> -->

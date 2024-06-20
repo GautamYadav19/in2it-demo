@@ -1,12 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ProductApiResponse } from 'src/app/Interfaces/product-table.interface';
 import { ProductDBdetail } from 'src/app/Interfaces/product-db-details';
+import { Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
   constructor(private http: HttpClient) {}
+  productFlag =new Subject<any>()
+  setProductFlag(data:any){
+    this.productFlag.next(data)
+  }
+  openclickProduct =new Subject<any>()
+  setOpenclickProduct(data:any){
+    this.openclickProduct.next(data)
+  }
   getProductData() {
     // return this.http.get<ProductApiResponse>('assets/product-data.json');
     const data = {

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { GridApi, ICellRendererParams } from 'ag-grid-community';
+import { Subject } from 'rxjs';
+import { ProductService } from 'src/app/DashBoard/product/service/product.service';
 
 @Component({
   selector: 'app-custom-product-btn',
@@ -12,8 +14,9 @@ export class CustomProductBtnComponent
 {
   params: any;
   flag!: boolean;
+
   gridApi!: GridApi;
-  constructor() {}
+  constructor(private productService: ProductService) {}
   agInit(params: ICellRendererParams<any, any>): void {
     this.params = params;
     this.gridApi = this.params.context.parentComponent.gridApi;
@@ -23,26 +26,34 @@ export class CustomProductBtnComponent
     return true;
   }
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
+  store: any[] = [];
   startEditing() {
-    console.log(this.params);
+    this.productService.setProductFlag(this.params);
+    // this.productService.openclickProduct.subscribe((data) => {
+    //   console.log(data);
+      
+    // });
+    // console.log("this.store",this.store);
+    // this.store.push(this.params);
+    // this.productService.setOpenclickProduct(this.params)
+    // console.log(this.store);
     
-    this.params.context.parentComponent.onBtStartEditing(this.params.rowIndex);
+    this.params.context.parentComponent.onBtStartEditing(this.params);
+    console.log("context.parentComponent.",this.params);
+    
     this.flag = this.params.context.parentComponent.flag;
-
   }
   save() {
     this.params.context.parentComponent.save(this.params.data);
     this.flag = this.params.context.parentComponent.flag;
   }
   cancel() {
-    this.params.context.parentComponent.cancel(this.params.data)
+    this.params.context.parentComponent.cancel(this.params.data);
     this.flag = this.params.context.parentComponent.flag;
   }
-  delete(){
-    this.params.context.parentComponent.delete(this.params.data)
+  delete() {
+    this.params.context.parentComponent.delete(this.params.data);
     this.flag = this.params.context.parentComponent.flag;
   }
 }

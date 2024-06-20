@@ -7,10 +7,11 @@ import { IconsModule } from '../icons/icons.module';
 import { CustomProductBtnComponent } from './ag-grid-table/custom-product-btn/custom-product-btn.component';
 import { TableInputDescComponent } from './ag-grid-table/table-input-desc/table-input-desc.component';
 import { TableInputNameComponent } from './ag-grid-table/table-input-name/table-input-name.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AgGridTableComponent, CustomCellComponent, CustomProductBtnComponent, TableInputDescComponent, TableInputNameComponent],
-  imports: [CommonModule, AgGridModule,IconsModule],
+  imports: [CommonModule, AgGridModule,IconsModule,FormsModule],
   exports: [AgGridTableComponent],
 })
 export class SharedModule {}
