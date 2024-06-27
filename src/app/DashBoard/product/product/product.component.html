@@ -1,11 +1,23 @@
-<app-ag-grid-table [colDefs]="colDefs" [rowData]="rowData" [pagination]="true" [paginationPageSize]="10" 
-    [gridOptions]="gridOptions" (SelectionChanged)="SelectionChanged($event)" ></app-ag-grid-table>
+<div class="container">
+    <div class="d-flex justify-content-end">
+        <div class="row">
+            <div class="col">
+                <div ngbDropdown class="d-inline-block">
+                    <i-feather name="settings" class="m-2" (click)="setDropDown()"></i-feather>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-ag-grid-table [colDefs]="colDefs" [rowData]="rowData" [pagination]="true" [paginationPageSize]="10"
+    [gridOptions]="gridOptions" (SelectionChanged)="SelectionChanged($event)" [setDropDownVar]="setDropDownVar"></app-ag-grid-table>
 
 
 <div class="container">
     <div class="row">
         <div class="d-flex justify-content-end">
-            <button (click)="NavigateToRoute()" class="btn btn-primary" [disabled]="!disableNextBtn" type="button">Add to List</button>
+            <button (click)="NavigateToRoute()" class="btn btn-primary" [disabled]="!disableNextBtn" type="button">Add
+                to List</button>
         </div>
     </div>
 </div>

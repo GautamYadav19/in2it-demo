@@ -1,2 +1,13 @@
+<div class="container">
+    <div class="d-flex justify-content-end">
+        <div class="row">
+            <div class="col">
+                <div ngbDropdown class="d-inline-block">
+                    <i-feather name="settings" class="m-2" (click)="setDropDown()"></i-feather>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <app-ag-grid-table [colDefs]="colDefs" [rowData]="rowData" [gridOptions]="gridOptions" (GridReady)="onGridReady($event)"
-   ></app-ag-grid-table>
+    [addUserFlag]="true" [setDropDownVar]="setDropDownVar"></app-ag-grid-table>

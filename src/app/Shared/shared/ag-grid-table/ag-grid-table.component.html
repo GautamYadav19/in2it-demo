@@ -1,20 +1,26 @@
-<ag-grid-angular
-class="ag-theme-alpine table table-hover"
-style="height: 400px"
-[rowData]="rowData"
-[columnDefs]="colDefs"
-[rowSelection]="'multiple'"
-(gridReady)="onGridReady($event)"
-(selectionChanged)="onSelectionChanged()"
-(cellClicked)="oncellClickedFn($event,$event,$event)"
-[gridOptions]="gridOptions"
-[pagination]="pagination"
-[isRowSelectable]="isRowSelectable"
-[paginationPageSize]="paginationPageSize"
-[getRowStyle]="getRowStyle"
-[rowStyle]="rowStyle"
-[defaultColDef]="defaultcolDef"
-[editType]="editType"
-[suppressRowClickSelection]="true"
+<div class="container">
+    <div class="d-flex justify-content-end">
+        <div class="row">
+            <div class="col">
+                <div ngbDropdown class="d-inline-block bropdownBtn">
+                    
 
-></ag-grid-angular>
+                    <div  *ngIf="setDropDownVar"  >
+                        <span *ngFor="let col of colDefList">
+                            <button (click)="toggleVisible(col)" ngbDropdownItem> <i-feather
+                                    [name]="col.hide?'eye-off':'eye'"></i-feather> {{col.headerName}}</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <i-feather *ngIf="addUserFlag" name="plus-circle" (click)="addUser()" class="m-2"></i-feather> -->
+    </div>
+</div>
+
+<ag-grid-angular class="ag-theme-alpine table table-hover" style="height: 400px" [rowData]="rowData"
+    [columnDefs]="colDefs" [rowSelection]="'multiple'" (gridReady)="onGridReady($event)"
+    (selectionChanged)="onSelectionChanged()" (cellClicked)="oncellClickedFn($event,$event,$event)"
+    [gridOptions]="gridOptions" [pagination]="pagination" [isRowSelectable]="isRowSelectable"
+    [paginationPageSize]="paginationPageSize" [getRowStyle]="getRowStyle" [rowStyle]="rowStyle"
+    [defaultColDef]="defaultcolDef" [suppressRowClickSelection]="true"></ag-grid-angular>

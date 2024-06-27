@@ -1,14 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../service/data.service';
-import { CellValueChangedEvent, ColDef, GridApi, GridOptions, GridReadyEvent, RowValueChangedEvent } from 'ag-grid-community';
+import {
+  CellValueChangedEvent,
+  ColDef,
+  ColumnApi,
+  GridApi,
+  GridOptions,
+  GridReadyEvent,
+  RowValueChangedEvent,
+} from 'ag-grid-community';
 
 @Component({
   selector: 'app-team-task',
   templateUrl: './team-task.component.html',
   styleUrls: ['./team-task.component.css'],
 })
-export class TeamTaskComponent  {
-
+export class TeamTaskComponent {
   // gridOptions!: GridOptions;
   // gridApi!:GridApi
   // public editType: "fullRow" = "fullRow";
@@ -55,7 +62,7 @@ export class TeamTaskComponent  {
   //     }
   //     return
   //   }
-    
+
   //   };
   // }
 
@@ -74,27 +81,27 @@ export class TeamTaskComponent  {
   //   });
   // }
   private gridApi!: GridApi;
-  public themeClass: string =
-    "ag-theme-quartz";
+  gridOption!:GridOptions
+  public themeClass: string = 'ag-theme-quartz';
 
   public columnDefs: ColDef[] = [
     {
-      field: "make",
-      cellEditor: "agSelectCellEditor",
+      field: 'make',
+      cellEditor: 'agSelectCellEditor',
       cellEditorParams: {
-        values: ["Porsche", "Toyota", "Ford", "AAA", "BBB", "CCC"],
+        values: ['Porsche', 'Toyota', 'Ford', 'AAA', 'BBB', 'CCC'],
       },
     },
-    { field: "model" },
-    { field: "field4", headerName: "Read Only", editable: false },
-    { field: "price"},
+    { field: 'model' },
+    { field: 'field4', headerName: 'Read Only', editable: false },
+    { field: 'price' },
     {
-      headerName: "Suppress Navigable",
-      field: "field5",
+      headerName: 'Suppress Navigable',
+      field: 'field5',
       suppressNavigable: true,
       minWidth: 200,
     },
-    { headerName: "Read Only", field: "field6", editable: false },
+    { headerName: 'Read Only', field: 'field6', editable: false },
   ];
 
   public defaultColDef: ColDef = {
@@ -102,25 +109,25 @@ export class TeamTaskComponent  {
     editable: true,
   };
 
-  public editType: "fullRow" = "fullRow";
+  public editType: 'fullRow' = 'fullRow';
 
   public rowData: any[] | null = getRowData();
-
-  
+  columnApi!: any;
   onBtStopEditing() {
-    this.gridApi.stopEditing();
+    this.gridOption?.columnApi?.setColumnVisible('model',false)
   }
 
   onBtStartEditing() {
-    this.gridApi.setFocusedCell(1, "make");
+    this.gridApi.setFocusedCell(1, 'make');
     this.gridApi.startEditingCell({
       rowIndex: 1,
-      colKey: "make",
+      colKey: 'make',
     });
   }
 
   onGridReady(params: GridReadyEvent) {
     this.gridApi = params.api;
+    this.columnApi=params.columnApi
   }
 }
 
@@ -128,28 +135,28 @@ function getRowData() {
   const rowData = [];
   for (let i = 0; i < 10; i++) {
     rowData.push({
-      make: "Toyota",
-      model: "Celica",
+      make: 'Toyota',
+      model: 'Celica',
       price: 35000 + i * 1000,
-      field4: "Sample XX",
-      field5: "Sample 22",
-      field6: "Sample 23",
+      field4: 'Sample XX',
+      field5: 'Sample 22',
+      field6: 'Sample 23',
     });
     rowData.push({
-      make: "Ford",
-      model: "Mondeo",
+      make: 'Ford',
+      model: 'Mondeo',
       price: 32000 + i * 1000,
-      field4: "Sample YY",
-      field5: "Sample 24",
-      field6: "Sample 25",
+      field4: 'Sample YY',
+      field5: 'Sample 24',
+      field6: 'Sample 25',
     });
     rowData.push({
-      make: "Porsche",
-      model: "Boxster",
+      make: 'Porsche',
+      model: 'Boxster',
       price: 72000 + i * 1000,
-      field4: "Sample ZZ",
-      field5: "Sample 26",
-      field6: "Sample 27",
+      field4: 'Sample ZZ',
+      field5: 'Sample 26',
+      field6: 'Sample 27',
     });
   }
   return rowData;

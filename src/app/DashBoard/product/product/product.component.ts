@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../service/product.service';
 import {
-  ProductApiResponse,
   Table,
 } from 'src/app/Interfaces/product-table.interface';
-import { ColDef, GridApi, GridOptions, RowClassRules } from 'ag-grid-community';
-import { ProductDBdetail } from 'src/app/Interfaces/product-db-details';
+import { ColDef, GridApi, GridOptions } from 'ag-grid-community';
 import { Router } from '@angular/router';
 
 @Component({
@@ -21,6 +19,7 @@ export class ProductComponent implements OnInit {
   gridOptions!: GridOptions;
   gridApi!: GridApi;
   isRowSelectable!: any;
+  setDropDownVar: boolean = false;
 
   disableNextBtn!: boolean;
   constructor(private productService: ProductService, private router: Router) {}
@@ -78,9 +77,6 @@ export class ProductComponent implements OnInit {
     ];
   }
 
-  // defineRowData(table: Table[]) {
-  //   this.rowData = table;
-  // }
 
   defineGridOptions() {
     this.gridOptions = {
@@ -93,7 +89,7 @@ export class ProductComponent implements OnInit {
         }
         return;
       },
-      rowSelection:"multiple",
+      rowSelection: 'multiple',
     };
   }
   selectedData!: any;
@@ -105,37 +101,43 @@ export class ProductComponent implements OnInit {
     console.log(this.selectedData, this.selectedData !== undefined);
 
     if (this.selectedData !== undefined) {
-      console.log('faldd',this.selectedData);
+      console.log('faldd', this.selectedData);
       const tableData = JSON.parse(localStorage.getItem('productData')!);
-for(let i=0;i<this.selectedData?.length;i++){
-  console.log(this.selectedData[i].is_table_exist);
-  this.selectedData[i].is_table_exist = true;
-  this.selectedData[i].table_id = {
-    value: Math.floor(Math.random() * 800),
-    is_edit: false,
-    type: 'integer',
-  };
+      for (let i = 0; i < this.selectedData?.length; i++) {
+        console.log(this.selectedData[i].is_table_exist);
+        this.selectedData[i].is_table_exist = true;
+        this.selectedData[i].table_id = {
+          value: Math.floor(Math.random() * 800),
+          is_edit: false,
+          type: 'integer',
+        };
 
-  this.selectedData[i].created_on = {
-    value: '17/06/2024',
-    is_edit: false,
-    type: 'datetime',
-  };
+        this.selectedData[i].created_on = {
+          value: '17/06/2024',
+          is_edit: false,
+          type: 'datetime',
+        };
 
-  
-  const index = tableData.findIndex((data: any) => {
-    return (
-      data?.table_name?.value === this.selectedData[i].table_name?.value
-    );
-  });
-  console.log(this.selectedData[i],tableData[index] , this.selectedData[i]);
-  tableData[index] = this.selectedData[i];
-}
-console.log(tableData);
+        const index = tableData.findIndex((data: any) => {
+          return (
+            data?.table_name?.value === this.selectedData[i].table_name?.value
+          );
+        });
+        console.log(
+          this.selectedData[i],
+          tableData[index],
+          this.selectedData[i]
+        );
+        tableData[index] = this.selectedData[i];
+      }
+      console.log(tableData);
       localStorage.setItem('productData', JSON.stringify(tableData));
     }
     const state = { data: this.selectedData };
 
     this.router.navigateByUrl('product/tablelist', { state });
+  }
+  setDropDown() {
+    this.setDropDownVar = !this.setDropDownVar;
   }
 }
