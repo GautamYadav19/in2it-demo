@@ -3,11 +3,15 @@
         <div class="row">
             <div class="col">
                 <div ngbDropdown class="d-inline-block">
-                    <i-feather name="settings" class="m-2" (click)="setDropDown()"></i-feather>
+                    
+                    <i-feather name="settings" class="m-2"  (click)="setDropDown()" ></i-feather>
+
+                 
                 </div>
             </div>
         </div>
+        <i-feather  name="plus-circle" class="m-2" (click)="addNewUser()"></i-feather>
     </div>
 </div>
-<app-ag-grid-table [colDefs]="colDefs" [rowData]="rowData" [gridOptions]="gridOptions" (GridReady)="onGridReady($event)"
-    [addUserFlag]="true" [setDropDownVar]="setDropDownVar"></app-ag-grid-table>
+<app-ag-grid-table [colDefs]="colDefs" [rowData]="rowData" [gridOptions]="gridOptions"
+   (GridReady)="onGridReady($event)"  [addUserFlag]="true" [setDropDownVar]="setDropDownVar"></app-ag-grid-table>
