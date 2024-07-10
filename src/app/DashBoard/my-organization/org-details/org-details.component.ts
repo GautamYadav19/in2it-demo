@@ -14,7 +14,18 @@ export class OrgDetailsComponent implements OnInit {
   addTaskFlag: boolean = false;
   rightCardData: any;
   rowData: any;
-  columnDef: ColDef[]=[];
+  columnDef: ColDef[]=[
+    {headerName:'ID',field:'id' },
+    {headerName:'Name',field:'name' },
+    {headerName:'Email',field:'email' },
+    {headerName:'Role',field:'role' },
+    {headerName:'Additional Role',field:'additionalrole' },
+    {headerName:'Phone Number',field:'phoneNumber' },
+   
+    
+    
+
+  ];
   // yaha abhii static data la rahe hain table ka liya
   tableData: any = [];
   constructor(private orgService: OrgService) {}
@@ -25,24 +36,18 @@ export class OrgDetailsComponent implements OnInit {
   togglebtn() {
     this.addTaskFlag = !this.addTaskFlag;
   }
+
   getContactData() {
-    const data = this.orgService.getAllList();
-  
+  this.orgService.getAllList();
   }
+  
   getOrgByID() {
     this.orgService.getOrgIdSub.subscribe((res) => {
       this.orgDetailsdata = this.orgService.getOrgByID(res);
-      const keys = Object.keys(this.orgDetailsdata?.contact[0]);
-      for (let i = 0; i < keys.length; i++) {
-        const obj = {
-          field: keys[i],
-          with:100
-        };
-        this.columnDef.push(obj);
-      }
       this.rowData =this.orgDetailsdata.contact
     });
   }
+
   getOrgMemberDataById(id: number) {
     this.togglebtn();
     const data = this.tableData.filter((res: any) => {

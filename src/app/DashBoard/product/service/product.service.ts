@@ -8,15 +8,17 @@ import { Subject } from 'rxjs';
 export class ProductService {
   constructor(private http: HttpClient) {}
   productFlag =new Subject<any>()
+
   setProductFlag(data:any){
     this.productFlag.next(data)
   }
+
   openclickProduct =new Subject<any>()
+
   setOpenclickProduct(data:any){
     this.openclickProduct.next(data)
   }
   getProductData() {
-    // return this.http.get<ProductApiResponse>('assets/product-data.json');
     const data = {
       resData: {
         data: [
@@ -659,9 +661,5 @@ export class ProductService {
     };
     return data;
   }
-  getProductDBdetail() {
-    return this.http.get<ProductDBdetail>(
-      'assets/product-data-db-details.json'
-    );
-  }
+ 
 }

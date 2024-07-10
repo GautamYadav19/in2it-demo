@@ -61,39 +61,9 @@
             <div [ngClass]="toggle?'row':''">
               <div [ngClass]="toggle?'col-lg-8':''">
                 <table class="table table-hover">
-                  <!-- <thead>
-                    <tr>
-                      <th> <input (click)="selectAllData()" class="form-check-input " type="checkbox"
-                          [(ngModel)]="isCheckedSelectAll" value="" id="flexCheckDefault">Organization</th>
-                      <th>Name</th>
-                      <th>Role</th>
-                      <th>Email</th>
-                      <th>Phone Number</th>
-                    </tr>
-                  </thead> -->
-                  <!-- <tbody>
-                    <ng-container *ngFor="let org of showtableData">
-                      <tr *ngFor="let contactData of org.contact">
-                        <td> <input (click)="selectData(org,contactData)" class="form-check-input " type="checkbox"
-                            [checked]="selectCheckBox(org.id,contactData.id) " id="flexCheckDefault"><a class="ms-2"
-                            [routerLink]="'/organization'" [state]="{data:org,id:org.id}">{{ org.organization }}</a>
-                        </td>
-                        <td><ngb-highlight (click)="getOrgMemberDataById(org.id,contactData.id)"
-                            [result]="contactData.name " [term]="filter.value"></ngb-highlight></td>
-                        <td>{{contactData.role}}</td>
-                        <td>{{contactData.email}}</td>
-                        <td>{{contactData.phoneNumber}}</td>
-                      </tr>
-                    </ng-container>
-                  </tbody> -->
+                
                 </table>
-                <!-- (rowClicked)="navigateToOrganization($event)" -->
-
-                <!-- <ag-grid-angular [rowSelection]="'multiple'" (gridReady)="onGridReady($event)" (selectionChanged)="onSelectChange()"
-                  class="ag-theme-alpine table table-hover" style="height: 500px" [rowData]="rowData"
-                  [columnDefs]="columnDef"
-                  (cellClicked)="[getOrgMemberDataById($event,$event,$event),navigateToOrganization($event)]"></ag-grid-angular> -->
-                <!-- (cellClick)="[getOrgMemberDataById($event,$event,$event),navigateToOrganization($event)]" -->
+               
               </div>
               <app-ag-grid-table (SelectionChanged)="onSelectChange($event)" (GridReady)="onGridReady($event)"
                 [rowData]="rowData" [colDefs]="columnDef" [gridOptions]="gridoptions"></app-ag-grid-table>

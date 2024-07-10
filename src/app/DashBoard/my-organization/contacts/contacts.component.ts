@@ -40,8 +40,13 @@ export class ContactsComponent implements OnInit {
   rightCardData: any;
   orgDropdown: any;
   flagForOrgDropdown: boolean = false;
+
   orgForm!: FormGroup;
+
   gridoptions!: GridOptions;
+  orgNameForPatch: any;
+  editMode: boolean = false;
+
   singlenameOrg: any;
   columnDef: ColDef[] = [
     {
@@ -57,6 +62,7 @@ export class ContactsComponent implements OnInit {
   ];
   rowData: any;
   gridApi!: GridApi;
+
   constructor(
     private orgServie: OrgService,
     public router: Router,
@@ -77,7 +83,6 @@ export class ContactsComponent implements OnInit {
             )
           )
         );
-        
       } else {
         this.getTableList();
       }
@@ -131,25 +136,20 @@ export class ContactsComponent implements OnInit {
   }
   // form array end
   onGridReady(params: any) {
-    console.log(params);
     this.gridApi = params.api;
   }
   onSelectChange(selectRow: any) {
-    // const selectRow = this.gridApi?.getSelectedRows();
-    console.log(selectRow);
     if (selectRow && selectRow.length > 0) {
       for (let i = 0; i < selectRow.length; i++) {
         const ListData = this.showtableData.filter((field: any) => {
           return field.id === selectRow[i].id;
         });
 
-        console.log('selectRow[i].id', selectRow[i].id, this.showtableData);
         const org = {
           orgId: selectRow[i].orgId,
           contact: ListData,
           contactIdForEdit: selectRow[i].id,
         };
-        console.log(selectRow[i], ListData);
         this.storeSelectedData.push(org);
       }
     }
@@ -164,31 +164,33 @@ export class ContactsComponent implements OnInit {
   filterData(filtername: any) {
     this.flagForOrgDropdown = true;
     this.orgDropdown = filtername;
+
     const dataList = this.tableData.filter((field: any) => {
-      return field?.organization === filtername;
+      // Check if field.organization is not null and matches filtername
+      return field.organization !== null && field.organization === filtername;
     });
+
     this.showtableData = dataList;
   }
-  orgNameForPatch: any;
-  getOrgMemberDataById(orgId: any, contactId: any, org?: any) {
-    console.log(orgId, contactId, org);
 
+  getOrgMemberDataById(orgId: any, contactId: any, org?: any) {
     this.toggle = true;
     this.openFormToggle = false;
+
     const ListData = this.showtableData.filter((field: any) => {
       return field.id === orgId;
     });
-    this.navigateData = ListData;
+    
     this.orgNameForPatch = ListData[0].organization;
     const contactData = ListData[0].contact.filter((field: any) => {
       return field.id === contactId;
     });
+    console.log("contactData",contactData);
+
     this.rightCardData = contactData[0];
     // }
   }
-  navigateData: any;
   navigateToOrganization(org: any) {
-    console.log(org.orgId);
     const ListData = this.showtableData.filter((field: any) => {
       return field.id === org.orgId;
     });
@@ -204,15 +206,17 @@ export class ContactsComponent implements OnInit {
     const uniqueOrgs = [...new Set(orgList)];
     this.orgDropdown = uniqueOrgs;
   }
+
   getRoles(orgName: any) {
-    const roleList: any[] = [];
-    const lisfOfRoles = this.tableData.filter((data: any) => {
+    const singleData = this.tableData.filter((data: any) => {
       return data.organization === orgName.value;
     });
+
     const restrictedValue = 'Developer';
-    const listOfValidRoles = lisfOfRoles[0].contact.some((data: any) => {
+    const listOfValidRoles = singleData[0].contact.some((data: any) => {
       return data.role === restrictedValue;
     });
+    
     if (listOfValidRoles) {
       const role1 = this.role.filter((data: any) => {
         return data !== restrictedValue;
@@ -251,7 +255,6 @@ export class ContactsComponent implements OnInit {
     this.getAllOrgdropdown();
   }
 
-  editMode: boolean = false;
   initEditForm() {
     this.editMode = true;
     const data = this.rightCardData;
@@ -365,7 +368,8 @@ export class ContactsComponent implements OnInit {
   isCheckedSelectAll: boolean = false;
 
   deleteMultipleData() {
-    console.log(this.storeSelectedData, 'sdfd');
+    console.log("showtableData",this.showtableData);
+    
     this.storeSelectedData.forEach((storedata: any) => {
       const filter = this.showtableData.filter((data: any) => {
         return data.id === storedata.orgId;
@@ -384,14 +388,13 @@ export class ContactsComponent implements OnInit {
         ...this.showtableData,
       }))
     );
-    console.log(this.showtableData);
     this.storeSelectedData = [];
     this.checkBoxDisableBtn = true;
   }
 
   editSelectedData() {
     if (!this.checkBoxDisableBtn) {
-      let orgId = this.storeSelectedData[0]?.orgId;
+      let orgId = this.storeSelectedData[0]!.orgId;
       let contactId = this.storeSelectedData[0].contactIdForEdit;
       this.getOrgMemberDataById(orgId, contactId);
       this.openFormToggleFn(true);
@@ -402,12 +405,12 @@ export class ContactsComponent implements OnInit {
   filter = new FormControl('');
 
   search(text: string) {
-    const term = text?.toLowerCase();
+    const term = text!.toLowerCase();
     let result: any[] = [];
 
     this.showtableData.forEach((org: any) => {
       const filteredContacts = org.contact.filter((contact: any) => {
-        return contact.name?.toLowerCase().includes(term);
+        return contact.name!.toLowerCase().includes(term);
       });
 
       if (filteredContacts.length > 0) {

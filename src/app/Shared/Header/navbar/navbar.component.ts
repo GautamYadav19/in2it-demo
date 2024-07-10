@@ -28,7 +28,6 @@ export class NavbarComponent implements OnInit {
     });
   }
   toggle() {
-    console.log(this.flag);
     this.flag = !this.flag;
   }
   setTableTitle(name: NavTitle) {

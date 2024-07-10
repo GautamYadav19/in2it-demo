@@ -8,20 +8,15 @@ import { AgGridModule } from 'ag-grid-angular';
 import { ProductDbDetailComponent } from './product-db-detail/product-db-detail.component';
 import { IconsModule } from 'src/app/Shared/icons/icons.module';
 
-
-
 @NgModule({
-  declarations: [
-    ProductComponent,
-    ProductDbDetailComponent
-  ],
+  declarations: [ProductComponent, ProductDbDetailComponent],
   imports: [
     CommonModule,
     ProductRoutingModule,
     SharedModule,
-    AgGridModule,IconsModule
-  ],providers:[
-    DatePipe 
-  ]
+    AgGridModule,
+    IconsModule,
+  ],
+  providers: [DatePipe],
 })
-export class ProductModule { }
+export class ProductModule {}

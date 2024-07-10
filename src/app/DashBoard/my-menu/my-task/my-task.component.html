@@ -35,64 +35,7 @@
 <hr class="mt-2 mb-2" />
 <div [ngClass]="addTaskFlag ? 'row' : ''">
   <div [ngClass]="addTaskFlag ? 'col-lg-9' : ''">
-    <!-- <table class="table table-hover">
-      <thead>
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Solution Area</th>
-          <th scope="col">Workflow</th>
-          <th scope="col">Task Id</th>
-          <th scope="col">Task</th>
-          <th scope="col">Status</th>
-          <th scope="col">Start Date</th>
-          <th scope="col">Due data</th>
-          <th scope="col">Priority</th>
-          <th scope="col">Action</th>
-
-
-
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let data of tableData;let i = index">
-          <th scope="row">
-            <input (click)="OnSelectData(i)" class="form-check-input mt-1" type="checkbox" value="{{data.fieldId}}"
-              id="flexCheckDefault">
-            {{data.fieldId}}
-          </th>
-          <td>{{data.solutionArea}}</td>
-          <td>{{data.workflow}}</td>
-          <td>{{data.taskId}}</td>
-          <td>{{data.taskName}}</td>
-          <td [ngClass]="data.status==='In Progress'?'yellow':(data.status==='Active'?'green':'priority-low')">
-            {{data.status}}</td>
-          <td>{{data.startDate}}</td>
-          <td>{{data.dueDate}}</td>
-          <td [ngClass]="{
-              'priority-high':data.priority ==='High',
-              'priority-medium':data.priority ==='Medium',
-              'priority-low':data.priority ==='Low'
-            }"> {{data.priority}}</td>
-          <td> <i-feather style="color: green;" class="m-1" name="edit" (click)="editTaskById(i)"
-              (click)="togglebtn()"></i-feather>
-            <i-feather style="color: red;" class="m-1" name="trash-2" (click)="onDelete(i)"> </i-feather>
-          </td>
-        </tr>
-
-      </tbody>
-    </table> -->
-    <!-- 
-    <ag-grid-angular
-      class="ag-theme-alpine table table-hover"
-      style="height: 500px"
-      [rowData]="rowData"
-      (gridReady)="onGridReady($event)"
-      (selectionChanged)="onSelectionChanged()"
-      [rowSelection]="'multiple'"
-      [columnDefs]="colDefs"
-      [pagination]="true"
-      [paginationPageSize]="paginationPageSize"
-    ></ag-grid-angular> -->
+   
     <app-ag-grid-table [gridOptions]="gridOptions" [rowData]="rowData" [colDefs]="colDefs"
       (SelectionChanged)="onSelectionChanged()"></app-ag-grid-table>
   </div>

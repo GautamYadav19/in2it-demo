@@ -30,16 +30,19 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
   flag!: boolean;
   rowData!: any;
   columnDefs!: ColDef[];
+
   ngOnInit(): void {
     this.getListOfTable();
     this.getAllTable();
-    const existingData = JSON.parse(localStorage.getItem('orgData')!);
+
+    const existingData = JSON.parse(localStorage.getItem('orgData')!) || [];
+
     existingData?.forEach((element: any) => {
       this.navs.push(element);
     });
 
     const navigation = history.state;
-    if (navigation.data && navigation.id) {
+    if (navigation && navigation.id) {
       this.add(navigation, navigation.data);
     }
   }
@@ -57,6 +60,7 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
       modalName: 'Organization',
     });
   }
+
   ngOnDestroy(): void {
     localStorage.removeItem('orgData');
   }
@@ -69,9 +73,11 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
       return data.id !== id;
     });
     localStorage.setItem('orgData', JSON.stringify(data));
+    
     event.preventDefault();
     event.stopImmediatePropagation();
   }
+
   checkExisitingTab(id: number) {
     this.flag = false;
     this.navs.some((data) => {
@@ -82,12 +88,14 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
       return false;
     });
   }
+
   onTabClick(id: any) {
     if (id !== 0) {
       this.active = id;
       this.orgService.SetOrgId(id);
     }
   }
+
   add(event: MouseEvent, org: any) {
     this.checkExisitingTab(org?.id);
     this.active = org.id;
@@ -127,6 +135,7 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
       'email',
       'phone',
     ];
+
     for (let i = 0; i < tableFields.length; i++) {
       if (tableFields[i] === 'id') {
         const data = {
@@ -156,6 +165,7 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
     }
     this.columnDefs = columnnames;
   }
+  
   onCellClick(event: any) {
     if (event.colDef.field === 'organization') {
       this.add(event, event.data);

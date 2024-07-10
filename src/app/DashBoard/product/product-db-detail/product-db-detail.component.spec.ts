@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProductDbDetailComponent } from './product-db-detail.component';
+import { DatePipe } from '@angular/common';
 
 describe('ProductDbDetailComponent', () => {
   let component: ProductDbDetailComponent;
@@ -9,6 +10,7 @@ describe('ProductDbDetailComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ ProductDbDetailComponent ]
+      ,providers:[DatePipe]
     })
     .compileComponents();
   });
@@ -16,7 +18,6 @@ describe('ProductDbDetailComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductDbDetailComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {

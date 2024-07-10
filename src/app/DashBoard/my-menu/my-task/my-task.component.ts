@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataService } from '../service/data.service';
-import { CheckboxSelectionComponent, ColDef, GridApi, GridOptions } from 'ag-grid-community';
-import { EditButtonComponent } from './AgGridComponents/edit-button/edit-button.component';
-import { CellRendererComponent } from 'ag-grid-community/dist/lib/components/framework/componentTypes';
+import { ColDef, GridApi, GridOptions } from 'ag-grid-community';
 import { CustomCellComponent } from 'src/app/Shared/shared/ag-grid-table/custom-cell/custom-cell.component';
 
 @Component({
@@ -63,20 +61,18 @@ export class MyTaskComponent implements OnInit {
     this.getTableData();
     this.initPagination();
     this.service.tabNavigateName.subscribe();
-    this.gridOptions={
-      context:{
-        parentComponent:this,
-        parent:'mytask'
-      }
-    }
-    
+    this.gridOptions = {
+      context: {
+        parentComponent: this,
+        parent: 'mytask',
+      },
+    };
   }
   onGridReady(params: any) {
     this.gridApi = params.api;
   }
   onSelectionChanged() {
     const selectedRows = this.gridApi?.getSelectedRows();
-    console.log(selectedRows)
     if (selectedRows && selectedRows.length > 0) {
       this.listOfSelectedData.push(selectedRows[0].fieldId);
     }
@@ -89,84 +85,51 @@ export class MyTaskComponent implements OnInit {
   getTableData() {
     this.tableData = JSON.parse(localStorage.getItem('data') || '[]');
     this.rowData = this.tableData;
-    console.log(this.rowData);
-    const colNames = [];
-    const tableFields = [
-      'fieldId',
-      'taskName',
-      'taskId',
-      'solutionArea',
-      'status',
-      'startDate',
-      'dueDate',
-      'priority',
-      'workflow',
+
+    this.colDefs = [
+      {
+        headerName: 'field Id',
+        field: 'fieldId',
+        checkboxSelection: true,
+        width: 155,
+      },
+      { headerName: 'task Name', field: 'taskName', width: 155 },
+      { headerName: 'task Id', field: 'taskId', width: 155 },
+      { headerName: 'solution Area', field: 'solutionArea', width: 155 },
+      {
+        headerName: 'status',
+        field: 'status',
+        width: 150,
+        cellStyle: (data: any) => {
+          return data.value == 'In Progress'
+            ? { background: 'yellow' }
+            : data.value == 'Active'
+            ? { background: 'green' }
+            : { background: 'blue' };
+        },
+      },
+      { headerName: 'start Date', field: 'startDate' },
+      { headerName: 'due Date', field: 'dueDate' },
+      {
+        headerName: 'priority',
+        field: 'priority',
+        width: 100,
+        cellStyle: (data: any) => {
+          return data.value == 'Low'
+            ? { background: 'red' }
+            : data.value == 'High'
+            ? { background: 'blue' }
+            : { background: 'green' };
+        },
+      },
+      { headerName: 'workflow', field: 'workflow' },
+      {
+        headerName: 'Action',
+        field: 'Action',
+        width: 155,
+        cellRenderer: CustomCellComponent,
+      },
     ];
-    const colKeys = tableFields;
-    colKeys.push('Action');
-    for (let i = 0; i < colKeys.length; i++) {
-      if (colKeys[i] === 'priority') {
-        let colTableDataFormate = {
-          field: colKeys[i],
-          width: 100,
-
-          cellStyle: (data: any) => {
-            return data.value == 'Low'
-              ? { background: 'red' }
-              : data.value == 'High'
-              ? { background: 'blue' }
-              : { background: 'green' };
-          },
-        };
-
-        colNames.push(colTableDataFormate);
-      } else if (colKeys[i] === 'status') {
-        let colTableDataFormate = {
-          field: colKeys[i],
-          width: 150,
-
-          cellStyle: (data: any) => {
-            return data.value == 'In Progress'
-              ? { background: 'yellow' }
-              : data.value == 'Active'
-              ? { background: 'green' }
-              : { background: 'blue' };
-          },
-        };
-
-        colNames.push(colTableDataFormate);
-      } else if (colKeys[i] === 'fieldId') {
-        let colTableDataFormate = {
-          field: colKeys[i],
-          width: 120,
-          // headerCheckboxSelection: true,
-          checkboxSelection: true,
-        };
-
-        colNames.push(colTableDataFormate);
-      } else if (colKeys[i] === 'Action') {
-        let colTableDataFormate = {
-          field: colKeys[i],
-          width: 155,
-          cellRenderer:CustomCellComponent
-          // cellRendererFramework: EditButtonComponent,
-          // cellRendererParams: {
-          //   editTaskByIdAgGrid: this.editTaskById.bind(this),
-          //   onDeleteAgGrid: this.onDelete.bind(this),
-          //   togglebtnAgGrid: this.togglebtn.bind(this),
-          // },
-        };
-        colNames.push(colTableDataFormate);
-      } else {
-        let colTableDataFormate = {
-          field: colKeys[i],
-          width: 155,
-        };
-        colNames.push(colTableDataFormate);
-      }
-    }
-
-    this.colDefs = colNames;
   }
 
   addTaskFormInit() {
@@ -183,11 +146,10 @@ export class MyTaskComponent implements OnInit {
     });
   }
   editTaskById(params: any) {
-    console.log(params);
     const id = params.data.fieldId;
-    console.log(id, this.tableData[0]);
     this.editMode = true;
     localStorage.setItem('editId', JSON.stringify(id));
+
     const index = this.tableData.findIndex((data: any) => {
       return data.fieldId === id;
     });
@@ -198,12 +160,10 @@ export class MyTaskComponent implements OnInit {
     this.listOfSelectedData.push(id);
   }
   OnDeleteMultiData() {
-    console.log(this.listOfSelectedData, this.listOfSelectedData.length);
     if (this.listOfSelectedData.length > 0) {
       var result = confirm('Want to delete?');
       if (result) {
         for (let i = 0; i < this.listOfSelectedData.length; i++) {
-          console.log('loopdata', this.listOfSelectedData[i]);
           this.service.deleteTask(this.listOfSelectedData[i]);
           this.tableData.splice(this.listOfSelectedData[i], 1);
         }
@@ -212,9 +172,9 @@ export class MyTaskComponent implements OnInit {
     }
     this.getTableData();
   }
+
   onDelete(params: any) {
     const id = params.data.fieldId;
-    console.log(id);
     var result = confirm('Want to delete?');
     if (result) {
       this.service.deleteTask(id);
@@ -222,29 +182,27 @@ export class MyTaskComponent implements OnInit {
       this.getTableData();
     }
   }
+  
   togglebtn() {
     this.addTaskFlag = !this.addTaskFlag;
   }
 
   clear() {
     this.addTaskForm.reset();
-    console.log("ejfer")
   }
   OnCanel() {
     this.togglebtn();
     this.clear();
   }
   onSubmit() {
-    console.log(this.listOfSelectedData);
     if (this.addTaskForm.valid) {
       if (!this.editMode) {
         this.service.insertTask(this.addTaskForm.value);
         this.tableData.push(this.addTaskForm.value);
         this.addTaskForm.reset();
       } else {
-        console.log('edit on');
+        // edit on
         const existingData = JSON.parse(localStorage.getItem('data')!) || [];
-        console.log(JSON.parse(localStorage.getItem('editId')!));
         const id = JSON.parse(localStorage.getItem('editId')!);
         const index = existingData.findIndex((data: any) => {
           return data.fieldId === id;

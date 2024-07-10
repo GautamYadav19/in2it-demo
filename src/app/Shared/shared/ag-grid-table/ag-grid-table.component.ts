@@ -32,6 +32,7 @@ export class AgGridTableComponent implements OnInit {
 
   @Input() addUserFlag: boolean = false;
   @Input() setDropDownVar: boolean = false;
+  colDefList: any[] = [];
 
   // insare input ki jaghahum colDef ka bhi use kar skte hai
 
@@ -53,9 +54,8 @@ export class AgGridTableComponent implements OnInit {
   oncellClickedFn(...event: any) {
     this.cellClick.emit(event);
   }
-  colDefList: any[] = [];
   showDropDownFn() {
-    this.colDefs.forEach((col: any) => {
+    this.colDefs?.forEach((col: any) => {
       const data = {
         colField: col.field,
         headerName: col.headerName,

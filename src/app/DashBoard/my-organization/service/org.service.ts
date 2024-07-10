@@ -5,24 +5,13 @@ import { BehaviorSubject, Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class OrgService {
-  constructor() {}
+
   public orgID = new BehaviorSubject<number>(0);
+
   getOrgIdSub =this.orgID.asObservable()
+
   SetOrgId(id: number) {
     this.orgID.next(id);
-  }
-  deleteOrg(id: any) {
-    const existingData = JSON.parse(localStorage.getItem('orgData')!) || [];
-    existingData.splice(id, 1);
-    localStorage.setItem('orgData', JSON.stringify(existingData));
-  }
-  getOrgByID(id: any) {
-    const orgData = JSON.parse(localStorage.getItem('orgData')!) || [];
-    for (let i = 0; i <= orgData.length; i++) {
-      if (orgData[i]?.id === id) {
-        return orgData[i];
-      }
-    }
   }
   getAllList(){
     let organizations = [
@@ -185,5 +174,21 @@ export class OrgService {
     ];
     return organizations
   }
+  
+  deleteOrg(id: any) {
+    const existingData = JSON.parse(localStorage.getItem('orgData')!) || [];
+    existingData.splice(id, 1);
+    localStorage.setItem('orgData', JSON.stringify(existingData));
+  }
+
+  getOrgByID(id: any) {
+    const orgData = JSON.parse(localStorage.getItem('orgData')!) || [];
+    for (let i = 0; i <= orgData.length; i++) {
+      if (orgData[i]?.id === id) {
+        return orgData[i];
+      }
+    }
+  }
+ 
  
 }

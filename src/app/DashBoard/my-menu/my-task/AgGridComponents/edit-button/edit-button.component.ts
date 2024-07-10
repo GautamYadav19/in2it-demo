@@ -8,15 +8,14 @@ import { ICellRendererParams } from 'ag-grid-community';
   styleUrls: ['./edit-button.component.css'],
 })
 export class EditButtonComponent implements ICellRendererAngularComp {
- 
   constructor() {
-    console.log(this.params)
+    console.log(this.params);
   }
   params: any;
 
   agInit(params: ICellRendererParams<any, any>): void {
     this.params = params;
-    console.log("ag",params)
+    console.log('ag', params);
   }
 
   refresh(params: ICellRendererParams<any, any>): boolean {
@@ -24,21 +23,11 @@ export class EditButtonComponent implements ICellRendererAngularComp {
   }
 
   editTaskByIdAgGrid() {
-    // if (this.params.editTaskByIdAgGrid instanceof Function) {
-    //   this.params.editTaskByIdAgGrid(this.params);
-    // }
-    this.params.context.parentComponent.togglebtn()
-    this.params.context.parentComponent.editTaskById(this.params)
+    this.params.context.parentComponent.togglebtn();
+    this.params.context.parentComponent.editTaskById(this.params);
   }
 
-
-
   onDeleteAgGrid() {
-
-    this.params.context.parentComponent.onDelete(this.params)
-    
-    // if (this.params.onDeleteAgGrid instanceof Function) {
-    //   this.params.onDeleteAgGrid(this.params);
-    // }
+    this.params.context.parentComponent.onDelete(this.params);
   }
 }
