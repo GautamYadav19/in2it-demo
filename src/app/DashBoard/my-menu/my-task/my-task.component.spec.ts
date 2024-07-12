@@ -154,7 +154,9 @@ describe('MyTask', () => {
       },
     ];
     localStorage.setItem('productData', JSON.stringify(testData));
+ 
     component.getTableData();
+   
     expect(component.colDefs).toEqual([
       {
         headerName: 'field Id',
@@ -250,6 +252,7 @@ describe('MyTask', () => {
       dueDate: '2024-06-28',
       priority: 'High',
     };
+ 
     component.addTaskForm.setValue(formData);
     component.onSubmit();
     expect(component.getTableData).toHaveBeenCalled();
@@ -295,9 +298,40 @@ describe('MyTask', () => {
     localStorage.clear();
     component.onSubmit();
   });
+
   it('should submit form correctly when  it in else mode onSubmit()', () => {
     component.editMode = true;
-
     component.onSubmit();
   });
+  
+  it('should set column defs',()=>{
+    let sp1 = spyOn(component,'getTableData').and.callThrough();
+
+    component.getTableData();
+    const { cellStyle }:any= component.colDefs[4]
+    cellStyle({value:'Low'},{value:'yellow'},{value:'Low'})
+    expect(sp1).toHaveBeenCalled()
+  })
+   
+  it('should set column defs d',()=>{
+    let sp1 = spyOn(component,'getTableData').and.callThrough();
+
+    component.getTableData();
+    const { cellStyle }:any= component.colDefs[7]
+
+
+    cellStyle({value:'Low'})
+    expect(sp1).toHaveBeenCalled()
+  })
+  it('should set column defs for high',()=>{
+    let sp1 = spyOn(component,'getTableData').and.callThrough();
+
+    component.getTableData();
+    const { cellStyle }:any= component.colDefs[7]
+
+
+    cellStyle({value:'Heigh'})
+    expect(sp1).toHaveBeenCalled()
+  })
+
 });

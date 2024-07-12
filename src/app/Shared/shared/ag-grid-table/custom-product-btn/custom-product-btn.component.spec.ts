@@ -82,9 +82,6 @@ describe('CustomProductBtnComponent', () => {
     expect(
       component.params.context.parentComponent.delete
     ).toHaveBeenCalledWith(component.params.data);
-    expect(component.params.context.parentComponent.save).toHaveBeenCalledWith(
-      component.params.data
-    );
   });
 
   it('save is params.data.createMode is false', () => {

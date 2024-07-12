@@ -71,22 +71,28 @@ describe('ContactsComponent', () => {
     component.ngOnInit();
   });
 
-  it('filterData() is valid', () => {
-    expect(component.flagForOrgDropdown).toBeFalse();
+  it('should filter data correctly', () => {
+    // Setup initial state
+    component.flagForOrgDropdown = false;
     const filtername = 'gautam';
     component.orgDropdown = filtername;
     const dataList = [
-      { id: 1, organization: 'gautam' },
-      { id: 2, organization: 'yash' },
+      { id: 1, organization: 'gautam', contact: [{ orgId: 1, organization: 'test' }] },
+      { id: 2, organization: 'yash', contact: [{ orgId: 2, organization: 'test 2' }] },
     ];
     component.tableData = dataList;
 
+    // Call the method under test
     component.filterData(filtername);
-    expect(component.flagForOrgDropdown).toBeTrue();
 
+    // Assertions
+    expect(component.flagForOrgDropdown).toBeTrue();
+    expect(component.orgDropdown).toEqual(filtername);
     expect(component.showtableData).toEqual([
-      { id: 1, organization: 'gautam' },
+      { id: 1, organization: 'gautam', contact: [{ orgId: 1, organization: 'test' }] }
     ]);
+
+  
   });
 
   it('should correctly call getOrgMemberDataById()', () => {

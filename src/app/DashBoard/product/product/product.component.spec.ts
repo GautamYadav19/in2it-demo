@@ -51,7 +51,6 @@ describe('ProductComponent', () => {
     component.setDropDown();
   });
 
-
   it('should retrieve productTableData from localStorage when un-available', () => {
     localStorage.clear();
     component.getProductData();
@@ -79,19 +78,59 @@ describe('ProductComponent', () => {
         table_name: { value: 'Table A' },
         is_table_exist: false,
         table_id: { value: 123, is_edit: false, type: 'integer' },
-        created_on: { value: '17/06/2024', is_edit: false, type: 'datetime' }
-      }
+        created_on: { value: '17/06/2024', is_edit: false, type: 'datetime' },
+      },
     ];
 
     // Mock localStorage.getItem and localStorage.setItem
-    spyOn(localStorage, 'getItem').and.callFake(() => JSON.stringify([])); 
+    spyOn(localStorage, 'getItem').and.callFake(() => JSON.stringify([]));
     spyOn(localStorage, 'setItem').and.callFake(() => {});
 
     spyOn(router, 'navigateByUrl');
 
     component.NavigateToRoute();
 
-  //   // Assertions
+    //   // Assertions
     expect(localStorage.getItem).toHaveBeenCalledWith('productData');
   });
+  
+  it('should be isRowSelectable()', () => {
+    const params = {
+      data: {
+        is_table_exist: true,
+      },
+    };
+    const { isRowSelectable }: any = component.gridOptions;
+    isRowSelectable(params);
+    const { getRowStyle }: any = component.gridOptions;
+    getRowStyle(params);
+  });
+  it('should be isRowSelectable() null return', () => {
+    const params = {
+      data: {
+        is_table_exist: false,
+      },
+    };
+
+    const { getRowStyle }: any = component.gridOptions;
+    getRowStyle(params);
+  });
+
+  it("valueFormatter if value YES",()=>{
+    const {valueFormatter}:any =component.colDefs[2]
+    const params = {
+      data: {
+        value: 'Yes',
+      },
+    };
+    valueFormatter(params)
+  })
+  
+  it("valueFormatter if value NO",()=>{
+    const {valueFormatter}:any =component.colDefs[2]
+    const params = {
+        value: 'Yes',
+    };
+    valueFormatter(params)
+  })
 });

@@ -3,10 +3,14 @@ import { EditButtonComponent } from './edit-button.component';
 
 describe('EditButtonComponent', () => {
   let component: EditButtonComponent;
-  let mockParams: ICellRendererParams<any, any>;
-
+  const mockParams: any = {
+    context: {
+      parentComponent: jasmine.createSpyObj('parentComponent', ['togglebtn','onDelete','editTaskById']),
+    },
+  };
   beforeEach(() => {
     component = new EditButtonComponent();
+    component.params=mockParams
   });
 
   it('should initialize params correctly in agInit', () => {
@@ -24,7 +28,9 @@ describe('EditButtonComponent', () => {
   it('should call onDelete in onDeleteAgGrid', () => {
     component.agInit(mockParams);
     component.onDeleteAgGrid();
-    expect(mockParams.context.parentComponent.onDelete).toHaveBeenCalledWith(mockParams);
+    expect(mockParams.context.parentComponent.onDelete).toHaveBeenCalledWith(
+      mockParams
+    );
   });
 
   it('should return true in refresh method', () => {
