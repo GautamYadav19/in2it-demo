@@ -7,15 +7,14 @@ import { ICellRendererParams } from 'ag-grid-community';
   templateUrl: './table-input-desc.component.html',
   styleUrls: ['./table-input-desc.component.css']
 })
-export class TableInputDescComponent implements OnInit,ICellRendererAngularComp {
+export class TableInputDescComponent implements ICellRendererAngularComp {
   fieldName:any
   params: any;
   constructor() {}
-  ngOnInit(): void {
-  }
+  
   agInit(params: ICellRendererParams<any, any>): void {
     this.params = params;
-    this.fieldName=params.colDef?.field
+    this.fieldName=params.colDef!.field
   }
   refresh(params: ICellRendererParams<any, any>): boolean {
     return true;

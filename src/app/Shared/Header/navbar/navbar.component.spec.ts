@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 
 import { NavbarComponent } from './navbar.component';
 import { DataService } from 'src/app/DashBoard/my-menu/service/data.service';
@@ -6,7 +6,7 @@ import { DataService } from 'src/app/DashBoard/my-menu/service/data.service';
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
   let fixture: ComponentFixture<NavbarComponent>;
-  let service: DataService;
+  let dataService :DataService
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [NavbarComponent],
@@ -33,7 +33,7 @@ describe('NavbarComponent', () => {
     expect(component.flag).toBe(true);
 
     component.toggle();
-
+0
     expect(component.flag).toBe(false);
   });
   it('should be call setTableTitle()', () => {
@@ -43,16 +43,19 @@ describe('NavbarComponent', () => {
     };
 
     component.setTableTitle(testData);
-    // service.setTabnavigateName(testData);
   });
-  it('should be call getTabTitle()', () => {
-    const testData = {
-      name: 'test name',
-      modalName: 'test modal name',
-    };
-    // spyOn(service.tabNavigateName, 'subscribe')
-    component.getTabTitle();
-    // CC
+  it('should set title when DataService emits a value', () => {
+    const expectedTitle :any  = 'Test Title';
 
+    component.getTabTitle();
+
+    expect(component.title).toEqual(expectedTitle);
+  });
+
+  it('should set title to undefined when DataService does not emit a value', () => {
+
+    component.getTabTitle();
+
+    expect(component.title).toBeUndefined();
   });
 });

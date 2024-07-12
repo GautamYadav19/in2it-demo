@@ -18,8 +18,8 @@ export class AgGridTableComponent implements OnInit {
   @Input() colDefs!: ColDef[];
   @Output() GridReady: EventEmitter<any> = new EventEmitter<GridApi>();
   @Output() SelectionChanged: EventEmitter<any> = new EventEmitter();
-  @Output() cellClick: EventEmitter<any> = new EventEmitter();
-  @Output() dataShared: EventEmitter<any> = new EventEmitter();
+  // @Output() cellClick: EventEmitter<any> = new EventEmitter();
+  // @Output() dataShared: EventEmitter<any> = new EventEmitter();
 
   @Input() gridOptions!: GridOptions;
   @Input() pagination!: boolean;
@@ -30,7 +30,7 @@ export class AgGridTableComponent implements OnInit {
   @Input() rowStyle!: any;
   @Input() defaultcolDef!: ColDef;
 
-  @Input() addUserFlag: boolean = false;
+  // @Input() addUserFlag: boolean = false;
   @Input() setDropDownVar: boolean = false;
   colDefList: any[] = [];
 
@@ -51,9 +51,11 @@ export class AgGridTableComponent implements OnInit {
     const selectRow = this.gridAPi.getSelectedRows();
     this.SelectionChanged.emit(selectRow);
   }
-  oncellClickedFn(...event: any) {
-    this.cellClick.emit(event);
-  }
+  // oncellClickedFn(...event: any) {
+  //   console.log(event,"event");
+    
+  //   this.cellClick.emit(event);
+  // }
   showDropDownFn() {
     this.colDefs?.forEach((col: any) => {
       const data = {
@@ -67,13 +69,13 @@ export class AgGridTableComponent implements OnInit {
   toggleVisible(col: any) {
     col.hide = !col.hide;
     if (col.hide) {
-      this.gridOptions.columnApi?.setColumnVisible(col.colField, false);
+      this.gridOptions.columnApi!.setColumnVisible(col.colField, false);
     } else {
-      this.gridOptions.columnApi?.setColumnVisible(col.colField, true);
+      this.gridOptions.columnApi!.setColumnVisible(col.colField, true);
     }
   }
-  addUser() {
-    this.dataShared.emit()
-  }
+  // addUser() {
+  //   this.dataShared.emit()
+  // }
 
 }

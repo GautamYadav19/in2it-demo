@@ -1,8 +1,6 @@
-import { remove } from '@amcharts/amcharts5/.internal/core/util/Array';
-import { Component, OnInit } from '@angular/core';
+import { Component,  } from '@angular/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { GridApi, ICellRendererParams } from 'ag-grid-community';
-import { Subject } from 'rxjs';
 import { ProductService } from 'src/app/DashBoard/product/service/product.service';
 
 @Component({
@@ -11,7 +9,7 @@ import { ProductService } from 'src/app/DashBoard/product/service/product.servic
   styleUrls: ['./custom-product-btn.component.css'],
 })
 export class CustomProductBtnComponent
-  implements OnInit, ICellRendererAngularComp
+  implements  ICellRendererAngularComp
 {
   params: any;
   oldData: any;
@@ -24,16 +22,8 @@ export class CustomProductBtnComponent
     return true;
   }
 
-  ngOnInit(): void {}
   store: any[] = [];
-  save() {
-    if (!this.params.data.createMode) {
-      this.params.data.editMode = false;
-    } else {
-      delete this.params.data.createMode;
-    }
-    this.params.context.parentComponent.save(this.params.data);
-  }
+ 
 // ======================old =====================
   // startEditing() {
   //   this.params.data.editMode = true;
@@ -64,8 +54,7 @@ export class CustomProductBtnComponent
     // Now edit mode can be set
     this.params.data.editMode = true;
     
-    console.log("Editing started. Current data:", this.params.data);
-    console.log("Old data stored:", this.params.data.oldData);
+ 
   }
   
   cancel() {
@@ -74,7 +63,7 @@ export class CustomProductBtnComponent
       // If not in create mode, revert to old data
       Object.assign(this.params.data, this.params.data.oldData);
       this.params.data.editMode = false;
-      console.log("Editing cancelled. Restored data:", this.params.data);
+      
     }else{
       delete this.params.data.createMode;
       this.params.context.parentComponent.delete(this.params.data);
@@ -85,5 +74,13 @@ export class CustomProductBtnComponent
   delete() {
     this.params.data.editMode = false;
     this.params.context.parentComponent.delete(this.params.data);
+  }
+  save() {
+    if (!this.params.data.createMode) {
+      this.params.data.editMode = false;
+    } else {
+      delete this.params.data.createMode;
+    }
+    this.params.context.parentComponent.save(this.params.data);
   }
 }

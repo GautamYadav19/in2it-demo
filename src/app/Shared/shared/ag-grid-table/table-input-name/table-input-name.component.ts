@@ -15,7 +15,7 @@ export class TableInputNameComponent implements ICellRendererAngularComp {
 
   agInit(params: ICellRendererParams<any, any>): void {
     this.params = params;
-    this.fieldName = params.colDef?.field;
+    this.fieldName = params.colDef!.field;
   }
   refresh(params: ICellRendererParams<any, any>): boolean {
     return true;

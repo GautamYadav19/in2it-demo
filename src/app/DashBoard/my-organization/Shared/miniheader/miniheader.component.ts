@@ -37,7 +37,7 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
 
     const existingData = JSON.parse(localStorage.getItem('orgData')!) || [];
 
-    existingData?.forEach((element: any) => {
+    existingData!.forEach((element: any) => {
       this.navs.push(element);
     });
 
@@ -73,7 +73,7 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
       return data.id !== id;
     });
     localStorage.setItem('orgData', JSON.stringify(data));
-    
+
     event.preventDefault();
     event.stopImmediatePropagation();
   }
@@ -97,7 +97,7 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
   }
 
   add(event: MouseEvent, org: any) {
-    this.checkExisitingTab(org?.id);
+    this.checkExisitingTab(org!.id);
     this.active = org.id;
     if (!this.flag) {
       this.navs.push(org);
@@ -105,8 +105,6 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
       const existingData = JSON.parse(localStorage.getItem('orgData')!) || [];
       existingData.push(org);
       localStorage.setItem('orgData', JSON.stringify(existingData));
-
-      // event.preventDefault();
     } else {
       this.orgService.SetOrgId(org.id);
     }
@@ -120,8 +118,8 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
   }
 
   getAllTable() {
-    this.showTable = this.organizations;
-    this.rowData = this.showTable;
+    this.rowData=this.showTable = this.organizations;
+  //  = this.showTable;
     const columnnames = [];
     const tableFields = [
       'id',
@@ -165,10 +163,10 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
     }
     this.columnDefs = columnnames;
   }
-  
-  onCellClick(event: any) {
-    if (event.colDef.field === 'organization') {
-      this.add(event, event.data);
+
+  onCellClick(res: any) {
+    if (res.colDef.field === 'organization') {
+      this.add(res, res.data);
     }
   }
   getListOfTable() {

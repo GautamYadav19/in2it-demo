@@ -10,7 +10,6 @@ import { IconsModule } from 'src/app/Shared/icons/icons.module';
 describe('MiniheaderComponent', () => {
   let component: MiniheaderComponent;
   let fixture: ComponentFixture<MiniheaderComponent>;
-  let event: MouseEvent;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -49,61 +48,129 @@ describe('MiniheaderComponent', () => {
       relatedOrgs: '',
       type: '',
     };
-
+    component.navs = [navTestData];
     localStorage.setItem('orgData', JSON.stringify(navTestData));
 
     spyOn(component, 'getListOfTable').and.callThrough();
     spyOn(component, 'getAllTable').and.callThrough();
-    console.log(component.navs);
+
     expect(component.getListOfTable).toHaveBeenCalledTimes(0);
     expect(component.getAllTable).toHaveBeenCalledTimes(0);
   });
 
-  it('should create', () => {
-    // const navTestData = [
-    //   {
-    //     id: 0,
-    //     organization: 'Organization',
-    //     email: '',
-    //     industry: '',
-    //     onboarding: '',
-    //     orgSPOC: '',
-    //     phone: '',
-    //     products: '',
-    //     relatedOrgs: '',
-    //     type: '',
-    //   },
-    //   {
-    //     id: 1,
-    //     organization: 'Organization 1',
-    //     email: '',
-    //     industry: '',
-    //     onboarding: '',
-    //     orgSPOC: '',
-    //     phone: '',
-    //     products: '',
-    //     relatedOrgs: '',
-    //     type: '',
-    //   },
-    // ];
+  it('close', () => {
+    let data = [
+      {
+        id: 1,
+        name: 'test',
+      },
+    ];
+    localStorage.setItem('orgData', JSON.stringify(data));
+    let event = new MouseEvent('click');
 
-    // localStorage.setItem('orgData', JSON.stringify(navTestData));
-    // // const existingData = JSON.parse(localStorage.getItem('orgData')!);
-    // const event = new MouseEvent('click', { bubbles: true, cancelable: true });
-    // const spyPreventDefault = spyOn(event, 'preventDefault').and.callThrough();
-
-    // component.close(event, 0, 1);
-
-    // expect(component.navs).toEqual(navTestData);
-    // expect(component.active).toEqual(0);
-
-    // expect(spyPreventDefault).toHaveBeenCalled();
-    // expect(event.defaultPrevented).toBeTrue();
-
-    // Mock localStorage
-    spyOn(localStorage, 'getItem').and.returnValue(
-      JSON.stringify([{ id: 1 }, { id: 2 }])
-    );
-    spyOn(localStorage, 'setItem');
+    component.close(event, 1, 1);
   });
- });
+
+  it('checkExisitingTab is true', () => {
+    component.navs = [
+      {
+        id: 0,
+        organization: 'Organization',
+        email: '',
+        industry: '',
+        onboarding: '',
+        orgSPOC: '',
+        phone: '',
+        products: '',
+        relatedOrgs: '',
+        type: '',
+      },
+    ];
+    component.checkExisitingTab(0);
+  });
+  it('checkExisitingTab is false', () => {
+    component.navs = [
+      {
+        id: 0,
+        organization: 'Organization',
+        email: '',
+        industry: '',
+        onboarding: '',
+        orgSPOC: '',
+        phone: '',
+        products: '',
+        relatedOrgs: '',
+        type: '',
+      },
+    ];
+    component.checkExisitingTab(1);
+    expect(component.flag).toBeFalse();
+  });
+
+  it('onTabClick', () => {
+    component.onTabClick(1);
+    expect(component.active).toEqual(1);
+  });
+
+  it('add flag is false', () => {
+    component.flag = false;
+
+    let event = new MouseEvent('click');
+    let org = { id: 1, name: 'test' };
+    spyOn(component, 'checkExisitingTab').and.callThrough();
+    component.add(event, org);
+  });
+
+  it('add flag is true', () => {
+    let event = new MouseEvent('click');
+    component.flag = true;
+    expect(component.flag).toBeDefined();
+    expect(component.flag).toBeTrue();
+
+    let org = { id: 1, name: 'test' };
+    component.add(event, org);
+  });
+
+  it('filterData', () => {
+    component.organizations = [
+      {
+        type: 'test',
+      },
+    ];
+    component.filterData('test');
+    expect(component.rowData).toEqual([
+      {
+        type: 'test',
+      },
+    ]);
+  });
+
+  it('onCellClick', () => {
+    const res = {
+      data: { id: 1 },
+      colDef: {
+        field: 'organization',
+      },
+    };
+
+    component.onCellClick(res);
+  });
+
+  it('searOrgList', () => {
+    component.organizations = [
+      {
+        type: 'test',
+      },
+    ];
+    component.searOrgList('test');
+    expect(component.rowData).toEqual(component.organizations);
+  });
+  it('searOrgList undefine send', () => {
+    component.organizations = [
+      {
+        type: 'test',
+      },
+    ];
+    component.searOrgList('');
+  });
+});

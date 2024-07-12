@@ -17,7 +17,35 @@ import { DatePipe } from '@angular/common';
 })
 export class ProductDbDetailComponent implements OnInit {
   rowData!: any[];
-  colDefs!: ColDef[];
+  colDefs: ColDef[] = [
+    {
+      headerName: 'Table ID',
+      field: 'table_id.value',
+      width: 170,
+    },
+    {
+      headerName: 'Table Name',
+      field: 'table_name.value',
+      width: 170,
+      cellRenderer: TableInputNameComponent,
+    },
+    {
+      headerName: 'Table Description',
+      field: 'description.value',
+      width: 170,
+      cellRenderer: TableInputNameComponent,
+    },
+    { headerName: 'Create On', field: 'created_on.value', width: 170 },
+    { headerName: 'Create By', field: 'created_by.value', width: 170 },
+    { headerName: 'Updated On', field: 'updated_on.value', width: 170 },
+    { headerName: 'Updated By', field: 'updated_by.value', width: 170 },
+    {
+      headerName: 'Action',
+      field: 'action',
+      width: 170,
+      cellRenderer: CustomProductBtnComponent,
+    },
+  ];
   gridOptions!: GridOptions;
   gridApi!: GridApi;
 
@@ -25,6 +53,9 @@ export class ProductDbDetailComponent implements OnInit {
   showProductList!: TableItem[];
   editmode: boolean = false;
   currentDate: string;
+  setDropDownVar: boolean = false;
+  localstorageData = JSON.parse(localStorage.getItem('productData')!);
+
   constructor(private datePipe: DatePipe) {
     this.currentDate = this.transformDate(new Date());
   }
@@ -42,8 +73,9 @@ export class ProductDbDetailComponent implements OnInit {
       },
     };
   }
-  localstorageData = JSON.parse(localStorage.getItem('productData')!);
-
+  onGridReady(params: GridReadyEvent) {
+    this.gridApi = params.api;
+  }
   getProductDetails() {
     const list = this.localstorageData.filter((data: any) => {
       return data.is_table_exist === true;
@@ -51,60 +83,11 @@ export class ProductDbDetailComponent implements OnInit {
     this.rowData = list.map((item: any) => {
       return { ...item, editMode: false };
     });
-    this.defineColDef();
   }
 
-  defineColDef() {
-    this.colDefs = [
-      {
-        headerName: 'Table ID',
-        field: 'table_id.value',
-        width: 170,
-      },
-      {
-        headerName: 'Table Name',
-        field: 'table_name.value',
-        width: 170,
-        cellRenderer: TableInputNameComponent,
-      },
-      {
-        headerName: 'Table Description',
-        field: 'description.value',
-        width: 170,
-        cellRenderer: TableInputNameComponent,
-      },
-      { headerName: 'Create On', field: 'created_on.value', width: 170 },
-      { headerName: 'Create By', field: 'created_by.value', width: 170 },
-      { headerName: 'Updated On', field: 'updated_on.value', width: 170 },
-      { headerName: 'Updated By', field: 'updated_by.value', width: 170 },
-      {
-        headerName: 'Action',
-        field: 'action',
-        width: 170,
-        cellRenderer: CustomProductBtnComponent,
-      },
-    ];
+  setDropDown() {
+    this.setDropDownVar = !this.setDropDownVar;
   }
-
-  onGridReady(params: GridReadyEvent) {
-    this.gridApi = params.api;
-  }
-
-  save(data: any) {
-    const index = this.localstorageData.findIndex((id: any) => {
-      return id?.table_id?.value == data?.table_id?.value;
-    });
-    this.localstorageData[index] = data;
-    localStorage.setItem('productData', JSON.stringify(this.localstorageData));
-  }
-  // cancel(data: any) {
-  //   const index = this.localstorageData.findIndex((item: any) => {
-  //     return item.table_id?.value === data.table_id?.value;
-  //   });
-
-  //   this.localstorageData[index] = this.localstorageData[index];
-  //   // this.getProductDetails();
-  // }
 
   delete(data: any) {
     const index = this.localstorageData.findIndex((id: any) => {
@@ -115,8 +98,8 @@ export class ProductDbDetailComponent implements OnInit {
     localStorage.setItem('productData', JSON.stringify(this.localstorageData));
     this.getProductDetails();
   }
+
   addNewUser() {
-    // this.createMode=true
     const data = {
       createMode: true,
       is_table_exist: true,
@@ -187,11 +170,15 @@ export class ProductDbDetailComponent implements OnInit {
       related_table: [],
     };
     this.localstorageData.push(data);
-    this.gridOptions.api?.applyTransaction({ add: [data] });
+    this.gridOptions.api!.applyTransaction({ add: [data] });
     localStorage.setItem('productData', JSON.stringify(this.localstorageData));
   }
-  setDropDownVar: boolean = false;
-  setDropDown() {
-    this.setDropDownVar = !this.setDropDownVar;
+
+  save(data: any) {
+    const index = this.localstorageData.findIndex((id: any) => {
+      return id.table_id.value == data.table_id.value;
+    });
+    this.localstorageData[index] = data;
+    localStorage.setItem('productData', JSON.stringify(this.localstorageData));
   }
 }

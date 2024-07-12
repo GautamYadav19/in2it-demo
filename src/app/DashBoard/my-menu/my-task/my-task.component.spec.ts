@@ -291,7 +291,10 @@ describe('MyTask', () => {
     component.onSubmit();
     expect(component.editMode).toBe(false);
   });
-
+  it('should initialize existingData as an empty array if localStorage does not contain "data"', () => {
+    localStorage.clear();
+    component.onSubmit();
+  });
   it('should submit form correctly when  it in else mode onSubmit()', () => {
     component.editMode = true;
 

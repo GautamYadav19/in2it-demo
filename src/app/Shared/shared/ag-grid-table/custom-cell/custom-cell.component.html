@@ -6,7 +6,7 @@
     (click)="onDeleteAgGrid()"> </i-feather>
 
 <!-- contact -->
-<p *ngIf="params.context.parent==='contact' && fieldName=='organization'" (click)="navigateToOrganization()">
+<p *ngIf="params.context.parent==='contact' && fieldName=='organization'" (click)="navigateToOrganizationCustomCell()">
     {{params.data.organization}}</p>
 <p *ngIf="params.context.parent==='contact' && fieldName=='name'" (click)="getOrgMemberDataById()">{{params.data.name}}
 </p>

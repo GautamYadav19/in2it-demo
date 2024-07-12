@@ -20,7 +20,7 @@
 
 <ag-grid-angular class="ag-theme-alpine table table-hover" style="height: 400px" [rowData]="rowData"
     [columnDefs]="colDefs" [rowSelection]="'multiple'" (gridReady)="onGridReady($event)"
-    (selectionChanged)="onSelectionChanged()" (cellClicked)="oncellClickedFn($event,$event,$event)"
+    (selectionChanged)="onSelectionChanged()"
     [gridOptions]="gridOptions" [pagination]="pagination" [isRowSelectable]="isRowSelectable"
     [paginationPageSize]="paginationPageSize" [getRowStyle]="getRowStyle" [rowStyle]="rowStyle"
     [defaultColDef]="defaultcolDef" [suppressRowClickSelection]="true"></ag-grid-angular>

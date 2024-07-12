@@ -170,7 +170,20 @@ export class ContactsComponent implements OnInit {
       return field.organization !== null && field.organization === filtername;
     });
 
-    this.showtableData = dataList;
+   this.showtableData = dataList;
+    this.rowData = this.showtableData.flatMap((org: any) =>
+      org.contact.map(
+        (contact: any) => (
+          (this.singlenameOrg = this.showtableData),
+          {
+            ...contact,
+            orgId: org.id,
+            organization: org.organization,
+            ...this.showtableData,
+          }
+        )
+      )
+    );
   }
 
   getOrgMemberDataById(orgId: any, contactId: any, org?: any) {

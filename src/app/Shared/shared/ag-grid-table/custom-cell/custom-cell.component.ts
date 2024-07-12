@@ -19,7 +19,7 @@ export class CustomCellComponent implements ICellRendererAngularComp {
   togglebtn: boolean = false;
   count: number = 0;
   gridApi!: GridApi;
-  selectedRow: number | null = null; // Track the selected row index
+  selectedRow: number | null = null; 
   agInit(params: ICellRendererParams<any, any>): void {
     this.params = params;
     if (
@@ -43,7 +43,7 @@ export class CustomCellComponent implements ICellRendererAngularComp {
   onDeleteAgGrid() {
     this.params.context.parentComponent.onDelete(this.params);
   }
-  navigateToOrganization() {
+  navigateToOrganizationCustomCell() {
     const data = this.params.data;
     this.params.context.parentComponent.navigateToOrganization(data);
   }
@@ -55,37 +55,6 @@ export class CustomCellComponent implements ICellRendererAngularComp {
       this.params.data
     );
   }
-  // editTaskByIdProductDetails() {
-  //   // this.toggle();
-  // }
-  // toggle() {
-  //   // console.log('storeIndex', this.params.context.parentComponent.storeIndex);
-  //   // console.log('new index', this.params.rowIndex);
 
-  //   // this.togglebtn = !this.togglebtn;
-  // }
-
-  // onDeleteProductDetails() {
-  //   // this.toggle();
-  // }
-  // store: number[] = [];
-  // startEditing() {
-  // //  console.log(this.params);
-   
-  // //   // this.count++;
-  // //   this.toggle(); // This function toggles the edit mode
-  //   this.params.context.parentComponent.onBtStartEditing(this.params.rowIndex);
-    
-  //   this.togglebtn =this.params.context.parentComponent.toggleBtn
-  //   console.log(this.params.context.parentComponent.toggleBtn);
-  // }
-
-  // stopEditing() {
-
-  //   // this.toggle();
-  //   this.params.context.parentComponent.onBtStopEditing();
-  //   this.togglebtn =this.params.context.parentComponent.toggleBtn
-
-  // }
 
 }
