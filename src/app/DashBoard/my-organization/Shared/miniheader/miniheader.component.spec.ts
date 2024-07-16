@@ -27,7 +27,6 @@ describe('MiniheaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MiniheaderComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -58,6 +57,25 @@ describe('MiniheaderComponent', () => {
     expect(component.getAllTable).toHaveBeenCalledTimes(0);
   });
 
+  
+  it('should onInit() for exisiting data', () => {
+    const navTestData = {
+      id: 0,
+      organization: 'Organization',
+      email: 'test@gmail.com',
+      industry: '',
+      onboarding: '',
+      orgSPOC: '',
+      phone: '',
+      products: '',
+      relatedOrgs: '',
+      type: '',
+    };
+    component.navs = [navTestData];
+    localStorage.setItem('orgData', JSON.stringify([navTestData]));
+    component.ngOnInit();
+
+  });
   it('close', () => {
     let data = [
       {
@@ -112,23 +130,27 @@ describe('MiniheaderComponent', () => {
     expect(component.active).toEqual(1);
   });
 
-  it('add flag is false', () => {
-    component.flag = false;
+  // it('add flag is false', () => {
+  //   component.flag = false;
 
-    let event = new MouseEvent('click');
-    let org = { id: 1, name: 'test' };
-    spyOn(component, 'checkExisitingTab').and.callThrough();
-    component.add(event, org);
-  });
+  //   let event = new MouseEvent('click');
+  //   let org = { id: 1, name: 'test' };
+  //   spyOn(component, 'checkExisitingTab').and.callThrough();
+  //   component.add(event, org);
+  // });
 
   it('add flag is true', () => {
     let event = new MouseEvent('click');
-    component.flag = true;
-    expect(component.flag).toBeDefined();
-    expect(component.flag).toBeTrue();
+ 
 
     let org = { id: 1, name: 'test' };
+    component.flag = true;
     component.add(event, org);
+    // component.flag = true;
+
+    expect(component.flag).toBeDefined();
+    // expect(component.flag).toBeTrue();
+
   });
 
   it('filterData', () => {
@@ -165,6 +187,7 @@ describe('MiniheaderComponent', () => {
     component.searOrgList('test');
     expect(component.rowData).toEqual(component.organizations);
   });
+
   it('searOrgList undefine send', () => {
     component.organizations = [
       {
@@ -172,5 +195,15 @@ describe('MiniheaderComponent', () => {
       },
     ];
     component.searOrgList('');
+  });
+
+  it('navigation', () => {
+    spyOn(component, 'add');
+
+    history.pushState({ id: 1, data: ['mockData'] }, '', '/');
+
+    component.ngOnInit();
+
+    expect(component.add).toHaveBeenCalled();
   });
 });

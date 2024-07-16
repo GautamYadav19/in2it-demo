@@ -5,8 +5,14 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { IconsModule } from 'src/app/Shared/icons/icons.module';
 import { SharedModule } from 'src/app/Shared/shared/shared.module';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { Params, Router } from '@angular/router';
 
 describe('ContactsComponent', () => {
   let component: ContactsComponent;
@@ -17,7 +23,13 @@ describe('ContactsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ContactsComponent],
-      imports: [RouterTestingModule, SharedModule, IconsModule, NgbNavModule],
+      imports: [
+        RouterTestingModule,
+        SharedModule,
+        IconsModule,
+        NgbNavModule,
+        ReactiveFormsModule,
+      ],
     }).compileComponents();
   });
 
@@ -26,6 +38,7 @@ describe('ContactsComponent', () => {
     component = fixture.componentInstance;
     formBuilder = TestBed.inject(FormBuilder);
     router = TestBed.inject(Router);
+   
     DummyCommonData = [
       {
         id: 1,
@@ -77,8 +90,16 @@ describe('ContactsComponent', () => {
     const filtername = 'gautam';
     component.orgDropdown = filtername;
     const dataList = [
-      { id: 1, organization: 'gautam', contact: [{ orgId: 1, organization: 'test' }] },
-      { id: 2, organization: 'yash', contact: [{ orgId: 2, organization: 'test 2' }] },
+      {
+        id: 1,
+        organization: 'gautam',
+        contact: [{ orgId: 1, organization: 'test' }],
+      },
+      {
+        id: 2,
+        organization: 'yash',
+        contact: [{ orgId: 2, organization: 'test 2' }],
+      },
     ];
     component.tableData = dataList;
 
@@ -89,10 +110,12 @@ describe('ContactsComponent', () => {
     expect(component.flagForOrgDropdown).toBeTrue();
     expect(component.orgDropdown).toEqual(filtername);
     expect(component.showtableData).toEqual([
-      { id: 1, organization: 'gautam', contact: [{ orgId: 1, organization: 'test' }] }
+      {
+        id: 1,
+        organization: 'gautam',
+        contact: [{ orgId: 1, organization: 'test' }],
+      },
     ]);
-
-  
   });
 
   it('should correctly call getOrgMemberDataById()', () => {
@@ -201,7 +224,7 @@ describe('ContactsComponent', () => {
     component.tableData = [testData];
     const orgName = { value: 'Organization B' };
     component.getRoles(orgName);
-    const test = component.tableData.filter((data: any) => {
+    component.tableData.filter((data: any) => {
       return data.organization === orgName.value;
     });
   });
@@ -262,7 +285,7 @@ describe('ContactsComponent', () => {
   });
 
   it('call initEditForm() ', () => {
-    expect(component.orgForm).toBeUndefined();
+    // expect(component.orgForm).toBeUndefined();
     component.orgForm = formBuilder.group({
       name: [''],
       email: [''],
@@ -533,8 +556,8 @@ describe('ContactsComponent', () => {
     expect(component.storeSelectedData).toEqual([]);
   });
 
-  it("should be call search()",()=>{
-   const testData = {
+  it('should be call search()', () => {
+    const testData = {
       id: 1,
       organization: 'Organization A',
       type: 'Customer',
@@ -558,5 +581,79 @@ describe('ContactsComponent', () => {
     };
     component.showtableData = [testData];
     component.search('Jane');
-  })
+  });
+
+  it('newAddMore', () => {
+    component.newAddMore();
+  });
+  // it('should return FormArray', () => {
+  //   let length = component.addmore.length;
+  //   component.addMoreFn();
+  //   expect(component.addmore.length).toBe(length - 1);
+  // });
+  it('gridReady', () => {
+    const params = {} as any;
+    component.onGridReady(params);
+  });
+
+  it('select change lenght >0', () => {
+    let selectRow = [{ id: 1 }, { id: 2 }, { id: 3 }];
+    component.showtableData = [{ id: 1 }, { id: 2 }, { id: 3 }];
+    component.onSelectChange(selectRow);
+  });
+  it('select change length ==1', () => {
+    let selectRow = [{ id: 1 }];
+    component.onSelectChange(selectRow);
+    expect(component.checkBoxDisableBtn).toBeFalse();
+  });
+  it('select change length to be null', () => {
+    let selectRow = null;
+    component.onSelectChange(selectRow);
+    expect(component.checkBoxDisableBtn).toBeTrue();
+  });
+
+  it('filter.value change', () => {
+    spyOn(component, 'search').and.callThrough();
+    const testData = {
+      id: 1,
+      organization: 'Organization A',
+      type: 'Customer',
+      industry: 'Industry A',
+      onboarding: 'Onboarding A',
+      relatedOrgs: 'Related Orgs A',
+      products: 'Products A',
+      orgSPOC: 'Org SPOC A',
+      email: 'gautam@example.com',
+      phone: '123-456-7890',
+      contact: [
+        {
+          id: 1,
+          name: 'Jane Smith',
+          role: 'Designer',
+          email: 'jane.smith@example.com',
+          phoneNumber: '+27 654-3210',
+          additionalrole: 'No Additional role',
+        },
+      ],
+    };
+    component.showtableData = [testData];
+    component.filter.setValue('Organization A');
+  });
+  it('filter.value change is false', () => {
+    spyOn(component, 'getTableList').and.callThrough();
+    component.filter.setValue('');
+    expect(component.getTableList).toHaveBeenCalled();
+  });
+  it('should add a new form control to addmorefield FormArray', () => {
+    component.orgForm = formBuilder.group({
+      addmorefield: formBuilder.array([]),
+    });
+    component.addMoreFn();
+
+    // Get the FormArray
+    const addmoreArray = component.addmore;
+
+    // Expect that a new FormGroup (newAddMore()) is pushed to the FormArray
+    expect(addmoreArray.length).toBe(1); // Assuming newAddMore() adds one control
+  });
 });

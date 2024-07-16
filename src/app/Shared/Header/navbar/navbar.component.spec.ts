@@ -33,15 +33,12 @@ describe('NavbarComponent', () => {
     component.ngOnInit();
 
     expect(component.getTabTitle).toHaveBeenCalled();
-    // component.getTabTitle();
     component.title = { name: 'test', modalName: 'test model' };
 
     dataService.tabNavigateName.subscribe((res) => {
       expect(component.title).toEqual(res);
     });
     dataService.setTabnavigateName({ name: 'test', modalName: 'test model' });
-
-
   });
   it('should be call toggle()', () => {
     expect(component.flag).toBe(true);

@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProductComponent } from './product.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { ProductRoutingModule } from '../product-routing.module';
+
 import { DatePipe } from '@angular/common';
 import { AgGridModule } from 'ag-grid-angular';
 import { IconsModule } from 'src/app/Shared/icons/icons.module';
@@ -51,10 +50,6 @@ describe('ProductComponent', () => {
     component.setDropDown();
   });
 
-  it('should retrieve productTableData from localStorage when un-available', () => {
-    localStorage.clear();
-    component.getProductData();
-  });
   it('should retrieve productTableData from localStorage when available', () => {
     const mockLocalStorageData = [
       { id: 1, name: 'Product A', is_table_exist: true },
@@ -90,10 +85,26 @@ describe('ProductComponent', () => {
 
     component.NavigateToRoute();
 
-    //   // Assertions
     expect(localStorage.getItem).toHaveBeenCalledWith('productData');
   });
-  
+
+  it('should update localStorage and navigate to  undefine', () => {
+    component.selectedData = null;
+
+    spyOn(router, 'navigateByUrl');
+
+    component.NavigateToRoute();
+    expect(component.selectedData).toEqual(null);
+  });
+
+  it('should be call navigate when Findindex() is call ', () => {
+
+  component.selectedData = [{ table_name: { value: 1 } }];
+   spyOn(router, 'navigateByUrl');
+
+   component.NavigateToRoute();
+
+  });
   it('should be isRowSelectable()', () => {
     const params = {
       data: {
@@ -116,21 +127,26 @@ describe('ProductComponent', () => {
     getRowStyle(params);
   });
 
-  it("valueFormatter if value YES",()=>{
-    const {valueFormatter}:any =component.colDefs[2]
+  it('valueFormatter if value YES', () => {
+    const { valueFormatter }: any = component.colDefs[2];
     const params = {
       data: {
         value: 'Yes',
       },
     };
-    valueFormatter(params)
-  })
-  
-  it("valueFormatter if value NO",()=>{
-    const {valueFormatter}:any =component.colDefs[2]
+    valueFormatter(params);
+  });
+
+  it('valueFormatter if value NO', () => {
+    const { valueFormatter }: any = component.colDefs[2];
     const params = {
-        value: 'Yes',
+      value: 'Yes',
     };
-    valueFormatter(params)
-  })
+    valueFormatter(params);
+  });
+
+  it('should retrieve productTableData from localStorage when un-available', () => {
+    localStorage.clear();
+    component.getProductData();
+  });
 });

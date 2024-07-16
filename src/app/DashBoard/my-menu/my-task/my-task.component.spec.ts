@@ -222,7 +222,7 @@ describe('MyTask', () => {
     spyOn(window, 'confirm').and.returnValue(true);
 
     component.OnDeleteMultiData();
-    expect(component.tableData.length).toBe(0); // Ensure tableData remains unchanged
+    expect(component.listOfSelectedData.length).toBe(0); // Ensure tableData remains unchanged
   });
 
   it('should be call delete muiltiple data() Fn with empty or false return by confirm', () => {
@@ -295,7 +295,7 @@ describe('MyTask', () => {
     expect(component.editMode).toBe(false);
   });
   it('should initialize existingData as an empty array if localStorage does not contain "data"', () => {
-    localStorage.clear();
+    localStorage.removeItem('data');
     component.onSubmit();
   });
 

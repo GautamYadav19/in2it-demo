@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { OrgService } from '../service/org.service';
 import { ColDef } from 'ag-grid-community';
 
@@ -28,9 +27,14 @@ export class OrgDetailsComponent implements OnInit {
   ];
   // yaha abhii static data la rahe hain table ka liya
   tableData: any = [];
-  constructor(private orgService: OrgService) {}
+  constructor(private orgService: OrgService) {
+    this.orgService.getOrgIdSub.subscribe((res) => {
+      this.orgDetailsdata = this.orgService.getOrgByID(res);
+      this.rowData =this.orgDetailsdata.contact
+    });
+  }
   ngOnInit(): void {
-    this.getOrgByID();
+    // this.getOrgByID();
     this.getContactData();
   }
   togglebtn() {
@@ -41,12 +45,9 @@ export class OrgDetailsComponent implements OnInit {
   this.orgService.getAllList();
   }
   
-  getOrgByID() {
-    this.orgService.getOrgIdSub.subscribe((res) => {
-      this.orgDetailsdata = this.orgService.getOrgByID(res);
-      this.rowData =this.orgDetailsdata.contact
-    });
-  }
+  // getOrgByID() {
+    
+  // }
 
   getOrgMemberDataById(id: number) {
     this.togglebtn();

@@ -26,6 +26,7 @@ describe('OrgService', () => {
     const instance = new OrgService();
     instance.getAllList();
   });
+
   it('delete()', () => {
     // arrange
     const instance = new OrgService();
@@ -42,6 +43,7 @@ describe('OrgService', () => {
     expect(updatedData.length).toBe(1);
     expect(updatedData.find((org:any) => org.id === 2)).toBeUndefined();
   });
+
   it('delete()', () => {
     // arrange
     const instance = new OrgService();
@@ -58,4 +60,20 @@ describe('OrgService', () => {
     expect(existingDataData.length).toBe(2);
     expect(existingDataData.find((org:any) => org.id === 2)).toEqual({ id: 2, test: 'test 2' });
   });
+
+
+  it("remove localstorage data getOrgByID",()=>{
+    const instance = new OrgService();
+   
+    localStorage.removeItem('orgData')
+    instance.getOrgByID(1);
+    expect(instance.getOrgByID).toBeDefined()
+  })
+  it("remove localstorage data delete",()=>{
+    const instance = new OrgService();
+   
+    localStorage.removeItem('orgData')
+    instance.deleteOrg(1);
+    expect(instance.deleteOrg).toBeDefined()
+  })
 });

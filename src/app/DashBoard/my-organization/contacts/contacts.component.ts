@@ -17,6 +17,8 @@ export class ContactsComponent implements OnInit {
   editformToggleBtn: boolean = false;
   openFormToggle: boolean = false;
   checkBoxDisableBtn: boolean = true;
+  filter = new FormControl('');
+
   navs = [
     {
       id: 0,
@@ -125,14 +127,15 @@ export class ContactsComponent implements OnInit {
   get addmore(): FormArray {
     return this.orgForm.get('addmorefield') as FormArray;
   }
+ 
+  addMoreFn() {
+    this.addmore.push(this.newAddMore());
+  }
   newAddMore(): FormGroup {
     return this.fb.group({
       newFieldname: [''],
       newfield: [''],
     });
-  }
-  addMoreFn() {
-    this.addmore.push(this.newAddMore());
   }
   // form array end
   onGridReady(params: any) {
@@ -381,8 +384,6 @@ export class ContactsComponent implements OnInit {
   isCheckedSelectAll: boolean = false;
 
   deleteMultipleData() {
-    console.log("showtableData",this.showtableData);
-    
     this.storeSelectedData.forEach((storedata: any) => {
       const filter = this.showtableData.filter((data: any) => {
         return data.id === storedata.orgId;
@@ -415,7 +416,6 @@ export class ContactsComponent implements OnInit {
       this.checkBoxDisableBtn = true;
     }
   }
-  filter = new FormControl('');
 
   search(text: string) {
     const term = text!.toLowerCase();

@@ -83,9 +83,9 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
     this.navs.some((data) => {
       if (data.id === id) {
         this.flag = true;
-        return true;
+        // return true;
       }
-      return false;
+      // return false;
     });
   }
 
@@ -100,6 +100,7 @@ export class MiniheaderComponent implements OnInit, OnDestroy {
     this.checkExisitingTab(org!.id);
     this.active = org.id;
     if (!this.flag) {
+      
       this.navs.push(org);
       this.orgService.SetOrgId(org.id);
       const existingData = JSON.parse(localStorage.getItem('orgData')!) || [];

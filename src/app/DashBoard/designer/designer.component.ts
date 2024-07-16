@@ -3,7 +3,6 @@ import {
   EventEmitter,
   Inject,
   NgZone,
-  OnInit,
   PLATFORM_ID,
 } from '@angular/core';
 import * as am5 from '@amcharts/amcharts5';
@@ -17,15 +16,14 @@ import { isPlatformBrowser } from '@angular/common';
   templateUrl: './designer.component.html',
   styleUrls: ['./designer.component.css'],
 })
-export class DesignerComponent implements OnInit {
-  private root!: am5.Root;
+export class DesignerComponent   {
+   root!: am5.Root;
   chartInitiated: boolean = false;
   myevent = new EventEmitter<any>();
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private zone: NgZone
   ) {}
-  ngOnInit(): void {}
 
   browserOnly(f: () => void) {
     if (isPlatformBrowser(this.platformId)) {

@@ -26,24 +26,21 @@ describe('OrgDetailsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    spyOn(component, 'getOrgByID');
     spyOn(component, 'getContactData');
-
     component.ngOnInit();
-
-    component.getOrgByID()
-
   });
 
+
+  it('should call getContactData()', () => {
+    component.getContactData();
+  });
+  
+
+ 
   it('should call togglebtn()', () => {
     expect(component.addTaskFlag).toBeFalse();
     component.togglebtn();
     expect(component.addTaskFlag).toBeTrue();
-  });
-
-  it('should call getContactData()', () => {
-    component.getContactData();
-
   });
   it('should call getOrgMemberDataById()', () => {
     const testData = [{ id: 1 }, { id: 2 }, { id: 3 }]; // Sample test data
@@ -61,9 +58,5 @@ describe('OrgDetailsComponent', () => {
 
     // Assert that rightCardData is set correctly
     expect(component.rightCardData).toEqual({ id: 1 });
-  });
-
-   it('should call getOrgByID()', () => {
-   
   });
 });

@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../service/product.service';
-import {
-  Table,
-} from 'src/app/Interfaces/product-table.interface';
+import { Table } from 'src/app/Interfaces/product-table.interface';
 import { ColDef, GridApi, GridOptions } from 'ag-grid-community';
 import { Router } from '@angular/router';
 
@@ -16,7 +14,7 @@ export class ProductComponent implements OnInit {
   showTableData!: Table[];
   selectedData!: any;
 
-  colDefs: ColDef[]=[
+  colDefs: ColDef[] = [
     {
       headerName: 'Table Name',
       field: 'table_name.value',
@@ -38,9 +36,9 @@ export class ProductComponent implements OnInit {
         return params.value ? 'Yes' : 'No';
       },
     },
-  ];;
+  ];
   rowData!: any[];
-  gridOptions: GridOptions={
+  gridOptions: GridOptions = {
     isRowSelectable: (parms: any) => {
       return !parms.data.is_table_exist;
     },
@@ -88,11 +86,7 @@ export class ProductComponent implements OnInit {
     }
   }
 
-
- 
- 
   NavigateToRoute() {
-
     if (this.selectedData !== undefined) {
       const tableData = JSON.parse(localStorage.getItem('productData')!);
       for (let i = 0; i < this.selectedData?.length; i++) {
@@ -108,13 +102,14 @@ export class ProductComponent implements OnInit {
           is_edit: false,
           type: 'datetime',
         };
- 
+        console.log('tableData', tableData);
+
         const index = tableData.findIndex((data: any) => {
           return (
-            data?.table_name?.value === this.selectedData[i].table_name?.value
+            data.table_name.value === this.selectedData[i].table_name.value
           );
         });
-       
+
         tableData[index] = this.selectedData[i];
       }
       localStorage.setItem('productData', JSON.stringify(tableData));
@@ -123,6 +118,4 @@ export class ProductComponent implements OnInit {
 
     this.router.navigateByUrl('product/tablelist', { state });
   }
-
-
 }
