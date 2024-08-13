@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuardGuard } from './core/auth-guard.guard';
+import { LoginComponent } from './core/login/login.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'menu', pathMatch: 'full' },
@@ -28,12 +30,13 @@ const routes: Routes = [
   },
   {
     path: 'product',
+    canActivate: [AuthGuardGuard],
     loadChildren: () =>
       import('../app/DashBoard/product/product.module').then((x) => {
         return x.ProductModule;
       }),
   },
-
+  { path: 'login', component: LoginComponent },
 ];
 
 @NgModule({

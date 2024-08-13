@@ -5,14 +5,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { IconsModule } from 'src/app/Shared/icons/icons.module';
 import { SharedModule } from 'src/app/Shared/shared/shared.module';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import {
-  FormArray,
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { Params, Router } from '@angular/router';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 describe('ContactsComponent', () => {
   let component: ContactsComponent;
@@ -38,7 +32,7 @@ describe('ContactsComponent', () => {
     component = fixture.componentInstance;
     formBuilder = TestBed.inject(FormBuilder);
     router = TestBed.inject(Router);
-   
+
     DummyCommonData = [
       {
         id: 1,

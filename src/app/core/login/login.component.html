@@ -1,0 +1,61 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title text-center">{{isLogin ? 'Login' : 'Signup'}}</h3>
+            <form (ngSubmit)="onSubmit()" #authForm="ngForm">
+              <div class="form-group">
+                <label for="username">username</label>
+                <input
+                  type="email"
+                  id="username"
+                  class="form-control"
+                  required
+                  [(ngModel)]="username"
+                  name="username"
+                  #emailInput="ngModel"
+                />
+                <div *ngIf="emailInput.invalid && emailInput.touched" class="text-danger">
+                  Email is required
+                </div>
+              </div>
+             
+              <div class="form-group mt-3">
+                <label for="password">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  class="form-control"
+                  required
+                  [(ngModel)]="password"
+                  name="password"
+                  #passwordInput="ngModel"
+                />
+                <div *ngIf="passwordInput.invalid && passwordInput.touched" class="text-danger">
+                  Password is required
+                </div>
+              </div>
+             
+              <button
+                type="submit"
+                class="btn btn-primary mt-3"
+                [disabled]="authForm.invalid"
+              >
+                {{isLogin ? 'Login' : 'Signup'}}
+              </button>
+            </form>
+            <div class="mt-3 text-center">
+              <button
+                class="btn btn-link"
+                (click)="toggleForm()"
+              >
+                {{isLogin ? 'Create an account' : 'Already have an account?'}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   

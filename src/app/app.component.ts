@@ -7,4 +7,18 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'folder_structure_demo';
+  constructor(){
+    let obj={
+      name:"test",
+      arrow:()=>{
+          console.log(this)
+      },
+      fn:()=>{
+          console.log(this)
+      }
+      
+  }
+  obj.fn();
+  obj.arrow();
+  }
 }

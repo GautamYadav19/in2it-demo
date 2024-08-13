@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './Shared/Header/navbar/navbar.component';
 import { IconsModule } from './Shared/icons/icons.module';
 import { HttpClientModule } from '@angular/common/http';
+import { LoginComponent } from './core/login/login.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -14,12 +16,13 @@ import { HttpClientModule } from '@angular/common/http';
   declarations: [
     AppComponent,
     NavbarComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    IconsModule
+    IconsModule,FormsModule
 
   ],
   providers: [],
