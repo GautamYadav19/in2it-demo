@@ -7,6 +7,8 @@ import {
 } from '@angular/core';
 import { DataService } from 'src/app/DashBoard/my-menu/service/data.service';
 import { NavTitle } from '../../Interfaces/interface';
+import { AuthServiceService } from 'src/app/core/auth-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -17,7 +19,11 @@ import { NavTitle } from '../../Interfaces/interface';
 export class NavbarComponent implements OnInit {
   title!: NavTitle;
   flag: boolean = true;
-  constructor(private service: DataService) {}
+  constructor(
+    private service: DataService,
+    private _authServcie: AuthServiceService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.getTabTitle();
@@ -32,5 +38,9 @@ export class NavbarComponent implements OnInit {
   }
   setTableTitle(name: NavTitle) {
     this.service.setTabnavigateName(name);
+  }
+  logout() {
+    this._authServcie.clearStorage();
+    this.router.navigate(['']);
   }
 }

@@ -18,18 +18,29 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     if (this.isLogin) {
       this._auth
-        .login({ username: this.username, password: this.password })
-        .subscribe({
-          next: (data) => {
-            if (data?.token) {
-              this._auth.setDataInLocalStorage('tkn', data);
-              this.route.navigate(['/product']);
-            }
-          },error:(e)=>{
-            alert("some want's wrong");
-            console.log(e);
+      .login({
+        username: this.username,
+        password: this.password,
+        expiresInMins: this.expiresInMins,
+      })
+      .subscribe({
+        next: (data: any) => {
+          const token = {
+            token: data.token,
+            refreshToken: data.refreshToken,
+          };
+
+          if (data.token) {
+            this._auth.setDataInLocalStorage(
+              'userData',
+              JSON.stringify(data)
+            );
+            this._auth.setDataInLocalStorage('tkn', JSON.stringify(token));
+            this.route.navigate(['/product']);
           }
-        });
+        },
+        error: (e) => {},
+      });
     }
     else{
       // right now have no api for sign-up

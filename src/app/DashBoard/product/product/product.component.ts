@@ -3,6 +3,7 @@ import { ProductService } from '../service/product.service';
 import { Table } from 'src/app/Interfaces/product-table.interface';
 import { ColDef, GridApi, GridOptions } from 'ag-grid-community';
 import { Router } from '@angular/router';
+import { AuthServiceService } from 'src/app/core/auth-service.service';
 
 @Component({
   selector: 'app-product',
@@ -55,7 +56,11 @@ export class ProductComponent implements OnInit {
   setDropDownVar: boolean = false;
 
   disableNextBtn!: boolean;
-  constructor(private productService: ProductService, private router: Router) {}
+  constructor(
+    private productService: ProductService,
+    private router: Router,
+    private _authService: AuthServiceService
+  ) {}
 
   ngOnInit(): void {
     this.getProductData();
@@ -117,5 +122,11 @@ export class ProductComponent implements OnInit {
     const state = { data: this.selectedData };
 
     this.router.navigateByUrl('product/tablelist', { state });
+  }
+  getProfile() {
+  this._authService.getUserByAPi().subscribe((data)=>{
+      console.log(data)
+    
+    })
   }
 }

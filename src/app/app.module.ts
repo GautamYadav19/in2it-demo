@@ -6,26 +6,27 @@ import { AppComponent } from './app.component';
 
 import { NavbarComponent } from './Shared/Header/navbar/navbar.component';
 import { IconsModule } from './Shared/icons/icons.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './core/login/login.component';
 import { FormsModule } from '@angular/forms';
-
-
+import { AuthInterceptorInterceptor } from './core/auth-interceptor.interceptor';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavbarComponent,
-    LoginComponent,
-  ],
+  declarations: [AppComponent, NavbarComponent, LoginComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    IconsModule,FormsModule
-
+    IconsModule,
+    FormsModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorInterceptor,
+      multi: true,
+    },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
