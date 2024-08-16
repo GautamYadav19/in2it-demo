@@ -1,24 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { SSEService } from './service/sse.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit,OnDestroy{
   title = 'folder_structure_demo';
-  constructor(){
-    let obj={
-      name:"test",
-      arrow:()=>{
-          console.log(this)
-      },
-      fn:()=>{
-          console.log(this)
-      }
-      
+  constructor(private serviceSSE: SSEService) {}
+  
+  message!: string;
+  private eventSubscription!: Subscription;
+  ngOnInit(): void {
+    this.eventSubscription = this.serviceSSE
+    .getServerSentEvent('http://localhost:3000/api/events')
+    .subscribe((event) => {
+      this.message = event.data;
+    });
   }
-  obj.fn();
-  obj.arrow();
+  ngOnDestroy(): void {
+  this.eventSubscription.unsubscribe()
   }
+
 }
