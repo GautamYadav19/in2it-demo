@@ -36,6 +36,13 @@ const routes: Routes = [
         return x.ProductModule;
       }),
   },
+  {
+    path: 'calender',
+    loadChildren: () =>
+      import('../app/DashBoard/calender/calender.module').then((x) => {
+        return x.CalenderModule;
+      }),
+  },
   { path: 'login', component: LoginComponent },
 ];
 

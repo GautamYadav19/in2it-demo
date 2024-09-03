@@ -23,5 +23,14 @@ export class AppComponent implements OnInit,OnDestroy{
   ngOnDestroy(): void {
   this.eventSubscription.unsubscribe()
   }
-
+  // router.get('/events', (req, res) => {
+  //   res.setHeader('Content-Type', 'text/event-stream');
+  //   res.setHeader('Cache-Control', 'no-cache');
+  //   res.setHeader('Connection', 'keep-alive');
+  
+  //   setInterval(() => {
+  //     const data = `data: ${new Date().toISOString()}\n\n`;
+  //     res.write(data);
+  //   }, 1000);
+  // });
 }

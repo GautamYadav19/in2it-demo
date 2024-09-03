@@ -12,7 +12,11 @@ import { FormsModule } from '@angular/forms';
 import { AuthInterceptorInterceptor } from './core/auth-interceptor.interceptor';
 
 @NgModule({
-  declarations: [AppComponent, NavbarComponent, LoginComponent],
+  declarations: [
+    AppComponent,
+    NavbarComponent,
+    LoginComponent,
+  ],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -26,6 +30,7 @@ import { AuthInterceptorInterceptor } from './core/auth-interceptor.interceptor'
       useClass: AuthInterceptorInterceptor,
       multi: true,
     },
+    
   ],
   bootstrap: [AppComponent],
 })
