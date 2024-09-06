@@ -1,0 +1,59 @@
+{
+  "reviews": [
+    {
+      "id": 1,
+      "product": "iPhone 13 pro max-Pacific Blue-128GB storage",
+      "customer": {
+        "name": "Arlene McCoy",
+        "email": "macoy@arlene.com"
+      },
+      "review": "Mocetko adte me doj afta kaj mi fi li lugeb golo zuvgigsu vazjakej kezzuiha fihdos gaojo narojo vo. Basap bo jesihef upa anisaf cuvedode ba giebu gijacag mepiv weume de na to.",
+      "status": "Confirmed",
+      "date": "Sep 29"
+    },
+    {
+      "id": 2,
+      "product": "Apple MacBook Pro 13 inch-M1-8/256GB-space",
+      "customer": {
+        "name": "Jerome Bell",
+        "email": "belljerome@yahoo.com"
+      },
+      "review": "Mocetko adte me doj afta kaj mi fi li lugeb golo zuvgigsu vazjakej kezzuiha fihdos gaojo narojo vo. Basap bo jesihef upa anisaf cuvedode ba giebu gijacag mepiv weume de na to.",
+      "status": "Pending",
+      "date": "Sep 29"
+    },
+    {
+      "id": 3,
+      "product": "PlayStation 5 DualSense Wireless Controller",
+      "customer": {
+        "name": "Jacob Jones",
+        "email": "jones009@hotmail.com"
+      },
+      "review": "Mocetko adte me doj afta kaj mi fi li lugeb golo zuvgigsu vazjakej kezzuiha fihdos gaojo narojo vo. Basap bo jesihef upa anisaf cuvedode ba giebu gijacag mepiv weume de na to.",
+      "status": "Cancelled",
+      "date": "Sep 29"
+    },
+    {
+      "id": 4,
+      "product": "Amazon Basics Mesh, Mid-Back, Swivel Office De...",
+      "customer": {
+        "name": "Annette Black",
+        "email": "blackanne@yahoo.com"
+      },
+      "review": "Mocetko adte me doj afta kaj mi fi li lugeb golo zuvgigsu vazjakej kezzuiha fihdos gaojo narojo vo. Basap bo jesihef upa anisaf cuvedode ba giebu gijacag mepiv weume de na to.",
+      "status": "Pending",
+      "date": "Sep 29"
+    },
+    {
+      "id": 5,
+      "product": "Sony X85J 75 Inch Sony 4K Ultra HD LED Smart G...",
+      "customer": {
+        "name": "Albert Flores",
+        "email": "albertflo9@gmail.com"
+      },
+      "review": "Mocetko adte me doj afta kaj mi fi li lugeb golo zuvgigsu vazjakej kezzuiha fihdos gaojo narojo vo. Basap bo jesihef upa anisaf cuvedode ba giebu gijacag mepiv weume de na to.",
+      "status": "Pending",
+      "date": "Sep 29"
+    }
+  ]
+}

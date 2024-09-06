@@ -9,6 +9,7 @@ import { TableInputDescComponent } from './ag-grid-table/table-input-desc/table-
 import { TableInputNameComponent } from './ag-grid-table/table-input-name/table-input-name.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { AggridSpikeComponent } from './aggrid-spike/aggrid-spike.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
     CustomProductBtnComponent,
     TableInputDescComponent,
     TableInputNameComponent,
+    AggridSpikeComponent,
   ],
   imports: [
     CommonModule,

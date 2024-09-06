@@ -3,9 +3,8 @@
         <div class="row">
             <div class="col">
                 <div ngbDropdown class="d-inline-block bropdownBtn">
-                    
 
-                    <div  *ngIf="setDropDownVar"  >
+                    <div *ngIf="setDropDownVar">
                         <span *ngFor="let col of colDefList">
                             <button (click)="toggleVisible(col)" ngbDropdownItem> <i-feather
                                     [name]="col.hide?'eye-off':'eye'"></i-feather> {{col.headerName}}</button>
@@ -20,7 +19,6 @@
 
 <ag-grid-angular class="ag-theme-alpine table table-hover" style="height: 400px" [rowData]="rowData"
     [columnDefs]="colDefs" [rowSelection]="'multiple'" (gridReady)="onGridReady($event)"
-    (selectionChanged)="onSelectionChanged()"
-    [gridOptions]="gridOptions" [pagination]="pagination" [isRowSelectable]="isRowSelectable"
-    [paginationPageSize]="paginationPageSize" [getRowStyle]="getRowStyle" [rowStyle]="rowStyle"
-    [defaultColDef]="defaultcolDef" [suppressRowClickSelection]="true"></ag-grid-angular>
+    (selectionChanged)="onSelectionChanged()" [gridOptions]="gridOptions" [pagination]="pagination"
+    [isRowSelectable]="isRowSelectable" [paginationPageSize]="paginationPageSize" [getRowStyle]="getRowStyle"
+    [rowStyle]="rowStyle" [defaultColDef]="defaultcolDef" [suppressRowClickSelection]="true"></ag-grid-angular>

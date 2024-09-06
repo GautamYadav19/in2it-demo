@@ -1,22 +1,8 @@
-<!-- <div class="example-wrapper">
-  <div style="margin-bottom: 5px;">
-    <button style="font-size: 12px" (click)="onBtStartEditing()">
-      Start Editing Line 2
-    </button>
-    <button style="font-size: 12px" (click)="onBtStopEditing()">
-      Stop Editing
-    </button>
-  </div>
-  <ag-grid-angular
-    style="width: 100%; height: 500px;"
-    [columnDefs]="columnDefs"
-    [defaultColDef]="defaultColDef"
-    [editType]="editType"
-    [rowData]="rowData"
-    [class]="themeClass"
-    [gridOptions]="gridOption"
-    (gridReady)="onGridReady($event)"
-    ></ag-grid-angular>
-  </div> -->
-  <!-- (cellValueChanged)="onCellValueChanged($event)"
-  (rowValueChanged)="onRowValueChanged($event)" -->
+<input type="file" (change)="onFileSelected($event)" /> <!-- Change to (change) event -->
+
+<!-- Image Preview -->
+<div *ngIf="imagePreview || videoPreview">
+  <h3>Image Preview:</h3>
+  <img *ngIf="imagePreview" [src]="imagePreview" alt="Image Preview" width="200" />
+   <video *ngIf="videoPreview" [src]="videoPreview" controls autoplay></video>
+</div>
