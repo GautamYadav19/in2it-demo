@@ -1,8 +1,22 @@
-<input type="file" (change)="onFileSelected($event)" /> <!-- Change to (change) event -->
+<form (submit)="onSubmit()">
+  <input type="file" (change)="onFileSelected($event)" />
+  <button type="submit">Upload Media</button>
 
-<!-- Image Preview -->
-<div *ngIf="imagePreview || videoPreview">
-  <h3>Image Preview:</h3>
-  <img *ngIf="imagePreview" [src]="imagePreview" alt="Image Preview" width="200" />
-   <video *ngIf="videoPreview" [src]="videoPreview" controls autoplay></video>
-</div>
+  <!-- Image Preview -->
+  <div *ngIf="mediaPreview && !isVideo && !isPDF">
+    <h3>Image Preview:</h3>
+    <img [src]="mediaPreview" alt="Image Preview" width="200" />
+  </div>
+
+  <!-- Video Preview with Autoplay -->
+  <div *ngIf="mediaPreview && isVideo">
+    <h3>Video Preview:</h3>
+    <video [src]="mediaPreview" width="300" controls autoplay></video>
+  </div>
+
+  <!-- PDF Preview -->
+  <div *ngIf="mediaPreview && isPDF">
+    <h3>PDF Preview:</h3>
+    <embed [src]="mediaPreview" type="application/pdf" width="400" height="500" />
+  </div>
+</form>
