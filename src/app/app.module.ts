@@ -10,12 +10,14 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './core/login/login.component';
 import { FormsModule } from '@angular/forms';
 import { AuthInterceptorInterceptor } from './core/auth-interceptor.interceptor';
+import { InputFieldComponent } from './Shared/custom-componet/input-field/input-field.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     LoginComponent,
+    InputFieldComponent,
   ],
   imports: [
     BrowserModule,

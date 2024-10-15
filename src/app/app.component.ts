@@ -1,36 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { SSEService } from './service/sse.service';
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit,OnDestroy{
+export class AppComponent implements OnInit {
   title = 'folder_structure_demo';
-  constructor(private serviceSSE: SSEService) {}
-  
-  message!: string;
-  private eventSubscription!: Subscription;
-  ngOnInit(): void {
-    this.eventSubscription = this.serviceSSE
-    .getServerSentEvent('http://localhost:3000/api/events')
-    .subscribe((event) => {
-      this.message = event.data;
-    });
+  constructor() {}
+  external: string = '';
+  ngOnInit(): void {}
+  onSubmit(form: NgForm) {
+    console.log(form.value);
   }
-  ngOnDestroy(): void {
-  this.eventSubscription.unsubscribe()
-  }
-  // router.get('/events', (req, res) => {
-  //   res.setHeader('Content-Type', 'text/event-stream');
-  //   res.setHeader('Cache-Control', 'no-cache');
-  //   res.setHeader('Connection', 'keep-alive');
-  
-  //   setInterval(() => {
-  //     const data = `data: ${new Date().toISOString()}\n\n`;
-  //     res.write(data);
-  //   }, 1000);
-  // });
 }
