@@ -1,0 +1,13 @@
+<div class="form-group">
+  <!-- <label for="exampleInputEmail1">Email address</label> -->
+  <input
+    [type]="config?.type"
+    [value]="val"
+    (input)="onInputChange($event)"
+    class="form-control"
+    id="exampleInputEmail1"
+    aria-describedby="emailHelp"
+    [placeholder]="config?.placeholder"
+  />
+</div>
+<!-- <input  /> -->
