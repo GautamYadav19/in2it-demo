@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { NavTitle } from 'src/app/Shared/Interfaces/interface';
 
 @Injectable({
@@ -8,9 +8,8 @@ import { NavTitle } from 'src/app/Shared/Interfaces/interface';
 export class DataService {
   constructor() {}
 
-
   public tabNavigateName = new Subject<NavTitle>();
-  
+
   setTabnavigateName(data: NavTitle) {
     this.tabNavigateName.next(data);
   }
@@ -24,7 +23,7 @@ export class DataService {
     existingData.push(data);
     localStorage.setItem('data', JSON.stringify(existingData));
   }
-  
+
   deleteTask(id: any) {
     const existingData = JSON.parse(localStorage.getItem('data')!) || [];
     const exisitingID = existingData.findIndex((data: any) => {

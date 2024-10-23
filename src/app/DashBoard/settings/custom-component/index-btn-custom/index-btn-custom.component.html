@@ -1,0 +1,9 @@
+<app-btn-custom
+  [name]="btnname"
+  (editMode)="editModeBtnFn($event)"
+></app-btn-custom>
+
+<app-edit-btn
+  *ngIf="editModeBtn"
+  (shareData)="shareDataBtn($event)"
+></app-edit-btn>

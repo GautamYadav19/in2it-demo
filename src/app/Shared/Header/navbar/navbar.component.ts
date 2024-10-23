@@ -1,10 +1,4 @@
-import {
-  AfterContentChecked,
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/DashBoard/my-menu/service/data.service';
 import { NavTitle } from '../../Interfaces/interface';
 import { AuthServiceService } from 'src/app/core/auth-service.service';

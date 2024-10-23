@@ -1,0 +1,7 @@
+<app-para-custom
+  [para]="para"
+  (editMode)="editModeFn($event)"
+></app-para-custom>
+
+<!-- ! -->
+<app-edit-para *ngIf="editMode" (shareData)="shareData($event)"></app-edit-para>

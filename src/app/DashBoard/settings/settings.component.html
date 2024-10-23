@@ -1,1 +1,46 @@
-<p>settings works!</p>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-2">
+      <h3>Todo</h3>
+      <div
+        class="content"
+        *ngFor="let item of listOfElement"
+        draggable="true"
+        (dragstart)="drag($event, item.name)"
+      >
+        {{ item.name }}
+      </div>
+    </div>
+    <div
+      (drop)="drop($event)"
+      (dragover)="allowDrop($event)"
+      class="col-lg-7 left-container"
+    >
+      <h3>Form preview</h3>
+      <hr />
+
+      <div *ngFor="let component of showListElement; let i = index">
+        <ng-container
+          appDataTransfer
+          [component]="component.component"
+          [id]="component.id"
+          [params]="params"
+        >
+        </ng-container>
+        <br />
+      </div>
+    </div>
+    <div class="col-lg-3 left-container">
+      <!-- </div *ngFor="let component of showListElement; let i = index"> -->
+      <ng-container
+        *ngIf="editComponent"
+        appEditDataTransfer
+        [component]="editComponent.component"
+        [id]="editComponent.id"
+      >
+      </ng-container>
+      <br />
+      <!-- </div> -->
+    </div>
+  </div>
+</div>

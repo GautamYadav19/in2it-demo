@@ -30,7 +30,7 @@ const routes: Routes = [
   },
   {
     path: 'product',
-    canActivate: [AuthGuardGuard],
+
     loadChildren: () =>
       import('../app/DashBoard/product/product.module').then((x) => {
         return x.ProductModule;

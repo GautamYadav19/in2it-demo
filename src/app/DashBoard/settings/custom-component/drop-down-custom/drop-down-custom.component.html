@@ -1,0 +1,12 @@
+<div class="dropdown mt-2" (click)="toggleDropdown()">
+  <button class="dropdown-button">Dropdown</button>
+  <div
+    class="dropdown-content"
+    [class.show]="isOpen"
+    (click)="$event.stopPropagation()"
+  >
+    <a href="#" (click)="closeDropdown()">Action 1</a>
+    <a href="#" (click)="closeDropdown()">Action 2</a>
+    <a href="#" (click)="closeDropdown()">Action 3</a>
+  </div>
+</div>

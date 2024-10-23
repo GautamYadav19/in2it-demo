@@ -1,0 +1,29 @@
+.column {
+  width: 200px;
+  min-height: 100px;
+  border: 1px solid #ccc;
+  margin: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.column div {
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: move;
+}
+.content {
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: move;
+  text-align: center;
+  font-weight: 500;
+}
+.left-container {
+  border-left: 1px solid rgb(196, 190, 190);
+  height: 100vh;
+}
